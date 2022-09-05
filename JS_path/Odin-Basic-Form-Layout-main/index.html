@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign-up</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="normalize.css" />
+    <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="title-page">
+            <div class="title"><b>G H O S T</b></div>
+            <div class="canvas">
+                <div class='circle'>
+                    <div class='ghost'>
+                        <div class="ghost-top">
+                            <div class="eyes"></div>
+                            <div class="mouth"></div>
+                        </div>
+                        <div class='ghost-bottom'></div>
+                        <div class="legs">
+                            <div class="circle1"></div>
+                            <div class="circle2"></div>
+                            <div class="circle3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="title-message">
+                <p class="title-message1"><b>Sign up here!</b></p>
+                <div class="arrow-animation">
+                    <div class="arrow"></div>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="form-div">
+            <form class='form-container' action="urltosendto" method="post">
+                <legend id="form-title"><b>Sign up here!</b></legend>
+                <!-- USER DETAILS -->
+                <fieldset class="form-field">
+                    <legend>Personal Details</legend>
+
+                    <label for="firstName">*First Name</label>
+                    <input type="text" id="'firstName" placeholder="" required
+                           pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" /> <!-- name  -->
+
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="'lastName" placeholder=""
+                           pattern='^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$' /> <!-- last name  -->
+                </fieldset>
+
+                <!-- CONTACT -->
+                <fieldset class="form-field">
+                    <legend>Contact Information</legend>
+
+                    <label for="userEmail" maxlength="30">*Email</label>
+                    <input type="email" id="'userEmail" placeholder="Ex: johnsmith@gmail.com" required /> <!-- email  -->
+
+                    <label for="userPhone">Phone Number</label>
+                    <input type="tel" id="'userPhone" placeholder="" /> <!-- number  -->
+                </fieldset>
+
+                <!-- ACCOUNT DETAILS -->
+                <fieldset class="form-field">
+                    <legend>Account Details</legend>
+
+                    <label for="userPW">*Password</label>
+                    <input type="password" id="'userPW" minlength="6" maxlength="20" placeholder="" required /> <!-- pw  -->
+
+                    <label for="pwConfirm">*Confirm Password</label>
+                    <input type="password" minlength="6" maxlength="20" id="'pwConfirm" placeholder="" required /> <!-- pw confirmation  -->
+                </fieldset>
+                <div class="butt-holder">
+                    <button type="submit" class="butt"><b>Submit</b></button>
+                </div>
+            </form>
+
+            <div class="foot">
+                <p>Already have an account?</p>
+                <p>Sign in <a href="signin.com">here</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

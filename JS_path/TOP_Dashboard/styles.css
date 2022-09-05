@@ -1,0 +1,208 @@
+/*
+Grid for overall layout: need to make sidebar on left side
+*/
+
+/* Mobile */
+.container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 3fr 1fr;
+    grid-template-areas:
+        'header header'
+        'article notes';
+    height: 100vh;
+}
+
+/* DESKTOP */
+@media only screen and (min-width: 913px) {
+    /* For desktop: */
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
+        grid-template-areas:
+            'sidebar header header'
+            'sidebar article notes';
+        height: 100vh;
+    }
+}
+/*
+The header element has two columns
+The ul inside the menu element contains another grid
+*/
+.top {
+    grid-area: header;
+    background: gold;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.top > div {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#head-row1 div:nth-child(2) {
+    background: red;
+    margin-left: auto;
+}
+
+.button-list {
+    display: inline-grid;
+    grid-template-columns: repeat(3, 1fr);
+    list-style: none;
+}
+
+/*
+The sidebar element has a gap of 50px
+The text elements in the sidebar are centered with grid
+*/
+.sidebar {
+    grid-area: sidebar;
+    background: orange;
+    height:100%;
+    width: 100%;
+    display: inline-grid;
+    grid-template-rows: repeat(4, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+  .sidebar a {
+    text-decoration: none;
+    font-size: 2rem;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidebar .closebtn {
+    font-size: 2rem;
+    size: 1rem;
+  }
+  
+  .openbtn {
+    font-size: 2rem;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    border: none;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+  }
+
+/*
+The article element should set grid columns using repeat along with the auto-fit and minmax properties
+The article columns should have a minimum value of 250px and a maximum of 1fr unit
+The article element has a gap of 15px
+The card elements inside the article container have a height of 200px
+*/
+
+.main {
+    grid-area: article;
+    background: lightgrey;
+    display: grid;
+    grid-template-rows: 3rem min-content;
+    grid-template-areas:
+        'butts'
+        'cards';
+}
+.main-butts {
+    grid-area: butts;
+}
+.button-list {
+    background: red;
+    list-style:none;
+    display: inline-grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.card-space {
+    grid-area: cards;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 15px;
+    padding: 5% 5%;
+    align-items: center;
+    text-align: center;
+}
+
+.card {
+    background: white;
+    min-height: 200px;
+    border-radius: 20px;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+.new-card {
+    background: white;
+    border-radius: 20px;
+    height: 50%;
+    width: 50%;
+
+    opacity: 1;
+    padding: 3%;
+}
+
+.new-form {
+    width: 100%;
+    height: 100%;
+    display:grid;
+    grid-gap: 5%;
+    grid-template-rows: 1fr 3fr;
+    opacity: 1;
+    font-size: 1.5rem;
+}
+
+
+#new-detail {
+    text-align: center;
+    padding: 2rem;
+}
+
+#submit-new {
+    width: 30%;
+    height: 100%;
+}
+
+.butt-holder {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.closeBG {
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.foot {
+    grid-area: notes;
+    background: navy;
+    color: white;
+    font-size: 3em;
+    text-align: center;
+}
