@@ -1,0 +1,31 @@
+.shelf {
+    grid-area: library;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 0px;
+    padding: 5% 5%;
+    justify-content: start;
+    align-items: end;
+    text-align: center;
+    direction: ltr;
+}
+
+.new-book {
+    background: grey;
+    height: minmax(250px, 1fr);
+    width: minmax(40px, 80px);
+    border-radius: 5px;
+}
+
+.book {
+    background: grey;
+    height: minmax(250px, 1fr);
+    width: minmax(40px, 80px);
+    border-radius: 5px;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}

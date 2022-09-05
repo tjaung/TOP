@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Template for Exercises</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="normalize.css" />
+    <link rel="stylesheet" href="styles.css" />
+
+</head>
+
+<body>
+    <div>
+        <h1>Exercises:</h1>
+        <ol>
+            <li><a>Objects</a></li>
+        </ol>
+    </div>
+
+    <div>
+        <h2>Objects</h2>
+        <pre class="line-numbers">
+            <h3>Code:</h3>
+            <code class="language-css">
+                function Book(title, author, pages, read) {
+                    this.title = title;
+                    this.author = author;
+                    this.pages = pages;
+                    this.read = read;
+                
+                    this.info = function(){
+                        info = title + ' is a book written by ' + author + '. It is ' + pages + ' pages long. '
+                        if (read == true){
+                            info += 'You have read this book.'
+                        }
+                        else{
+                            info += 'You have not read this book yet.'
+                         }
+                        
+                         console.log(info)
+                
+                    }
+                }
+                
+                theHobbit = new Book('The Hobbit', 'J.R. Tolkien', 304, true);
+                theHobbit.info()
+            </code>
+         </pre>
+         <pre>
+            <h3>Output:</h3>
+            <code>
+                The Hobbit is a book written by J.R. Tolkien. It is 304 pages long. You have read this book.
+            </code>
+         </pre>
+
+        </code>
+    </div>
+    <script src="objects.js"></script> 
+</body>
