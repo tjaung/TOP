@@ -1,0 +1,225 @@
+/* GLOBALS */
+:root{
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-body-font-family: var(--bs-font-sans-serif);
+}
+
+
+button{
+    color: #E5E7EB;
+    font-size: 18px;
+    border-radius: 10%;
+    background-color: #3882F6;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #E5E7EB; /* Green */
+    color: #3882F6;
+
+  }
+
+/* HEADER: NAV BAR => nav items */
+header{
+    background: #1F2937;
+    font-family: var(--bs-body-font-family);
+}
+
+.nav-bar{
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    background: #1F2937;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.nav-bar h3{
+    color: #F9FAF8;
+    size: 24px;
+    padding-left: 20px;
+}
+
+.nav-bar ul{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    color: #E5E7EB;
+    size: 18px;
+    justify-content: space-evenly;
+    padding-right: 20px;
+}
+
+.nav-bar li{
+    margin-right: 15px;
+}
+
+.nav-bar a{
+    color: #E5E7EB;
+    text-decoration: none;
+    size: 18px;
+    padding-right: 20px;
+}
+
+
+/* BODY */
+
+/* First Part: Main Div => main message & main image */
+body {
+    font-family: var(--bs-body-font-family);
+}
+.body-1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100vh;
+    background: #1F2937;
+
+}
+
+.body-1-1 {
+    flex: 1 1 0;
+}
+
+.body-1 #body1-main-message{
+    font-size: 48px;
+    font-weight: bold;
+    color: #F9FAF8;
+    padding-left: 20px;
+}
+
+.body-1 #body1-secondary-message{
+    font-size: 18px;
+    color: #E5E7EB;
+    padding-left: 20px;
+}
+
+.body-1 button{
+    margin-left: 20px;
+}
+
+
+.body1-2{
+    background: white;
+    flex: 1 1 0;
+}
+
+.body-1 img{
+    max-height: 800px;
+    max-width: 1200px;
+    padding-right: 20px;
+}
+
+
+
+/* Second part: Images with texts explaining */
+.body-2{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.body-2 h2{
+    padding-top: 60px;
+    color: #1F2937;
+    font-style: extra-bold;
+    size: 36px;
+}
+
+.body-2-img-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 80px;
+}
+
+.info-card img{
+    border-radius: 15%;
+    max-height: 120px;
+    max-width: 120px;
+    border-color: red;
+}
+
+.info-card p{
+
+}
+
+
+/* Third part: some dumbass quote to seem smart and inspiring */
+.body-3{
+    size: 36px;
+    color: #1F2937;
+    background-color: #E5E7EB;
+    padding: 100px 20px 100px 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.body-3 #quote{
+    font-style: italic;
+    size: 36px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.body-3 #speaker{
+    size: 22px;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 30%;
+}
+
+
+
+/* Fourth part: footer like thing but not really a footer */
+.body-4{
+    background-color: white;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    justify-content: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+ 
+}
+
+.body4-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #3882F6;
+    color: #E5E7EB;
+    border-radius: 5%;
+    height: 100px;
+}
+
+.body4-container h2{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+/* FOOTER */
+footer {
+    display: flex;
+    background: #1F2937;
+    height: 60px;
+    color:#F9FAF8;
+    justify-content: center;
+    align-items:center;
+    --bs-body-font-family: var(--bs-font-sans-serif);
+}

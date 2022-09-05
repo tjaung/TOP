@@ -1,0 +1,129 @@
+body {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  justify-self: center;
+  justify-items: center;
+  align-items: center;
+  background-image: url('img/background_blur.jpg');
+  background-repeat: no-repeat;
+  background-size:cover;
+
+}
+
+.border {
+  display: flex;
+  flex-flow: column;
+  background-color: silver;
+/*  margin: 10% 20%;
+  padding: 2% 2% 3% 2%; */
+  border-color: black;
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 5%;
+
+  height: 80%;
+  width: 20%;
+  
+}
+
+.output-text {
+  display: inline-grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  margin: 2%;
+  padding-right: 2%;
+  height: 18vh;
+  background: gold;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 5%;
+  text-align: right;
+  font-size: 2em;
+  
+}
+
+.output-text #result #input {
+  height: 16px;
+  max-height: 16px;
+  display: inline-block;
+}
+
+
+.button-holder {
+  display: inline-grid;
+  justify-items: center;
+  align-items: center;
+  height: 80%;
+  
+}
+
+#memory {
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 1%;
+  background: silver;
+}
+
+#main {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  
+}
+
+#memory input {
+  border-style: none;
+  height: 5vh;
+  width: 100%;
+  font-size: 0.8em;
+}
+
+#main input {
+  border-style: none;
+  height: 8vh;
+  width: 100%;
+  font-size: 1.1em;
+}
+
+.action .memory .clears {
+  background-color: rgb(210, 210, 210);
+}
+
+.inputs {
+  background-color: rgb(240, 240, 240);
+}
+
+input {
+  cursor: pointer;
+}
+input:hover {
+  background-color: rgb(180, 180, 180);
+}
+input:active {
+  background-color: rgb(150, 150, 150);
+  box-shadow: 0 5px #666;
+}
+
+.foot {
+  font-size:6px;
+  text-align:center;
+  height:5%;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 480px) {
+  .border {
+    display: flex;
+    flex-flow: column;
+    background-color: silver;
+    overflow: auto;
+    border-color: black;
+    border-style: solid;
+    border-width: 5px;
+    border-radius: 5%;
+
+    height: 100%;
+    width: 100%;
+    }
+}
+

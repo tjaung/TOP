@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Etch-A-Sketch</title>
+    <!-- This project will automatically generate a grid of a x b 
+       divs within a grid of a x b size. The default will be set 
+       to 16 x 16, but a slider will be used to adjust the size
+       of the canvas. A toolbar will be placed directly above the 
+       canvas for tools such as color toggle and eraser. The UI
+       should be mobile friendly as well -->
+    <link rel='stylesheet' href='style.css'>    
+    <script src='script.js' defer></script>
+    <meta charset="UTF-8">
+
+</head>
+
+<html>
+    <header>
+        <h2 class='title'>Etch-A-Sketch</h2>
+    </header>
+    <body>
+        <section class='toolbar'>
+            <ul class='tools'>
+                <li><button type='radio' id='black-white'><img src='images/black.jpg'></button></li>
+                <li><button type='radio' id='color-choose'><img src='images/color.jpg'></button></li>
+                <li><button type='radio' id='color'><img src='images/rainbow.jpg'></button></li>
+                <li><button type='radio' id='eraser'><img src='images/eraser.jpg'></button></li>
+                <li><button id='grid-toggle'><img src='images/grid.jpg'></button></li>
+                <li><button id='clear'><img src='images/clear.jpg'></button></li>
+            </ul>
+        </section>
+
+	<!-- CANVAS -->
+	<div class='canvas-container'>
+          <div class='canvas'></div>
+        </div>
+
+        <section id='slider-container'>
+            <input type="range" min="1" max="100" value="16" class="slider" id='slider'>
+            <p id='dimensions'></p>
+        </section>
+        
+    </body>
+    <footer>
+        <p>Odin Project</p>
+    </footer>
+
+</html>

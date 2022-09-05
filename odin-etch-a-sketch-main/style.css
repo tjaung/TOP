@@ -1,0 +1,91 @@
+body {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center; 
+    margin: 0 0 0 0;
+    height: 90vh;
+    width: 99.9vw;
+}
+
+header {
+    height: 10vh;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+.title {
+  text-align: center;
+}
+
+.toolbar{
+    background: lightgrey;
+    width: 100vw;
+    height: 10vh;
+    border: 1px solid #000000;
+
+}
+.toolbar .tools {
+    list-style: none;
+    display: inline-grid;
+    grid-template-columns: repeat(6, 1fr);
+    justify-content: center;
+    align-items: center;
+    grid-gap: 10px;
+
+    size: 10px;
+}
+
+.tools img {
+    min-height: 20px;
+    min-width: 20px;
+    max-height: 20px;
+    max-width: 20px;
+}
+.tools button {
+    cursor: pointer;
+}
+
+.canvas-container {
+    width: 99.5%;
+    height: 85vh;
+    border: 1px solid #000000;
+    background: honeydew;
+    padding: 0 0 0 0;
+}
+.canvas {
+    height: 100%;
+    display:grid;
+    overflow: none;
+}
+
+.grid-item {
+  border: 1px solid #ddd;
+  background-color: white;
+}
+
+#slider-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slider{
+    opacity: 0.75;
+    width: 65vw;
+    height: 5vh;
+    background: grey;
+    outline: none;
+    -webkit-transition: .1s;
+    transition: opacity .1s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+footer {
+    height: 5vh;
+    text-align: center;
+}
+

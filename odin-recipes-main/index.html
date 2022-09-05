@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<head>
+  <title>MontyHall</title>
+  <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+  <div id="body">
+    <header>
+      <h1>Welcome to Odin's Hall</h1>
+    </header>
+    <div id="instructions" class="instructions">
+      <div id="row1" class="row1">
+	<p>Odin has hidden his secret recipe to infinite knowledge in his treasure room.</p>
+	<p>You have snuck into Valhalla in order to steal the recipe,</p>
+        <p>however, Odin is wise and has hidden the recipe behind one of three doors.</p>
+	<p>Which door will you enter? Choose wisely.</p>
+    </div>
+      <div id="d1">You selected the first door</div>
+      <div id="d2">You selected the second door</div>
+      <div id="d3">You selected the third door</div>
+      <div id="row2" class="row2">			
+        <p>The door is about to open...</p>
+        <p>Suddenly, the gods of tricks, Loki, has decided to help you as a prank to Odin. He has revealed one of the doors that do not lead to the recipe. Will you stay with your original choice or switch? </p>
+
+        <div class="buttons">
+          <button id="btn-1">Switch</button>
+          <button id="btn-2">Stay</button>
+        </div>
+      </div>
+    </div>
+
+  <main class="gates">
+  
+      <img id="gate1" class="gate"
+           src="images/gate.jpeg" alt="gate">
+      <img id="gate2" class="gate"
+  	 src="images/gate.jpeg" alt="gate">
+      <img id="gate3" class="gate"
+  	 src="images/gate.jpeg" alt="gate">
+  </main>
+  </div>
+
+  <div class='result'>
+  <br>
+    <p>How does this work?</p>
+    <div class="links">
+	<button><a href="about.html" target="_blank">Know more</a></button>
+    </div>
+  </div>
+
+<div id="switchAndWin" class="result">
+
+
+
+    <div class="links">
+	<button><a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" target="_blank">
+		Know more</a></button>
+	<button><a href="index.html">Play again</a></button>
+    </div>
+  </div>
+  <div id="switchAndLose" class="result">
+
+
+    <div class="links">
+      <button><a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" target="_blank">Know more</a></button>
+      <button><a href="index.html">Play again</a></button>
+    </div>
+  </div>
+  <div id="NoSwitchAndWin" class="result">
+   
+    <div class="links">
+      <button><a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" target="_blank">Know more</a></button>
+      <button><a href="index.html">Play again</a></button>
+    </div>
+  </div>
+  <div id="NoSwitchAndLose" class="result">
+  
+    <div class="links">
+      <button><a href="https://en.wikipedia.org/wiki/Monty_Hall_problem"target="_blank">Know more</a></button>
+      <button><a href="index.html">Play again</a></button>
+  </div>
+  </div>
+	<script src="script1.js" async defer></script>
+</body>
+</html>
+
+
+<script type="text/javascript">
+// Declaring global variables
+const body = document.getElementById('body');
+const instructions = document.getElementById('instructions');
+const row1 = document.getElementById('row1');
+const row2 = document.getElementById('row2');
+const d1 = document.getElementById('d1');
+const d2 = document.getElementById('d2');
+const d3 = document.getElementById('d3');
+const switchChoiceYes = document.getElementById('btn-1');
+const switchChoiceNo = document.getElementById('btn-2');
+const doorImage1 = document.getElementById('gate1');
+const doorImage2 = document.getElementById('gate2');
+const doorImage3 = document.getElementById('gate3');
+const SwitchAndWin = document.getElementById("switchAndWin");
+const SwitchAndLose = document.getElementById("switchAndLose");
+const NoSwitchAndWin = document.getElementById("NoSwitchAndWin");
+const NoSwitchAndLose = document.getElementById("NoSwitchAndLose");
+ 
+// Image of Car
+const winPath =
+"https://image.flaticon.com/icons/svg/3118/3118467.svg";
+// Image of Goat
+const losePath =
+"https://image.flaticon.com/icons/svg/836/836069.svg";
+ 
+// Variables for shuffling the doors
+var openDoor1, openDoor2, openDoor3, winner;
+
+// Hiding unnecessary elements
+row2.hidden = true;
+SwitchAndWin.hidden = true;
+SwitchAndLose.hidden = true;
+NoSwitchAndWin.hidden = true;
+NoSwitchAndLose.hidden = true;
+d1.hidden = true;
+d2.hidden = true;
+d3.hidden = true;
+
+
+
+// Function to randomly shuffle the doors
+function winDoorGenerator() {
+	winner = Math.floor(Math.random() * 3);
+	if (winner === 1) {
+		openDoor1 = winPath;
+		openDoor2 = losePath;
+		openDoor3 = losePath;
+	} else if (winner === 2) {
+		openDoor2 = winPath;
+		openDoor1 = losePath;
+		openDoor3 = losePath;
+	} else {
+		openDoor3 = winPath;
+		openDoor2 = losePath;
+		openDoor1 = losePath;
+	}
+}
+// Calling the function
+winDoorGenerator();
+
+// Event listener for door 1
+doorImage1.onclick = () => {
+
+	// Revealing necessary elements for dialogue
+	row1.hidden = true;
+	d1.hidden = false;
+	setTimeout(()=>{
+		d1.hidden = true;
+	},1000);
+	setTimeout(()=>{
+		row2.hidden = false;
+	},1000);
+
+	// Opening a door which has a goat behind it.
+	if (openDoor2 === losePath) {
+		setTimeout(() =>
+		{ doorImage2.src = openDoor2; }, 2000);
+
+	} else if (openDoor3 === losePath) {
+		setTimeout(() =>
+		{ doorImage3.src = openDoor3; }, 2000);
+	}
+
+	//Event listener if the player opts to switch
+	switchChoiceYes.onclick = () => {
+
+		// If the opened door is door2, forming a
+		// suitable dialogue.
+		if (doorImage2.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg"){
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the third door";
+			setTimeout(()=>{
+				instructions.innerHTML =
+				"Entering the room.....";
+			},1000);
+
+			// Opening the chosen door
+			setTimeout(() =>
+			{ doorImage3.src = openDoor3; }, 2500);
+
+			//Conditions to display the result page
+			if (openDoor3 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		}
+		//If the opened door is door3, forming a suitable dialogue.
+		else if (doorImage3.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg") {
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the second door";
+			setTimeout(()=>{
+				instructions.innerHTML =
+				"Entering the room......";
+			},1000);
+			
+			// Opening the chosen door
+			setTimeout(() => { doorImage2.src = openDoor2; }, 2500);
+			//Conditions to display the result page
+			if (openDoor2 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		}
+	}
+	//Event listener if the player does not opts to switch
+	switchChoiceNo.onclick = () => {
+		row2.hidden = true;
+		instructions.innerHTML = "Your choice is still the first door";
+		setTimeout(() =>
+		{ instructions.innerHTML =
+		"Entering the room......"; }, 1000);
+		
+		// Opening the chosen door
+		setTimeout(() => { doorImage1.src = openDoor1; }, 2500);
+		
+		// Conditions to display the result page
+		if (openDoor1 === losePath) {
+			setTimeout(() => { noSwitchAndLose(); }, 3500)
+		} else {
+			setTimeout(() => { noSwitchAndWin(); }, 3500)
+		}
+	}
+}
+
+const switchAndWin = () => {
+	body.hidden = true;
+	SwitchAndWin.hidden = false;
+	window.location.href = "recipes/switchAndWin.html";
+}
+const switchAndLose = () => {
+	body.hidden = true;
+	SwitchAndLose.hidden = false;
+	window.location.href = "recipes/switchAndLose.html";
+}
+const noSwitchAndWin = () => {
+	body.hidden = true;
+	NoSwitchAndWin.hidden = false;
+	window.location.href = "recipes/noSwitchAndWin.html";
+}
+const noSwitchAndLose = () => {
+	body.hidden = true;
+	NoSwitchAndLose.hidden = false;
+	window.location.href = "recipes/noSwitchAndLose.html";
+}
+
+doorImage2.onclick = () => {
+	row1.hidden = true;
+	d2.hidden = false;
+	setTimeout(() => { d2.hidden = true; }, 1000);
+	setTimeout(() => { row2.hidden = false; }, 1000)
+
+	if (openDoor1 === losePath) {
+		setTimeout(() =>
+		{ doorImage1.src = openDoor1; }, 2000);
+
+	} else if (openDoor3 === losePath) {
+		setTimeout(() =>
+		{ doorImage3.src = openDoor3; }, 2000);
+	}
+
+	switchChoiceYes.onclick = () => {
+		if (doorImage1.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg") {
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the third door"
+			setTimeout(() =>
+			{ instructions.innerHTML =
+			"Entering the room......"; }, 1000);
+			setTimeout(() => { doorImage3.src = openDoor3; }, 2500);
+			if (openDoor3 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		} else if (doorImage3.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg") {
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the first door";
+			setTimeout(() => { instructions.innerHTML
+			= "Entering the room......"; }, 1000);
+			setTimeout(() => { doorImage1.src = openDoor1; }, 2500);
+			if (openDoor1 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		}
+	}
+	switchChoiceNo.onclick = () => {
+		row2.hidden = true;
+		instructions.innerHTML = "Your choice is still the second door"
+		setTimeout(() => { instructions.innerHTML =
+		"Entering the room......"; }, 1000);
+		setTimeout(() => { doorImage2.src = openDoor2; }, 2500);
+		if (openDoor2 === losePath) {
+			setTimeout(() => { noSwitchAndLose(); }, 3500)
+		} else {
+			setTimeout(() => { noSwitchAndWin(); }, 3500)
+		}
+	}
+}
+doorImage3.onclick = () => {
+	row1.hidden = true;
+	d3.hidden = false;
+	setTimeout(() => { d3.hidden = true; }, 1000);
+	setTimeout(() => { row2.hidden = false; }, 1000)
+
+	if (openDoor1 === losePath) {
+		setTimeout(() => { doorImage1.src = openDoor1; }, 2000);
+
+	} else if (openDoor2 === losePath) {
+		setTimeout(() => { doorImage2.src = openDoor2; }, 2000);
+	}
+
+	switchChoiceYes.onclick = () => {
+		if (doorImage1.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg") {
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the second door"
+			setTimeout(() => { instructions.innerHTML =
+			"Entering the room......"; }, 1000);
+			setTimeout(() => { doorImage2.src = openDoor2; }, 2500);
+			if (openDoor2 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		} else if (doorImage2.src ===
+		"https://image.flaticon.com/icons/svg/836/836069.svg") {
+			row2.hidden = true;
+			instructions.innerHTML = "You switched to the first door"
+			setTimeout(() => { instructions.innerHTML =
+			"Etnering the room......"; }, 1000);
+			setTimeout(() => { doorImage1.src = openDoor1; }, 2500);
+			if (openDoor1 === losePath) {
+				setTimeout(() => { switchAndLose(); }, 3500)
+			} else {
+				setTimeout(() => { switchAndWin(); }, 3500)
+			}
+		}
+	}
+	switchChoiceNo.onclick = () => {
+		row2.hidden = true;
+		instructions.innerHTML = "Your choice is still the third door"
+		setTimeout(() => { instructions.innerHTML =
+		"Entering the room......"; }, 1000);
+		setTimeout(() => { doorImage3.src = openDoor3; }, 2500);
+		if (openDoor3 === losePath) {
+			setTimeout(() => { noSwitchAndLose(); }, 3500)
+		} else {
+			setTimeout(() => { noSwitchAndWin(); }, 3500)
+		}
+	}
+}
+
+</script>
+

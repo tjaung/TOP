@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Calculator</title>
+    <!-- This project will  -->
+    <link rel='stylesheet' href='style.css'>    
+    <script src='script.js' defer></script>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<html>
+  <body>
+    <!-- Top of calculator for results and input -->
+    <section class='border'>
+      <div id='output' class='output-text'>
+        <div data-previous id='result'></div>
+        <div data-current id='input'>0</div>
+      </div>
+
+    
+    <!-- Body of calculator for buttons and functions -->
+    <!-- Layout like a standard windows calculator app -->
+    
+    <!-- Memory Button row -->
+      <section id='memory' class='button-holder'>
+        <input type='button' data-memory id='MC' value='MC' class='memory'>
+        <input type='button' data-memory id='MR' value='MR' class='memory'>
+        <input type='button' data-memory id='M+' value='M+' class='memory'>
+        <input type='button' data-memory id='M-' value='M-' class='memory'>
+        <input type='button' data-memory id='MS' value='MS' class='memory'>
+      </section>
+    
+      <div id='main' class='button-holder'>
+        <input type='button' data-deleteAll id='CE' value='CE' class='clears'>
+        <input type='button' data-deleteCurrent id='C' value='C' class='clears'>
+        <input type='button' data-deleteOne id='back' value='&lArr;' class='clears'>
+        <input type='button' data-operation id='divide' value='/' class='action'>
+      
+        <input type='button' data-number value='7' class='inputs'>
+        <input type='button' data-number value='8' class='inputs'>
+        <input type='button' data-number value='9' class='inputs'>
+        <input type='button' data-operation id='mult' value='*' class='action'>
+        
+        <input type='button' data-number value='4' class='inputs'>
+        <input type='button' data-number value='5' class='inputs'>
+        <input type='button' data-number value='6' class='inputs'>
+        <input type='button' data-operation id='subtract' value='-' class='action'>
+        
+        <input type='button' data-number value='1' class='inputs'>
+        <input type='button' data-number value='2' class='inputs'>
+        <input type='button' data-number value='3' class='inputs'>
+        <input type='button' data-operation id='add' value='+' class='action'>
+        
+        <input type='button' data-special id='posNeg' value='&#xb1;' class='action'>
+        <input type='button' data-number value='0' class='inputs'>
+        <input type='button' data-number value='.' class='inputs'>
+        <input type='button' data-equals id='equal' value='=' class='action'>
+          
+      </div>
+      <div class='foot'>
+        <p>&copy;Odin Project</p>
+        <p><a href='https://github.com/tjaung/odin-etch-a-sketch'>tjaung</a></p>
+      </div>
+    </section>
+  </body>
+</html>

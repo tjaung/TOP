@@ -1,0 +1,167 @@
+/*Basic Styling */
+* {
+	margin: 0;
+	padding: 0%;
+	box-sizing: border-box;
+}
+
+body {
+	background-image: url('https://img.freepik.com/free-photo/paperboard-yellow-texture_95678-83.jpg?size=338&ext=jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+header {
+	height: 20vh;
+	font-family: 'Bangers', cursive;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 30px;
+	text-align: center;
+}
+
+.about p{
+	margin-left: 50px;
+	margin-right: 50px;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-bottom: 20px;
+	text-align: left;
+	
+}
+.about ol{
+	margin-left: 80px;
+	margin-right: 80px;
+	padding-left: 60px;
+	padding-right: 60px;
+	padding-bottom: 20px;
+	text-align: left;
+	
+}
+
+.instructions {
+	height: 15vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 25px;
+	font-family: 'McLaren', cursive;
+	margin: 30px 0;
+	text-align: center;
+}
+
+
+
+.gates {
+	text-align: center;
+	margin-top: 40px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	background: 'gold';
+}
+
+.gate {
+	width: 30%;
+	height: 50%;
+	cursor: pointer;
+	background-image: url('https://img.freepik.com/free-photo/paperboard-yellow-texture_95678-83.jpg?size=338&ext=jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.buttons {
+	width: 300px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+button {
+	padding: 10px 40px;
+	margin-bottom: 250px;
+	background-color: #000;
+	border: none;
+	border-radius: 50px;
+	color: #f5f5f5;
+	cursor: pointer;
+	margin: 0 20px;
+	font-size: 18px;
+	outline:none;
+	box-shadow: 0px 10px 13px -7px #000000,
+				7px 5px 15px 5px rgba(0, 0, 0, 0);
+}
+
+button:active {
+	transform: scale(0.9);
+}
+
+.result p {
+	font-size: 22px;
+	line-height: 40px;
+	text-align: center;
+}
+
+.result p:first-child {
+	font-family: 'Bangers', cursive;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	font-size: 40px;
+	margin-bottom: 30px;
+}
+
+.links {
+	width: 100vw;
+	height: 10vw;
+	text-align: center;
+	margin: 40px 0;
+}
+
+.result a {
+	color: gray;
+	background-color: #000;
+	text-decoration: none;
+}
+.result a:hover {
+	color:#f5f5f5;
+}
+
+
+/*Recipe CSS */
+.recipe{
+	padding-top: 100px;
+	display: flex;
+	text-align: center;
+	background-image: url('https://img.freepik.com/free-photo/paperboard-yellow-texture_95678-83.jpg?size=338&ext=jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.food-img {
+	width: 300px;
+	height: 330px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.ingredients{
+	padding: 50px 200px;
+	text-align:left;
+}
+
+@media screen and (max-width:700px) {
+	header {
+		margin-top: 20px;
+		font-size: 20px;
+		text-align: center;
+	}
+}
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <script type="text/javascript" src="game.js" defer></script>
+  <link rel='stylesheet' href='style.css'>
+</head>
+
+
+<body>
+  <div id='top' class='page-top'>
+    <h1>Rocks Paper Scissors</h1>
+    <p id='result'>Choose your weapon!</p>
+  </div>
+  
+  <section id='playfield'>
+    <h3>Computer</h3>
+    <div class='lives'>
+         <p class='compLives'>|</p>
+         <p class='compLives'>|</p>
+         <p class='compLives'>|</p>
+         <p class='compLives'>|</p>
+         <p class='compLives'>|</p>
+    </div>
+      <section id='computer' class='choices'>
+   <!--      <img id="scissor" src="images/scissor.jpg" alt="scissor">
+         <img id="paper" src="images/paper.jpg" alt="paper">
+         <img id="rock" src="images/rock.jpg" alt="rock">
+         -->
+      </section>
+      <div class='battleground'>
+        <img class='weapon' id="playerWeapon" src="images/rock.jpg" alt="player choice">
+        <p id='win-or-lose'>         </p>
+        <img class='weapon' id="compWeapon" src="images/rock.jpg" alt="computer choice">
+    </div>
+      </div>
+      
+      <section id='player' class='choices'>
+	  <img id="rock" class="choice"
+             src="images/rock.jpg" alt="rock">
+          <img id="paper" class="choice"
+             src="images/paper.jpg" alt="paper">
+          <img id="scissor" class="choice"
+             src="images/scissor.jpg" alt="scissor">
+      </section>
+     <div class='lives'>
+           <p class='playerLives'>|</p>
+           <p class='playerLives'>|</p>
+           <p class='playerLives'>|</p>
+           <p class='playerLives'>|</p>
+           <p class='playerLives'>|</p>
+      </div>
+      <h3>Player</h3>
+    
+    </section>
+    <div class="game-over">
+      <p id="endgameMsg"></p>
+      <button id="play-again">Play again</button>
+    </div>
+</body>
+
