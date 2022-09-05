@@ -1,6 +1,7 @@
 # TOP
 
-Repo for The Odin Project. This repo will be documentation of my learning for front-end development (with a little back-end and CS concepts). The Odin Project is currently broken up into 2 parts: Foundations and Advanced tracks.  
+Repo for The Odin Project. This repo will be documentation of my learning for front-end development (with a little back-end and CS concepts). 
+The Odin Project is currently broken up into two parts: Foundations and Advanced tracks.  
 
  - The Foundations course works on the basics of HTML, CSS, and JS, while touching on some important coding concepts.  
 
