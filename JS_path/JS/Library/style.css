@@ -1,31 +1,298 @@
-.shelf {
-    grid-area: library;
+/*
+Grid for overall layout: need to make sidebar on left side
+*/
+
+/*
+overall theme colors
+*/
+
+* {
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: 'Sublima', 'Poppins', sans-serif;
+    color: #182825;
+}
+
+
+
+/* Mobile */
+.container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 0px;
-    padding: 5% 5%;
-    justify-content: start;
-    align-items: end;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-columns: 100vw;
+    grid-template-areas:
+        'header'
+        'article'
+        'foot';
+    height: 100vh;
+}
+
+/* DESKTOP */
+@media only screen and (min-width: 913px) {
+    /* For desktop: */
+    .container {
+        display: grid;
+        grid-template-rows: 1fr 3fr 1fr;
+        grid-template-columns: 100vw;
+        grid-template-areas:
+            'header'
+            'article'
+            'foot';
+        height: 100vh;
+    }
+}
+/*
+The header element has two columns
+The ul inside the menu element contains another grid
+*/
+.top {
+    grid-area: header;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        'page logo'
+        'searchbar searchbar';    
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 5%;
+    padding-top: 5%;
+    background:#faf2ff;
+}
+
+
+.page {
+    grid-area: page;
+    margin-left: 10%;
+}
+
+.logo {
+    grid-area: logo;
+    display: grid;
+    justify-content: right;
+}
+
+.search {
+    grid-area: searchbar;
+    margin-right: 10%;
+    margin-left: 5%;
+    color: #474847;
+}
+
+.searchbar {
+    width:100%;
+    border-radius: 25px;
+    color: #474847;
+}
+.searchbar input:focus {
+    outline: none;
+}
+/*
+The sidebar element has a gap of 50px
+The text elements in the sidebar are centered with grid
+*/
+.sidebar {
+    background-color: #81667A;
+    width: 12rem;
+    height: 100vh;
+    padding: 0;
+    position: fixed;
+    transition: transform 300ms ease-in;
+    opacity: 90%;
+    z-index: 999;
+}
+.sidebar--isHidden {
+    transform: translateX(-12rem);
+    transition: transform 300ms ease-out;
+}
+.sidebar-menu {
+    list-style: none;
+    padding: 1.5rem;
+    margin-top: 0;
+}
+.sidebar-menu__item {
+    display: block;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-meu_item :nth-child(1){
+    position: fixed;
+    left: -5;
+}
+
+.sidebar-menu__item a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+.sidebar-menu__item a:hover {
+    color: grey;
+    transition: color 150ms linear;
+}
+
+
+.openbtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 15%;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    position: fixed;
+    transition: transform 300ms ease-in;
+    left: 12rem;
+    color: #474847;
+    background-color:#81667A;
+    font-weight: bold;
+  }
+
+.openbtn--isHidden {
+    transform: translateX(-12rem);
+    transition: transform 300ms ease-out;
+  }
+
+.openbtn:hover {
+    background-color: #f4a261;
+    transition: all 150ms ease-in;
+}
+
+
+
+/*
+The article element should set grid columns using repeat along with the auto-fit and minmax properties
+The article columns should have a minimum value of 250px and a maximum of 1fr unit
+The article element has a gap of 15px
+The card elements inside the article container have a height of 200px
+*/
+
+.main {
+    grid-area: article;
+    background: #f2f2f2;
+    display: grid;
+    grid-template-rows: 3rem min-content;
+    grid-template-areas:
+        'butts'
+        'cards';
+    
+}
+.main-butts {
+    grid-area: butts;
+}
+.button-list {
+    background: #f2f2f2;
+    list-style:none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+.button-list > li {
+	display: inline-grid;
+    justify-content: center;
+    color: #474847;
+}
+
+.button-list > li > button {
+    background: #AF9DAC;
+    border-radius: 0.315rem;
+    color: #474847;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+.button-list > li > button:hover {
+    background-color: #f4a261;
+    transition: all 150ms ease-in;
+}
+
+.card-space {
+    grid-area: cards;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 15px;
+    padding: 5% 15%;
+    align-items: center;
     text-align: center;
-    direction: ltr;
 }
 
-.new-book {
-    background: grey;
-    height: minmax(250px, 1fr);
-    width: minmax(40px, 80px);
-    border-radius: 5px;
-}
-
-.book {
-    background: grey;
-    height: minmax(250px, 1fr);
-    width: minmax(40px, 80px);
-    border-radius: 5px;
+.card {
+    background: white;
+    min-height: 200px;
+    border-radius: 20px;
 }
 
 .title {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
+    color: #474847;
+}
+.new-card {
+    background: white;
+    border-radius: 20px;
+    height: 50%;
+    width: 50%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    padding: 3%;
+    z-index: 9999;
+}
+
+.new-form {
+    width: 100%;
+    height: 100%;
+    display:grid;
+    grid-gap: 5%;
+    grid-template-rows: 1fr 3fr;
+    opacity: 1;
+    font-size: 1.5rem;
+    z-index: 9999;
+}
+
+
+#new-detail {
+    text-align: center;
+    padding: 2rem;
+    z-index: 9999;
+}
+
+#submit-new {
+    width: 30%;
+    height: 100%;
+    z-index: 9999;
+}
+
+.butt-holder {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.closeBG {
+    position:absolute;
+    width:100%;
+
+    top:0px;
+    left:0px;
+    z-index:1;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.foot {
+    grid-area: foot;
+    background: #AF9DAC;
+    font-size: 3em;
+    text-align: center;
+    color: #474847;
 }

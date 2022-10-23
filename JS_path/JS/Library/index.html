@@ -9,31 +9,96 @@
 
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="style.css" />
-
+    <script>src='script.js'</script>
 </head>
 
 <body>
-    <div class="library">
-        <div class="shelf">
-            <div class="book">
-                <p class="title">Title 1</p>
-                <p>More Info</p>
+
+    <div class="container" id="overall">
+    
+        <div class="sidebar sidebar--isHidden">
+            
+            <ul class="sidebar-menu">
+                <button class="openbtn .openbtn--isHidden">☰</button>
+                <li class="sidebar-menu__item"><a href="#"><i class="fa fa-rss" aria-hidden="true"></i> Item 1</a></li>
+                <li class="sidebar-menu__item"><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Item 2</a></li>
+                <li class="sidebar-menu__item"><a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Item 3</a></li>
+            </ul>
+        </div>
+
+        <header class="top">
+                <h1 class="page">Library</h1>
+                <div class="logo">
+                    <div><img src="/imgs/ghostLogo.jpeg" alt="Ghost-Logo"></div>
+                </div>
+                <div class="search">
+                    <input type="text" placeholder=&#x1F50E; class="searchbar">
+                </div>
+        </header>
+
+        <div class="main">
+            <div class="main-butts">
+                <ul class="button-list">
+                    <li><button class="newButt">New Card</button></li>
+                    <li><button>button2</button></li>
+                    <li><button>button3</button></li>
+                </ul>
             </div>
-            <div class="book">
-                <p class="title">Title 2</p>
-                <p>More Info</p>
+            <div class="card-space">
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
+                <div class="card">
+                    <p class="title">Article Title</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
+                </div>
             </div>
-            <div class="book">
-                <p class="title">Title 3</p>
-                <p>More Info</p>
-            </div> 
-            <div class="book">
-                <p class="title">Title 4</p>
-                <p>More Info</p>
-            </div>
-            <div class="new-book">
-                <button class="newBook">Add Book</button>
-            </div>
+        </div>
+        <div class="foot">Footer</div>
     </div>
-    <script src="script.js"></script> 
+
+    <!-- New Card Form Test 
+    <div class="closeBG">
+        <div class="new-card">
+            <form class="new-form">
+                <input type="text" id="card-title" class='title' name="card-title" placeholder="Title">
+                <textarea id='new-detail' rows="4" cols="15" placeholder="Details"></textarea> 
+                <div class='butt-holder'>
+                    <button id="submit-new">Submit</button>
+                </div>
+              </form>
+              
+        </div>
+    </div> -->
+
+    <script src="script.js"></script>    
 </body>
