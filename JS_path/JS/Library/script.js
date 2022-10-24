@@ -28,22 +28,37 @@ class Book {
     }
 }
 
-class Shelf {
+class Library {
     constructor() {
         this.books = [];
-
-        // add books to shelf
-        this.addBookToShelf = function (book) {
-            this.books = [book];
-        };
-
-        // remove books
-        this.removeBookFromShelf = function (book) {
-            this.books = this.books.filter((book) => book.title !== title);
-        };
-
     }
+    // add books to shelf
+    addBookToShelf = function (book) {
+        this.books.push(book);
+    };
+
+    // remove books
+    removeBookFromShelf = function (book) {
+        this.books = this.books.filter((book) => 
+            book.title !== title
+        );
+    };
+    
+    // search for book in library
+    getBook(title) {
+        return this.books.find((book) => 
+            book.title === title
+        );
+    };
+    
+    // return
+    isInLibrary(newBook) {
+        return this.books.some((book) => 
+            book.title === newBook.title
+        );
+    };
 }
+
 // New book function
 // get dom elements for data input. Push this data to the book constructor
 // once a new book object is created, push it to the shelf object.
@@ -103,6 +118,12 @@ let inputCardInfo = () => {
     const newCard = document.createElement('div');
     const newForm = document.createElement('form');
     const newTitle = document.createElement('input');
+    const newAuthor = document.createElement('input');
+    const newPages = document.createElement('input');
+    const newRead = document.createElement('input');
+    newPages.setAttribute("type", "number");
+    newRead.setAttribute("type", "checkbox");
+
     const newDetail = document.createElement('textarea');
     const newButtDiv = document.createElement('div');
     const newSubmit = document.createElement('button');
@@ -118,8 +139,18 @@ let inputCardInfo = () => {
     closeBG.className = 'closeBG';
     newCard.className = 'new-card';
     newForm.className = 'new-form';
-    newTitle.className = 'title';
-    newDetail.id = 'new-detail';
+    newTitle.className = 'new-item';
+    newAuthor.className = 'new-item';
+    newPages.className = 'new-item';
+    newRead.className = 'new-item';
+
+    newCard.id = 'new-card';
+    newForm.id = 'new-form';
+    newTitle.id = 'title-input';
+    newAuthor.id = 'author-input';
+    newPages.id = 'page-input';
+    newRead.id = 'read-input';
+    newDetail.id = 'note-input';
     newButtDiv.className = 'butt-holder';
     newSubmit.id = 'submit-new';
 
@@ -130,11 +161,29 @@ let inputCardInfo = () => {
 
     newForm.id = 'newCardInfo';
     
+    // create form parameters
     newTitle.placeholder = 'Enter Title';
     newTitle.name = 'card-title';
     newTitle.minLength = 1;
     newTitle.maxLength = 50;
     newTitle.required = true;
+
+    newAuthor.placeholder = 'Enter Author(s)';
+    newAuthor.name = 'card-author';
+    newAuthor.minLength = 1;
+    newAuthor.maxLength = 50;
+    newAuthor.required = true;
+
+   // newPages.placeholder = 'Enter Page Numbers';
+    newPages.name = 'card-pages';
+    newPages.placeholder = 'Pages';
+    newPages.min = 0;
+    newPages.max = 10000;
+    newPages.required = true;
+
+   // newRead.placeholder = 'Have you read this?';
+    newRead.name = 'card-read';
+    newRead.placeholder = 'Completed?'
 
     newDetail.placeholder = 'Enter details here';
     newDetail.name = 'new-detail';
@@ -152,38 +201,47 @@ let inputCardInfo = () => {
 
         const cardDiv = document.createElement('div');
         const cardTitle = document.createElement('p');
+        const cardAuthor = document.createElement('p');
+        const cardPages = document.createElement('p');
+        const cardRead = document.createElement('p');
         const cardText = document.createElement('p');
         console.log(newTitle.value)
         console.log(newDetail.value)
 
-        makeCard(newTitle.value, newDetail.value);
+        makeCard(newTitle.value, newAuthor.value, newPages.value, newRead.value, newDetail.value);
         closeBG.remove();
         newCard.remove();
         });
         
         newButtDiv.append(newSubmit);
-        newForm.append(newTitle, newDetail);
+        newForm.append(newTitle, newAuthor, newPages, newRead, newDetail);
         newCard.append(newForm, newButtDiv);
-        //closeBG.append(newCard);
+
         document.body.append(newCard);
         document.body.append(closeBG);
 
 }
 
 // New card function
-let makeCard = (title, details) => {
+let makeCard = (title, author, pages, read, details) => {
     const cardDiv = document.createElement('div');
     const cardTitle = document.createElement('p');
+    const cardAuthor = document.createElement('p');
+    const cardPages = document.createElement('p');
+    const cardRead = document.createElement('p');
     const cardText = document.createElement('p');
     console.log(title)
     console.log(details)
 
     //append children to parent div
     cardTitle.className = 'title';
-    cardDiv.append(cardTitle, cardText);
+    cardDiv.append(cardTitle, cardAuthor, cardPages, cardRead, cardText);
     
     // add details
     cardTitle.innerHTML = title;
+    cardAuthor.innerHTML = author;
+    cardPages.innerHTML = pages;
+    cardRead.innerHTML = (cardRead ? 'Finished' : 'Unfinished');
     cardText.innerHTML = details;
 
     // add card to card space
