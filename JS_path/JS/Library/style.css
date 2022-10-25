@@ -70,7 +70,8 @@ The ul inside the menu element contains another grid
 .logo {
     grid-area: logo;
     display: grid;
-    justify-content: right;
+    justify-content: center;
+    margin-left: 45%;
 }
 
 .search {
@@ -158,7 +159,10 @@ The text elements in the sidebar are centered with grid
     transition: all 150ms ease-in;
 }
 
-
+#logo {
+    width: 4.5rem;
+    height: 4.5rem;
+}
 
 /*
 The article element should set grid columns using repeat along with the auto-fit and minmax properties
@@ -196,16 +200,18 @@ The card elements inside the article container have a height of 200px
 }
 
 .button-list > li > button {
-    background: #AF9DAC;
+    background: #f2f2f2;
     border-radius: 0.315rem;
+    border: none;
     color: #474847;
     font-weight: bold;
     cursor:pointer;
 }
 
 .button-list > li > button:hover {
-    background-color: #f4a261;
+    background-color: #AF9DAC;
     transition: all 150ms ease-in;
+    box-shadow: #474847;
 }
 
 .card-space {
@@ -222,6 +228,10 @@ The card elements inside the article container have a height of 200px
     background: white;
     min-height: 200px;
     border-radius: 20px;
+}
+
+.hide {
+    display: none;
 }
 
 .title {

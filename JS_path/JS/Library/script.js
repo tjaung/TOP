@@ -38,7 +38,7 @@ class Library {
     };
 
     // remove books
-    removeBookFromShelf = function (book) {
+    removeBookFromShelf(title) {
         this.books = this.books.filter((book) => 
             book.title !== title
         );
@@ -47,17 +47,25 @@ class Library {
     // search for book in library
     getBook(title) {
         return this.books.find((book) => 
-            book.title === title
+            book.title.toLowerCase() === title.toLowerCase()
         );
     };
     
     // return
     isInLibrary(newBook) {
         return this.books.some((book) => 
-            book.title === newBook.title
+            book.title.toLowerCase() === newBook.title.toLowerCase()
         );
     };
+
+    // get all books
+    returnAllBooks(books) {
+        return this.values
+    };
 }
+const myLibrary = new Library();
+let theHobbit = new Book('The Hobbit', 'J.R. Tolkien', 304, true, 'good book');
+myLibrary.addBookToShelf(theHobbit);
 
 // New book function
 // get dom elements for data input. Push this data to the book constructor
@@ -73,7 +81,9 @@ const container = document.querySelector('.container');
 const sidebar = document.querySelector('.sidebar');
 const newButt = document.querySelector('.newButt');
 const cardArea = document.querySelector('.card-space');
-
+const removeButts = document.querySelectorAll('#remove');
+const searchBar = document.querySelector('[card-search]');
+const cards = document.getElementsByClassName('card');
 
 window.addEventListener("DOMContentLoaded", () => {
 	document.querySelector('.openbtn').addEventListener("click", () => {
@@ -91,7 +101,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	});
 });
 
-
+// Nav bar
 let openNav = () => {
     container.style.transition = "all 0.75s";
     container.style.gridTemplateColumns = "1fr 3fr 1fr";
@@ -106,12 +116,42 @@ let closeNav = () => {
     sidebar.style.display = 'none';
 };
 
+// search bar filter function
+searchBar.addEventListener('input', function(e) {
+    const cards = document.querySelectorAll('.card');
+    let searchItem;
+    searchItem = e.target.value.toLowerCase();
+    console.log(cards)
+    //Loop through library
+    cards.forEach(card => {
+        let titles = card.querySelector('.title');
+        let authors = card.querySelector('.author');
+        
+        const isVisible = 
+            titles.innerHTML.toLowerCase().includes(searchItem) ||
+            authors.innerHTML.toLowerCase().includes(searchItem)
+        console.log(isVisible);
+        card.classList.toggle('hide', !isVisible)
+    });
+});
+
+
 
 // New card form
 let closeForm = (closeForm) => {
     const form = document.querySelector('.closeBG');
     form.parentNode.removeChild(form);
 }
+
+removeButts.forEach(button => {
+    button.addEventListener('click', function(e) {
+        let title = this.parentNode.nextSibling.innerHTML; 
+        console.log(title);
+        myLibrary.removeBookFromShelf(title);
+
+        e.currentTarget.parentNode.parentNode.remove();
+      }, false);
+});
 
 let inputCardInfo = () => {
     const closeBG = document.createElement('div');
@@ -198,7 +238,6 @@ let inputCardInfo = () => {
 
     newSubmit.addEventListener("click", () => {
         //const info = getInput(newForm)
-
         const cardDiv = document.createElement('div');
         const cardTitle = document.createElement('p');
         const cardAuthor = document.createElement('p');
@@ -208,7 +247,9 @@ let inputCardInfo = () => {
         console.log(newTitle.value)
         console.log(newDetail.value)
 
+
         makeCard(newTitle.value, newAuthor.value, newPages.value, newRead.value, newDetail.value);
+
         closeBG.remove();
         newCard.remove();
         });
@@ -219,11 +260,13 @@ let inputCardInfo = () => {
 
         document.body.append(newCard);
         document.body.append(closeBG);
-
+    
 }
 
 // New card function
 let makeCard = (title, author, pages, read, details) => {
+    const removeButton = document.createElement('button');
+    const removeDiv = document.createElement('div');
     const cardDiv = document.createElement('div');
     const cardTitle = document.createElement('p');
     const cardAuthor = document.createElement('p');
@@ -233,9 +276,26 @@ let makeCard = (title, author, pages, read, details) => {
     console.log(title)
     console.log(details)
 
+    // Remove button
+    removeButton.innerHTML = 'X';
+        removeButton.addEventListener('click', function(e) {
+            let title = this.parentNode.nextSibling.innerHTML; 
+            console.log(title);
+            myLibrary.removeBookFromShelf(title);
+    
+            e.currentTarget.parentNode.parentNode.remove();
+          }, false);
+
+    removeDiv.appendChild(removeButton);
+
     //append children to parent div
     cardTitle.className = 'title';
-    cardDiv.append(cardTitle, cardAuthor, cardPages, cardRead, cardText);
+    cardAuthor.className = 'author';
+    cardPages.className = 'pages';
+    cardRead.className = 'read';
+    cardText.className = 'notes';
+
+    cardDiv.append(removeDiv, cardTitle, cardAuthor, cardPages, cardRead, cardText);
     
     // add details
     cardTitle.innerHTML = title;
@@ -247,6 +307,9 @@ let makeCard = (title, author, pages, read, details) => {
     // add card to card space
     cardArea.appendChild(cardDiv).className = 'card';
 
+    // Initialize new book
+    let newBook = new Book(title, author, pages, cardRead, details);
+    myLibrary.addBookToShelf(newBook);
 }
         
 //openButt.onclick = openNav;
