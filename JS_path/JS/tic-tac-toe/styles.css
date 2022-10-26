@@ -1,0 +1,50 @@
+body {
+    display: block;
+}
+
+#head {
+    background: lightgray;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 20vh;
+}
+
+
+
+.board {
+    background: silver;
+    display: grid;
+    width: 50%;
+    height: 50vh;
+    margin-left: 25%;
+    margin-right: 25%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    aspect-ratio: 1;
+}
+
+#score {
+    background: grey;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 30vh;
+}
+
+.player-selection {
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    padding-left: 15%;
+    padding-right: 15%;
+    align-items: center;
+    justify-content: center;
+}
+
+.players {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
