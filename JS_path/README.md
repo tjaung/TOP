@@ -5,4 +5,4 @@ This folder contains projects and exercises for the JS Path of The Odin Project.
 Projects from the JS Path:  
  1. [Form Layout](https://tjaung.github.io/Odin-Basic-Form-Layout/)
  2. [Dashboard](https://tjaung.github.io/TOP_Dashboard/)
- 3. [Library[(https://tjaung.github.io/TOP-Library/)
+ 3. [Library](https://tjaung.github.io/TOP-Library/)
