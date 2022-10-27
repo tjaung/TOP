@@ -1,6 +1,9 @@
 const Board = (() => {
-    let _board = new Array(9);
-    let _space = document.getElementsByClassName('board-square');
+    let _board = document.querySelector('.board');
+    let _space = Array.from(document.getElementsByClassName('board-square'));
+
+    // let Player1 = Player(true, 1);
+    // let Player2 = Player(false, 2);
 
     const getSpace = (i) => _board[i];
 
@@ -9,6 +12,10 @@ const Board = (() => {
         space.addEventListener('click', getMarker);
     });
 
+    // update player info
+    function updatePlayers() {
+        
+    }
     function getMarker(e) {
         //get player turn
         //get player symbol
@@ -61,31 +68,77 @@ const Board = (() => {
 
 })();
 
-const Player = (name, human, whichPlayer) => {
-    const playerName = name;
-    const isHuman = human;
-    const playerNumber = whichPlayer;
-    const symbol = (whichPlayer == 1? X : O);
+const Player = (humanOrBot, number) => {
+    const isHuman = humanOrBot;
+    const playerNumber = number;
+    const symbol = (playerNumber == 1? 'X' : 'O');
 
     // functions
     const _isWin = () => console.log('winner: ${playerName}')//win function
     const _isLose = () => console.log('loser: ${playerName}')//lose function
+
+    return {playerNumber, isHuman, symbol}
 }
 
 const PlayerSelection = (() => {
-    let _playerSelection = document.getElementsByClassName('player-selection');
-    let _players = document.getElementsByClassName('players');
-    // get child elements of _players as well. This will be the info needed to create new Player objects
+    let _board = document.querySelector('#board');
+    let _playerSelection = document.querySelector('#player-selection');
+    let _players = Array.from(document.querySelectorAll('players'));
+   // let player1 = _players[0], player2 = _players[1];
 
-    function sendInfo() {
-        // take the info from the player selection DOM
+    let _selection_butts = document.querySelectorAll('.player-button');
+    let _startButt = document.querySelector('#start-butt');
+    let _ready = document.querySelectorAll('.ready');
 
-        // create new Player Objects and return them
+
+    // give player selection buttons functionality
+    for (let i=0; i < _selection_butts.length; i++) {
+        _selection_butts[i].addEventListener('click', (e) => {
+            getPlayerInfo(e.target.classList[0], i);
+            showStartButton(player1, player2);
+        });
     }
 
-    function _takeAwaySelection () {
-        // toggle the player selection DOM display to none
-        // toggle the board DOM display on
+    
+    //hide player selection and initialize game board
+    _startButt.addEventListener('click', (e) => {
+        
+        showBoard();
+    })
+
+    let player1 = null;
+    let player2 = null;
+    // for button press, get player role (human or bot) and number
+    function getPlayerInfo(playerRole, index) {
+        let isHuman = playerRole == 'human'? true: false;
+        let number = index < 2? 1: 2;
+
+        _ready[number-1].textContent = `'Player ${number} ${isHuman}'`
+        return number == 1 ? player1 = [isHuman, number] : player2 = [isHuman, number];
+    }
+
+    //initialize start button
+    function showStartButton(player1, player2) {
+        if (player1 != null && player2 != null) {_startButt.style.display = 'block'};
+    }
+    // get child elements of _players as well. This will be the info needed to create new Player objects
+
+    // initialize game board
+    function showBoard() {
+       // let board = document.querySelector('#board');
+        _playerSelection.style.animation = 'fadeOut 1s forwards';
+        _playerSelection.style.zIndex = 0;
+        _board.style.animationDelay = '1s';
+        _board.style.animation = 'fadeIn 1s forwards';
+        _board.style.zIndex = 999;
+
+    }
+
+    return {
+        getPlayerInfo: getPlayerInfo,
+        player1Flag: player1,
+        player2Flag: player2
+        
     }
 })();
 

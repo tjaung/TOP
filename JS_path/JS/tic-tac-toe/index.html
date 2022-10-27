@@ -18,15 +18,26 @@
         Tic-Tac-Toe
     </header>    
 
-    <div class="player-selection">
-        <h2>Player Selection</h2>
-        <div>
+    <div id="player-selection">
+        <div id="card-container">
             <div class="players" id="player1">
-                player 1
+                <div class="symbol">X</div>
+                <button class="human player-button">Human</button>
+                <button class="bot player-button">Bot</button>
+                <div class="ready"></div>
             </div>
+        </div>
+        <div>Extra</div>
+        <div id="card-container">
             <div class="players" id="player2">
-                player 2
+                <div class="symbol">O</div>
+                <button class="human player-button">Human</button>
+                <button class="bot player-button">Bot</button>
+                <div class="ready"></div>
             </div>
+        </div>
+        <div class="butt-holder">
+            <button id="start-butt">START</button>
         </div>
     </div>
 
@@ -41,7 +52,7 @@
     </div>
 
 
-    <div class="board">
+    <div id="board">
         <button class="board-square">
             <p>1</p>
         </button>

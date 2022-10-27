@@ -11,7 +11,7 @@ body {
 
 
 
-.board {
+#board {
     background: silver;
     display: grid;
     width: 50%;
@@ -24,7 +24,10 @@ body {
     align-items: stretch;
     align-content: stretch;
     aspect-ratio: 1;
+    opacity: 0;
+    z-index: 0
 }
+
 
 #score {
     background: grey;
@@ -33,18 +36,136 @@ body {
     margin-left: 25%;
     margin-right: 25%;
     height: 30vh;
+    opacity: 1;
 }
 
-.player-selection {
+#player-selection {
+    position: absolute;
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+    height: 50vh;
     display: grid;
-    grid-template-rows: 1fr 2fr;
-    padding-left: 15%;
-    padding-right: 15%;
+    aspect-ratio: 1;
+    grid-template-rows: 2fr 3fr;
+    grid-template-columns: 2fr 1fr 2fr;
+    grid-template-areas: 
+        'player1 extra player2'
+        'butt butt butt';
+
     align-items: center;
     justify-content: center;
+    border: solid black 1px;
+    z-index: 999;
 }
 
+.player-selection--isHidden {
+    display: none;
+}
+
+
+.card {
+    display: grid;
+    grid-template-rows: repeat(1fr, 3);
+}
 .players {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+        'symbol symbol'
+        'human bot';
+    border: solid black 1px;
 }
+
+#player1 {
+    grid-area: player1;
+    background: chartreuse;
+}
+#player2 {
+    grid-area: player2;
+    background:magenta;
+}
+
+.symbol{
+    grid-area: symbol;
+    text-align: center;
+}
+.human {
+    grid-area: human;
+}
+.bot {
+    grid-area: bot;
+}
+
+.butt-holder {
+    grid-area: butt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start-butt {
+    display: none;
+}
+
+.result {
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @-moz-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-o-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  @-moz-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @-webkit-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @-o-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @-ms-keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
