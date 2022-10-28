@@ -10,22 +10,30 @@ body {
 }
 
 
-
 #board {
+  /* display: grid;
+  grid-template-rows: 1fr 5fr;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch; */
+  width: 50%;
+  height: 50vh;
+  margin-left: 25%;
+  margin-right: 25%;
+  opacity: 0;
+  z-index: 0;
+  aspect-ratio: 1;
+}
+
+#game-space {
     background: silver;
     display: grid;
-    width: 50%;
-    height: 50vh;
-    margin-left: 25%;
-    margin-right: 25%;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     justify-content: center;
     align-items: stretch;
     align-content: stretch;
     aspect-ratio: 1;
-    opacity: 0;
-    z-index: 0
 }
 
 
@@ -33,9 +41,9 @@ body {
     background: grey;
     display:grid;
     grid-template-columns: 1fr 1fr;
-    margin-left: 25%;
-    margin-right: 25%;
-    height: 30vh;
+    /* margin-left: 25%;
+    margin-right: 25%; */
+    height: 10vh;
     opacity: 1;
 }
 
@@ -44,7 +52,7 @@ body {
     margin-left: 25%;
     margin-right: 25%;
     width: 50%;
-    height: 50vh;
+    height: 40vh;
     display: grid;
     aspect-ratio: 1;
     grid-template-rows: 2fr 3fr;
