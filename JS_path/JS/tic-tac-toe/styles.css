@@ -36,6 +36,16 @@ body {
     aspect-ratio: 1;
 }
 
+.board-square {
+  background: white;
+  pointer-events: auto;
+}
+
+.disabled {
+  background: white;
+  pointer-events: none;
+}
+
 
 #score {
     background: grey;
@@ -115,8 +125,35 @@ body {
     display: none;
 }
 
-.result {
-    display: none;
+#result {
+    position: absolute;
+    margin-top: 15%;
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+    height: 40vh;
+    display: grid;
+    aspect-ratio: 1;
+    grid-template-rows: 3fr 2fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        'message'
+        'butts';
+    border: 1px, black, solid;
+    align-items: center;
+    justify-items: center;
+    border: solid black 1px;
+    z-index: 0;
+    background: gold;
+    opacity: 0;
+}
+
+#win-or-lose{
+  grid-area: message;
+}
+
+#new-game-options{
+  grid-area: butts;
 }
 
 
