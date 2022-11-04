@@ -10,6 +10,28 @@ const Player = (humanOrBot, number) => {
     return {playerNumber, isHuman, symbol, isTurn}
 }
 
+const Bot = (humanOrBot, number) => {
+    const isHuman = humanOrBot;
+    const playerNumber = number;
+    const symbol = (playerNumber == 1? 'X' : 'O');
+    const difficulty = 0;
+
+    // function for easy mode: random open spot
+    function getMove(botDifficulty, board) {
+        let spaces = Board.boardArray.multiIndexOf('');
+        let move = null;
+        if(botDifficulty == 0){
+            move = spaces[Math.floor(Math.random()*spaces.length)];
+            console.log(move)
+        }
+
+        return move
+    }
+
+    return {playerNumber, isHuman, symbol,
+    getMove: getMove}
+}
+
 const PlayerSelection = (() => {
 
     // --- GET MODULE DOM COMPONENTS
@@ -138,21 +160,15 @@ var Board = (() => {
         _board.style.zIndex = 0;
     }
 
-    // update player info
-    function updatePlayers(playerInfo) {
-        let [playerHuman, playerNumber] = [playerInfo[0], playerInfo[1]]
-        let newPlayer = Player(playerHuman, playerNumber);
-        return {newPlayer}
-    }
-
     // game start
     function startGame(playerOne, playerTwo) {
         console.log
-        Player1 = Player(playerOne[0], playerOne[1])
-        Player2 = Player(playerTwo[0], playerTwo[1])
+        Player1 = playerOne[0]? Player(playerOne[0], playerOne[1]): Bot(playerOne[0], playerOne[1])
+        Player2 = playerTwo[0]? Player(playerTwo[0], playerTwo[1]): Bot(playerTwo[0], playerTwo[1])
         _scores.children[0].innerHTML = `${Player1['playerNumber']} ${Player1['isHuman']} ${Player1['symbol']}`
-        _scores.children[1].innerHTML = `${Player2['playerNumber']} ${Player2['isHuman']} ${Player2['symbol']}`
-
+        _scores.children[2].innerHTML = `${Player2['playerNumber']} ${Player2['isHuman']} ${Player2['symbol']}`
+        console.log(Player1)
+        console.log(Player2)
         //while turn move is less than 10:
         // get the turn move i.e. move 1. if odd, player1 goes.
         // on turn move, on button click, add symbol to button. make button unclickable after
@@ -161,10 +177,15 @@ var Board = (() => {
     }
 
     function getPlayerTurn(move) {
+        // determine if theres a bot and what player
         if(move % 2){
-            return 2
+            _scores.children[1].innerHTML = "Player Two's Turn"
+            if(!Player2.isHuman) {return Player2.getMove(0, boardArray)}
+            else{return 2}
         }
-        return 1
+        _scores.children[1].innerHTML = "Player One's Turn"
+        if(!Player1.isHuman){return Player1.getMove(0, boardArray)}
+        else {return 1}
     };
 
     function toggleButtonClickability(butt) {
@@ -184,66 +205,162 @@ var Board = (() => {
                     boardArray: boardArray}}
     };
 
-    function checkEnd(board, counter, boardFlag) {
-        let moves = board.multiIndexOf(boardFlag).sort();
-        let rowCount = 1;
-        let n = 3;
-        // no matter board size, winning permutations will always be following:
-        //  across will always be +1
-        //  down will always be +n
-        //  diagnol will always be +(n+1)
+    function getAllIndexes(arr, val) {
+        var indexes = [], i = -1;
+        while ((i = arr.indexOf(val, i+1)) != -1){
+            indexes.push(i);
+        }
+        return indexes;
+    }
 
-        // across
-        for(let i=0; i<moves.length; i++){
-            if(moves[i+1]-moves[i] == 1){
-                rowCount++
-                console.log(rowCount)
-                if (rowCount == n){
-                    moveCount=1
-                    isWin()
-                    console.log(`${boardFlag} across`)
-                    return {moveCount: moveCount,
-                        outcome: true}
-                };
+    function checkEnd(board, counter, boardFlag) {
+        let moves = getAllIndexes(board, boardFlag);
+
+        // easy win method: check if indices are in win index conditions
+        let across1 = [0,1,2]
+        let across2 = [3,4,5]
+        let across3 = [6,7,8]
+
+        let down1 = [0,3,6]
+        let down2 = [1,4,7]
+        let down3 = [2,5,8]
+
+        let diagnal1 = [0,4,8]
+        let diagnal2 = [2,4,6]
+        let permutations = [across1, across2, across3, down1, down2, down3, diagnal1, diagnal2]
+
+        for(let i = 0; i<permutations.length; i++){
+            let result = permutations[i].every(j => moves.includes(j));
+            if(result){
+                isWin(boardFlag)
+                return {moveCount: moveCount,
+                    outcome: true}
             }
-            else{
-                rowCount=1;
-            };
-        };
-        // down
-        for(let i=0; i<moves.length; i++){
-            if(moves[i+1]-moves[i] == n){
-                rowCount++
-                console.log(rowCount)
-                if (rowCount == n){
-                    moveCount=1
-                    isWin()
-                    console.log(`${boardFlag} down`)
-                    return {moveCount: moveCount,
-                        outcome: true}
-                }
-            }
-            else{
-                rowCount=1;
-            };
-        }; 
-        // diagnal
-        for(let i=0; i<moves.length; i++){
-            if(moves[i+1]-moves[i] == n+1){
-                rowCount++
-                console.log(rowCount)
-                if (rowCount == n){
-                    moveCount=1
-                    isWin()
-                    console.log(`${boardFlag} diagnal`)
-                    return {moveCount: moveCount,
-                        outcome: true}
-                }
-            }
-            else{
-                rowCount=1;
-            };
-        };
+        }
+      
+        // programatic for game of any size: in prgoress
+        // for(f){
+        // // let winCount = [1,1,1,1]
+        // // // let downCount = 1;
+        // // // let diagnalCount = 1;
+        // // // let reverseDiagnalCount = 1;
+        // // let n = 3;
+        // // // no matter board size, winning permutations will always be following:
+        // // //  across will always be +1
+        // // //  down will always be +n
+        // // //  diagnol will always be +(n+1)
+        // // let restOfMoves = [];
+        // // let difference = 0;
+
+        // // // across
+        // // for(let i=1; i<moves.length; i++) {
+        // //     restOfMoves = moves.slice(i-1)
+
+        // //     for(j=0; j<restOfMoves.length; j++){
+        // //         difference = restOfMoves[j] - moves[i];
+        // //         console.log(difference)
+        // //         if(difference == 1){
+        // //             winCount[0] += 1;
+        // //             console.log('+1 across')
+        // //             if(restOfMoves.indexOf(j+1) !== -1){
+        // //                 isWin(boardFlag)
+        // //                 return {moveCount: moveCount,
+        // //                     outcome: true,
+        // //                     winCount: winCount}
+        // //             }
+        // //         }
+        // //         else if(difference == n){
+        // //             winCount[1] += 1;
+        // //             console.log('+1 down')
+        // //             if(restOfMoves.indexOf(j+n) !== -1){
+        // //                 isWin(boardFlag)
+        // //                 return {moveCount: moveCount,
+        // //                     outcome: true,
+        // //                     winCount: winCount}
+        // //             }
+        // //         }
+        // //         else if(difference == n+1){
+        // //             winCount[2] += 1;
+        // //             console.log('+1 diagnal')
+        // //             if(restOfMoves.indexOf(j+n+1) !== -1){
+        // //                 isWin(boardFlag)
+        // //                 return {moveCount: moveCount,
+        // //                     outcome: true,
+        // //                     winCount: winCount}
+        // //             }
+        // //         }
+        // //         else if(difference == n-1){
+        // //             winCount[3] += 1;
+        // //             console.log('+1 reverse diagnal')
+        // //             if(restOfMoves.indexOf(j+n-1) !== -1){
+        // //                 isWin(boardFlag)
+        // //                 return {moveCount: moveCount,
+        // //                     outcome: true,
+        // //                     winCount: winCount}
+        // //             }
+        // //         }
+        //         // if (winCount.indexOf(3) !== -1){
+        //         // // winCount=[1,1,1,1]
+        //         //     isWin(boardFlag)
+        //         //     console.log(`${boardFlag}`)
+        //         //     return {moveCount: moveCount,
+        //         //         outcome: true,
+        //         //         winCount: winCount}
+        //         // };
+
+        // // down
+        // // for(let i=0; i<moves.length; i++){
+        // //     if(moves[i+1]-moves[i] == n){
+        // //         rowCount++
+        // //         console.log(rowCount)
+        // //         if (rowCount == n){
+        // //             moveCount=1
+        // //             isWin(boardFlag)
+        // //             console.log(`${boardFlag} down`)
+        // //             return {moveCount: moveCount,
+        // //                 outcome: true}
+        // //         }
+        // //     }
+        // //     else{
+        // //         rowCount=1;
+        // //     };
+        // // }; 
+        // // // diagnal
+        // // for(let i=0; i<moves.length; i++){
+        // //     if(moves[i+1]-moves[i] == n+1){
+        // //         rowCount++
+        // //         console.log(rowCount)
+        // //         if (rowCount == n){
+        // //             moveCount=1
+        // //             isWin(boardFlag)
+        // //             console.log(`${boardFlag} diagnal`)
+        // //             return {moveCount: moveCount,
+        // //                 outcome: true}
+        // //         }
+        // //     }
+        // //     else{
+        // //         rowCount=1;
+        // //     };
+        // // };
+
+        // // // reverse diagnal
+        // // for(let i=0; i<moves.length; i++){
+        // //     if(moves[i+1]-moves[i] == n-1){
+        // //         rowCount++
+        // //         console.log(rowCount)
+        // //         if (rowCount == n){
+        // //             moveCount=1
+        // //             isWin(boardFlag)
+        // //             console.log(`${boardFlag} diagnal`)
+        // //             return {moveCount: moveCount,
+        // //                 outcome: true}
+        // //         }
+        // //     }
+        // //     else{
+        // //         rowCount=1;
+        // //     };
+        // // };
+        // }
 
         if(counter == 9){
             moveCount=1
@@ -252,50 +369,48 @@ var Board = (() => {
                     outcome: true}
         }
         else{
-            rowCount = 1;
+           // winCount = [1,1,1,1];
             return {moveCount: moveCount++,
                      outcome: false}
         }
     };
 
-    function resetBoard(boardArray) {
+    function resetBoard() {
+        _scores.children[1].innerHTML = "Player One's Turn"
         _space.forEach(butt => {
             butt.innerHTML = '';
-            butt.classList = butt.classList.contains('disabled')? butt.classList.toggle('disabled'): butt.classList;
+            butt.classList = 'board-square';
             });
-        return boardArray = [0,0,0,
-                            0,0,0,
-                            0,0,0]
+        boardArray = [0,0,0,
+                    0,0,0,
+                    0,0,0]
+        return {boardArray: boardArray}
     };
 
-    function isWin() {
+    function isWin(player) {
         //show winner page or loser page depnding on player number
         console.log('Winner!')
-        Results.displayResultMessage()
+        let outcome = `${player} Wins!`
+        Results.displayResultMessage(outcome)
         return moveCount = 1;
     }
 
     function isDraw() {
         //show draw page
         console.log('Draw')
-        Results.displayResultMessage()
+        let outcome = "It's a Draw!"
+        Results.displayResultMessage(outcome)
         return moveCount = 1;
     }
 
     //for each button get click event
     _space.forEach((space, index) => {
-        space.addEventListener('click', (e) => {
-            out = getPlayerTurn(moveCount)
-            boardChanges = updateBoard(out, index, boardArray);
+        space.addEventListener('click', (e) => {       
+            boardChanges = updateBoard(getPlayerTurn(moveCount), index, boardArray);
             e.target.innerHTML = boardChanges.symbol;
-            boardArray = boardChanges.boardArray;
             e.target = toggleButtonClickability(e.target);
-           
-            if(checkEnd(boardArray, moveCount, boardChanges.symbol).outcome){
-                // show play again
-                console.log('outcome')
-            }
-            
+            console.log(boardArray)
+            checkEnd(boardArray, moveCount, boardChanges.symbol)        
         });
     });
 
@@ -320,14 +435,19 @@ const Results = (() => {
     const newPlayers = document.getElementById('new-players');
 
     newPlayers.addEventListener('click', () => {
-        startNewGame();
+        startNewGameWithNewPlayers();
         PlayerSelection.showPlayerSelection();
     });
 
+    newGame.addEventListener('click', () => {
+        startNewGame();
+    });
+
     // functions
-    function displayResultMessage() {
+    function displayResultMessage(outcome) {
      //   resultDOM.style.animationDelay = '1s';
-        resultDOM.style.animation = 'fadeIn 1s forwards';
+        winLose.children[0].innerHTML = outcome;
+        resultDOM.style.animation = 'fadeInHalf 1s forwards';
         resultDOM.style.zIndex = 999;
     }
 
@@ -338,11 +458,16 @@ const Results = (() => {
         resultDOM.style.zIndex = 0;
     }
     
-    function startNewGame() {
+    function startNewGameWithNewPlayers() {
         Board.hideBoard();
-        Board.resetBoard(Board.boardArray);
+        Board.resetBoard();
         hideResultMessage();
         PlayerSelection.showPlayerSelection();
+    }
+
+    function startNewGame() {
+        Board.resetBoard();
+        hideResultMessage();
     }
 
     function getNewPlayers() {
