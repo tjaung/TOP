@@ -9,11 +9,9 @@
 
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="style.css" />
-    <script>src='script.js'</script>
 </head>
 
 <body>
-
     <div class="container" id="overall">
     
         <div class="sidebar sidebar--isHidden">
@@ -45,35 +43,41 @@
                 </ul>
             </div>
             <div class="card-space">
-                <div class="card">
-                    <div class="remove-div">
-                        <button id="remove">X</button>
-                    </div>
-                    <p class="title">The Hobbit</p>
-                    <p class="author">J.R. Tolkein</p>
-                    <p class="pages">304</p>
-                    <p class="read">Finished</p>
-                    <p class="notes">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
-                </div>
+                <new-card title="Test">
+                    <span slot="title">Title 1</span>
+                    <span slot="details">detail 1</span>
+                    <span slot="assignee">Me</span>
+                    <span slot="status">In Progress</span>
+                    <span slot="priority">High</span>
+                </new-card>
 
             </div>
         </div>
         <div class="foot">Footer</div>
     </div>
 
-    <!-- New Card Form Test 
-    <div class="closeBG">
-        <div class="new-card">
-            <form class="new-form">
-                <input type="text" id="card-title" class='title' name="card-title" placeholder="Title">
-                <textarea id='new-detail' rows="4" cols="15" placeholder="Details"></textarea> 
-                <div class='butt-holder'>
-                    <button id="submit-new">Submit</button>
-                </div>
-              </form>
+   
+
+    <div class="new-card">
+        <form class="new-form">
+            <input type="text" id="new-title" class='title' name="card-title" placeholder="Title">
+            <textarea id='new-detail' rows="4" cols="15" placeholder="Details"></textarea> 
+            <input type="dropbtn" id="new-assignee">
+            <input type="dropbtn" id="new-status">
+            <input type="dropbtn" id="new-priority">
+            
+            <div class='butt-holder'>
+                <input id="submit-new" type="submit" value="Submit">
+            </div>
+            </form>
               
         </div>
-    </div> -->
+    <div class="closeBG">
+    </div>
 
-    <script src="script.js"></script>    
+    
+
+
+    <script type='module' src="app.js"></script>   
+   
 </body>

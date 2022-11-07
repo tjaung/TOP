@@ -252,7 +252,7 @@ The card elements inside the article container have a height of 200px
     opacity: 1;
     padding: 3%;
     z-index: 9999;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -330,7 +330,7 @@ The card elements inside the article container have a height of 200px
     left:0px;
     z-index:1;
     background-color: rgba(0,0,0,0.5);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
