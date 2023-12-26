@@ -1,3 +1,33 @@
+.board {
+  display: grid;
+  height: 500px;
+  width: 500px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 1px solid black;
+  gap: 2px;
+  padding: 2px;
+  background-color: yellow;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  border: 1px solid grey;
+  background: lightyellow;
+  cursor: pointer;
+}
+
+.newGameButton {
+  color: 'red';
+  font-size: 2rem;
+  cursor: pointer;
+  
+}
+/* 
 body {
     display: block;
 }
@@ -15,7 +45,7 @@ body {
   grid-template-rows: 1fr 5fr;
   justify-content: center;
   align-items: stretch;
-  align-content: stretch; */
+  align-content: stretch; 
   width: 50%;
   height: 50vh;
   margin-left: 25%;
@@ -54,7 +84,7 @@ body {
     display:grid;
     grid-template-columns: 1fr 1fr;
     /* margin-left: 25%;
-    margin-right: 25%; */
+    margin-right: 25%; 
     height: 10vh;
     opacity: 1;
 }
@@ -240,4 +270,4 @@ body {
   @-ms-keyframes fadeOut {
     0% { opacity: 1; }
     100% { opacity: 0; }
-  }
+  } */
