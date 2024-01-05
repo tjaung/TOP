@@ -25,14 +25,21 @@ class GameBoard {
     };
 
     placeMove(space, player){
-        if(this.boardArray[space].getValue() === null){
-            this.boardArray[space].addToken(player);
-        };
+      const spaceVal = this.boardArray[space].getValue()
+      if (spaceVal === null){
+        this.boardArray[space].addToken(player);
+      }
+      else{this.boardArray[space].addToken(spaceVal)}
+
+        // if(this.boardArray[space].getValue() === null){
+        //     this.boardArray[space].addToken(player);
+        // };
     }
 
     printBoard() {
         const boardWithCellValues = this.boardArray.map((cell) => cell.getValue())
         console.log(boardWithCellValues)
+        return boardWithCellValues;
         // console.log(this.boardArray[0].getValue(), this.boardArray[1].getValue(), this.boardArray[2].getValue())
         // console.log(this.boardArray[3].getValue(), this.boardArray[4].getValue(), this.boardArray[5].getValue())
         // console.log(this.boardArray[6].getValue(), this.boardArray[7].getValue(), this.boardArray[8].getValue())
@@ -58,6 +65,10 @@ function Cell() {
     // return value;
   };
 
+  const clearValue = () => {
+    value = null;
+  }
+
   // How we will retrieve the current value of this cell through closure
   const getValue = () => value;
 
@@ -65,30 +76,63 @@ function Cell() {
     addIndex,
     getIndex,
     addToken,
-    getValue
+    getValue,
+    clearValue
   };
+}
+
+function delay(milliseconds){
+  return new Promise(resolve => {
+      setTimeout(resolve, milliseconds);
+  });  
 }
 
 class GameController {
     constructor(
         playerOneName = "Player One", 
-        playerTwoName = "Player Two") {
+        playerTwoName = "Player Two",
+        playerOneHuman = true,
+        playerTwoHuman = true) {
             this.board = new GameBoard();
             this.board.initializeBoard();
             this.players = [
                 {
                 name: playerOneName,
-                token: 0
+                token: 'X',
+                human: playerOneHuman
                 },
                 {
                 name: playerTwoName,
-                token: 1
+                token: 'O',
+                human: playerTwoHuman
                 }
             ];
             this.activePlayer = this.players[0];
             this.printNewRound();
         }
-  
+
+    //bot moves
+    makeEasyBotMove() {
+      //randomly pick an available space
+      const available = this.board.printBoard()
+      //get indices of available
+      let indices = []
+      let idx = available.indexOf(null);
+      while (idx !== -1) {
+        indices.push(idx);
+        idx = available.indexOf(null, idx + 1);
+      }
+      console.log(indices)
+      let move = indices[(Math.floor(Math.random() * indices.length))]
+      return move
+    }  
+
+    getBotMove(diff){
+      let move = null
+      move = this.makeEasyBotMove()
+      return move
+    }
+      
     switchPlayerTurn() {
       this.activePlayer = this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
     }
@@ -104,7 +148,7 @@ class GameController {
   
     checkAvailableMoves() {
         const availableMoves = this.board.getBoard().map((cell) => cell.getValue()).filter((val) => val == null);
-        console.log(availableMoves)
+        // console.log(availableMoves)
         if(availableMoves.length != 0){
             return true
         }
@@ -140,33 +184,136 @@ class GameController {
   
       return 0;
     }
-  
+
     playRound(space) {
         const token = this.getActivePlayer().token;
-        this.board.placeMove(space, token);
-        if(this.checkWinCondition()!=0){
+        let active = this.getActivePlayer().human
+        console.log(active)
+        if(active == 0){
+          console.log('bot turn first')
+          let botMove = this.getBotMove();
+          console.log(botMove, this.getActivePlayer().token)
+          this.board.placeMove(botMove, this.getActivePlayer().token);
+          if(this.checkWinCondition()!=0){
             console.log('end')
+          }
+          else{
+            this.switchPlayerTurn()
+            this.printNewRound()
+          }
         }
-        else{
-            this.switchPlayerTurn();
-            this.printNewRound();  
-        };
+        // if(activePlayer.human === false){
+        //     let botMove = this.game.makeEasyBotMove()
+        //     console.log(botMove)
+        //     this.board.placeMove(botMove, token);
+  
+        //   }
+        // const filledVal = this.board[space].getValue();
+        if(this.board.printBoard()[space] === null){
+          this.board.placeMove(space, token);
+                // if(this.board[space].getValue())
+            if(this.checkWinCondition()!=0){
+                console.log('end')
+            }
+            else{
+                this.switchPlayerTurn();
+                this.printNewRound();  
+                active = this.getActivePlayer().human
+                if(active == 0){
+                  console.log('bot turn next')
+                  let botMove = this.getBotMove();
+                  console.log(botMove, this.getActivePlayer().token)
+                  this.board.placeMove(botMove, this.getActivePlayer().token);
+                  if(this.checkWinCondition()!=0){
+                    console.log('end')
+                  }
+                  else{
+                    this.switchPlayerTurn()
+                    this.printNewRound()
+                  }
+
+                }
+            };
+
+        }
+      
     }
-  }
+
+    clearBoard() {
+      this.board = new GameBoard()
+      this.board.initializeBoard()
+      }
+    }
+  
 
 
 function ScreenController() {
     let game = new GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
-    const newGame = document.querySelector('.restart');
+    const restartDiv = document.querySelector('.restart');
+    
+    let player1Name = 'Player 1'
+    let player2Name = 'Player 2'
+    let player1Human = true;
+    let player2Human = true;
+    
+    // get human or bot
+    function clickPlayerButtonValue(e){
+      const target = e.target;
+      if(target.className.includes('1')){player1Human = target.value}
+      else if(target.className.includes('2')){player2Human = target.value}
+      console.log(`player1: ${player1Human}, player2: ${player2Human}`);
+      // return target.value;
+    }
+    const startGame = () => {
+      const player1NameInput = document.querySelector(".player1Name").value
+      const player2NameInput = document.querySelector(".player2Name").value
+      if(!player1Human){player1NameInput = 'Bot'};
+      if(!player2Human){player2NameInput = 'Bot'};
 
+      game = new GameController(
+        player1Name = player1NameInput,
+        player2Name = player2NameInput,
+        player1Human = player1Human, 
+        player2Human=player2Human);
+
+      game.playRound();
+      updateScreen();
+    }
+
+    function clickStartGame(e) {
+      const target = e.target;
+      startGame()
+    }
+
+    const renderStart = () => {
+      const startButton = document.querySelector('.start');
+      const player1 = document.querySelector('#player1')
+      const player2 = document.querySelector('#player2')
+      const selectionButts = player1.getElementsByTagName('button');
+      const selectionButts2 = player2.getElementsByTagName('button');
+      console.log(selectionButts)
+      for(const btn of selectionButts){
+        btn.addEventListener('click', clickPlayerButtonValue)
+      }
+      for(const btn of selectionButts2){
+        btn.addEventListener('click', clickPlayerButtonValue)
+      }
+      startButton.addEventListener('click', clickStartGame);
+    }
     // render newgame button
     const renderNewGame = () => {
+        // const restartDiv = document.createElement('div');
+        // restartDiv.classList.add('.restart');
         const newButton = document.createElement("button");
-        newButton.classList.add('newGameButton')
-        newButton.addEventListener('click', clickNewGame)
-        newGame.appendChild(newButton);
+        const mainMenuButton = document.createElement("button");
+        // newButton.classList.add('newGameButton')
+        newButton.innerHTML = 'Restart'
+        newButton.addEventListener('click', clickNewGame);
+        mainMenuButton.innerHTML = 'Main Menu';
+        restartDiv.appendChild(mainMenuButton);
+        restartDiv.appendChild(newButton);
     }
 
     const updateScreen = (end) => {
@@ -176,7 +323,6 @@ function ScreenController() {
       // get the newest version of the board and player turn
       const board = game.board.getBoard();
       const activePlayer = game.getActivePlayer();
-  
     
       // Display player's turn
       playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
@@ -205,6 +351,7 @@ function ScreenController() {
       if (!selectedButton) return;
       
       game.playRound(selectedButton.dataset.cell);
+
       let result = game.checkWinCondition(game.activePlayer);
       if(result == 1){
         console.log('win')
@@ -216,23 +363,27 @@ function ScreenController() {
         updateScreen(true)
         renderNewGame()
       }
-      else updateScreen(false);
+      else {
+        updateScreen(false);
+      }
     }
 
     function clickNewGame(e){
         const button = e.target;
-        game = new GameController()
-        newGame.removeChild(button)
-        // game.board.resetBoard();
-        updateScreen();
+        // game.clearBoard()
+        restartDiv.querySelectorAll('*').forEach(n => n.remove());
+        // updateScreen()
+        // game.playRound();
+        // updateScreen();
+        startGame()
     }
     // newGame.addEventListener('click', clickNewGame)
     // const buttons = document.querySelector('.cell');
     // buttons.forEach((btn) => btn.addEventListener("click", clickHandlerBoard));
   
     // Initial render
-    updateScreen();
-  
+    // updateScreen();
+    renderStart()
     // We don't need to return anything from this module because everything is encapsulated inside this screen controller.
   }
   
