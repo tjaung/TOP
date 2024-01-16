@@ -22,24 +22,24 @@
     </div>
 
     <section class="mainmenu">
-        <div class="players">
-            <div class="player" id="player1">
-                <input class="player1Name" type="text" value="Player 1" placeholder="Player 1">
-                <div>
-                    <button class="player1human" value="1">Human</button>
-                    <button class="player1bot" value="0">Bot</button>
+        <div class="player-select">
+            <div class="message">Choose Your Turn</div>
+            <div class="players">
+            
+                <div id="player1">
+                    <button class="player1human" value="1">X</button>
+                </div>
+
+                <div id="player2">
+                    <div>
+                        <button class="player2human" value="0">O</button>
+                    </div>
                 </div>
             </div>
-            <div class="player" id="player2">
-                <input class="player2Name" type="text" value="Player 2" placeholder="Player 2">
-                <div>
-                    <button class="player2human" value="1">Human</button>
-                    <button class="player2bot" value="0">Bot</button>
-                </div>
+
+            <div class="start">
+                <button class="start">Start</button>
             </div>
-        </div>
-        <div class="start">
-            <button class="start">Start</button>
         </div>
     </section>
     <div class="board"></div>

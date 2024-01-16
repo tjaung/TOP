@@ -28,17 +28,21 @@ body {
   cursor: pointer;
 }
 
-.players {
+.player-select {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.player {
+.players {
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   justify-content: center;
   align-items: center;
+}
+.message {
+  text-align: center;
+  
 }
 .player div {
   display: grid;

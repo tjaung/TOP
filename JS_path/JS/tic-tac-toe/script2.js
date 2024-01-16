@@ -16,7 +16,6 @@ class GameBoard {
             this.boardArray[i] = Cell();
             this.boardArray[i].addIndex(i);
           }
-          console.log(this.boardArray)
           return this.boardArray
     };
 
@@ -38,7 +37,7 @@ class GameBoard {
 
     printBoard() {
         const boardWithCellValues = this.boardArray.map((cell) => cell.getValue())
-        console.log(boardWithCellValues)
+        // console.log(boardWithCellValues)
         return boardWithCellValues;
         // console.log(this.boardArray[0].getValue(), this.boardArray[1].getValue(), this.boardArray[2].getValue())
         // console.log(this.boardArray[3].getValue(), this.boardArray[4].getValue(), this.boardArray[5].getValue())
@@ -89,50 +88,28 @@ function delay(milliseconds){
 
 class GameController {
     constructor(
-        playerOneName = "Player One", 
-        playerTwoName = "Player Two",
-        playerOneHuman = true,
-        playerTwoHuman = true) {
-            this.board = new GameBoard();
-            this.board.initializeBoard();
-            this.players = [
-                {
-                name: playerOneName,
-                token: 'X',
-                human: playerOneHuman
-                },
-                {
-                name: playerTwoName,
-                token: 'O',
-                human: playerTwoHuman
-                }
-            ];
-            this.activePlayer = this.players[0];
-            this.printNewRound();
+      playerHuman
+    ) {
+      // Initialize Players
+      this.playerOneHuman = playerHuman === '1' ? true : false
+      this.playerTwoHuman = this.playerOneHuman ? false : true
+
+      this.player1 = new Player('X', this.playerOneHuman)
+      this.player2 = new Player('O', this.playerTwoHuman)
+      this.players = [this.player1, this.player2]
+
+      // Get new board
+      this.board = new GameBoard();
+      this.board.initializeBoard();
+
+      // Setup first Round
+      this.activePlayer = this.players[0];
+      this.printNewRound();
+
+      // get win rate
+      this.winCount = 0;
         }
-
-    //bot moves
-    makeEasyBotMove() {
-      //randomly pick an available space
-      const available = this.board.printBoard()
-      //get indices of available
-      let indices = []
-      let idx = available.indexOf(null);
-      while (idx !== -1) {
-        indices.push(idx);
-        idx = available.indexOf(null, idx + 1);
-      }
-      console.log(indices)
-      let move = indices[(Math.floor(Math.random() * indices.length))]
-      return move
-    }  
-
-    getBotMove(diff){
-      let move = null
-      move = this.makeEasyBotMove()
-      return move
-    }
-      
+  
     switchPlayerTurn() {
       this.activePlayer = this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
     }
@@ -143,7 +120,7 @@ class GameController {
   
     printNewRound() {
       this.board.printBoard();
-      console.log(`${this.getActivePlayer().name}'s turn.`);
+      console.log(`${this.getActivePlayer().getToken()}'s turn.`);
     }
   
     checkAvailableMoves() {
@@ -157,7 +134,7 @@ class GameController {
     }
 
     checkWinCondition() {
-        let val = this.getActivePlayer().token
+        let val = this.getActivePlayer().getToken()
         const boardWithCellValues = this.board.getBoard().map(function (cell) {
             if (cell.getValue() === val) {
             return cell.getIndex();
@@ -177,66 +154,60 @@ class GameController {
       for (let i = 0; i < permutations.length; i++) {
         const result = permutations[i].every((j) => boardWithCellValues.includes(j));
         if (result) {
-          return 1;
+          if(this.getActivePlayer().getHuman()){
+            return 1
+          }
+          else{return -2}
         }
         else if(!this.checkAvailableMoves() && !result) return -1
       }
-  
+
       return 0;
     }
 
     playRound(space) {
-        const token = this.getActivePlayer().token;
-        let active = this.getActivePlayer().human
-        console.log(active)
-        if(active == 0){
-          console.log('bot turn first')
-          let botMove = this.getBotMove();
-          console.log(botMove, this.getActivePlayer().token)
-          this.board.placeMove(botMove, this.getActivePlayer().token);
-          if(this.checkWinCondition()!=0){
-            console.log('end')
-          }
-          else{
-            this.switchPlayerTurn()
-            this.printNewRound()
-          }
-        }
-        // if(activePlayer.human === false){
-        //     let botMove = this.game.makeEasyBotMove()
-        //     console.log(botMove)
-        //     this.board.placeMove(botMove, token);
-  
-        //   }
-        // const filledVal = this.board[space].getValue();
-        if(this.board.printBoard()[space] === null){
-          this.board.placeMove(space, token);
-                // if(this.board[space].getValue())
-            if(this.checkWinCondition()!=0){
-                console.log('end')
-            }
-            else{
-                this.switchPlayerTurn();
-                this.printNewRound();  
-                active = this.getActivePlayer().human
-                if(active == 0){
-                  console.log('bot turn next')
-                  let botMove = this.getBotMove();
-                  console.log(botMove, this.getActivePlayer().token)
-                  this.board.placeMove(botMove, this.getActivePlayer().token);
-                  if(this.checkWinCondition()!=0){
-                    console.log('end')
-                  }
-                  else{
-                    this.switchPlayerTurn()
-                    this.printNewRound()
-                  }
+      // get active player
+      const token = this.getActivePlayer().getToken();
+      let human = this.getActivePlayer().getHuman()
+      console.log(`active player bot: ${human}`)
 
-                }
-            };
+      if(!human){
+        this.moveBot()
+      }
+      else if(human){
+        console.log('Player move')
+        this.movePlayer(space)
+      }
+      // console.log(this.board.printBoard())
+    }
 
+    moveBot() {
+      if(!this.getActivePlayer().getHuman()){
+        let botMove = this.getActivePlayer().getBotMove(this.board)
+        this.board.placeMove(botMove, this.getActivePlayer().getToken());
+        console.log(`bot move: ${botMove}`)
+        if(this.checkWinCondition() != 0){
+          return 1
         }
-      
+        this.switchPlayerTurn();
+        this.printNewRound();
+      }
+    }
+
+    movePlayer(space) {
+      if(this.board.printBoard()[space] === null){
+        this.board.placeMove(space, this.getActivePlayer().getToken());
+
+        if(this.checkWinCondition() != 0){
+          return 1
+        }
+        this.printNewRound();
+      }
+    
+      console.log(`Player turn just went is bot: ${this.getActivePlayer().getHuman()}`)
+      this.switchPlayerTurn();
+      console.log(`Next player is bot: ${this.getActivePlayer().getHuman()}`)
+      this.moveBot();
     }
 
     clearBoard() {
@@ -245,46 +216,75 @@ class GameController {
       }
     }
   
+class Player {
+  constructor(
+    token,
+    human
+  ) 
+    {
+        this.playerToken = token
+        this.human = human;
+    }
 
+    getToken(){return this.playerToken}
+    getHuman(){return this.human}
+
+   //bot moves
+   makeEasyBotMove(board) {
+    //randomly pick an available space
+    const available = board.printBoard()
+    //get indices of available
+    let indices = []
+    let idx = available.indexOf(null);
+    while (idx !== -1) {
+      indices.push(idx);
+      idx = available.indexOf(null, idx + 1);
+    }
+    console.log(indices)
+    let move = indices[(Math.floor(Math.random() * indices.length))]
+    return move
+  }  
+
+    makeMediumBotMove(available) {
+
+    }
+
+    getBotMove(board, diff){
+      let move = null
+      move = this.makeEasyBotMove(board)
+      return move
+    }
+
+}
 
 function ScreenController() {
-    let game = new GameController();
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const restartDiv = document.querySelector('.restart');
-    
-    let player1Name = 'Player 1'
-    let player2Name = 'Player 2'
-    let player1Human = true;
-    let player2Human = true;
-    
+
+    let playerHuman = 1;
+    let game = new GameController();
+    let winCount = 0
+    let newWinCount = winCount
     // get human or bot
     function clickPlayerButtonValue(e){
       const target = e.target;
-      if(target.className.includes('1')){player1Human = target.value}
-      else if(target.className.includes('2')){player2Human = target.value}
-      console.log(`player1: ${player1Human}, player2: ${player2Human}`);
+      if(target.className.includes('1')){playerHuman = target.value}
+      else if(target.className.includes('2')){playerHuman = target.value}
+      console.log(`playerHuman: ${playerHuman}`);
       // return target.value;
     }
-    const startGame = () => {
-      const player1NameInput = document.querySelector(".player1Name").value
-      const player2NameInput = document.querySelector(".player2Name").value
-      if(!player1Human){player1NameInput = 'Bot'};
-      if(!player2Human){player2NameInput = 'Bot'};
-
-      game = new GameController(
-        player1Name = player1NameInput,
-        player2Name = player2NameInput,
-        player1Human = player1Human, 
-        player2Human=player2Human);
-
-      game.playRound();
+    const startGame = (winCount) => {
+      game = new GameController(playerHuman = playerHuman, botDiff = winCount);
+      console.log(`Player 1: ${game.players[0].getToken()}, Human: ${game.players[0].getHuman()}`)
+      console.log(`Player 2: ${game.players[1].getToken()}, Human: ${game.players[1].getHuman()}`)
+      // game.playRound();
       updateScreen();
     }
 
     function clickStartGame(e) {
       const target = e.target;
-      startGame()
+      startGame(winCount)
     }
 
     const renderStart = () => {
@@ -303,13 +303,27 @@ function ScreenController() {
       startButton.addEventListener('click', clickStartGame);
     }
     // render newgame button
-    const renderNewGame = () => {
+    const renderNewGame = (newWinCount) => {
+
         // const restartDiv = document.createElement('div');
         // restartDiv.classList.add('.restart');
         const newButton = document.createElement("button");
         const mainMenuButton = document.createElement("button");
         // newButton.classList.add('newGameButton')
-        newButton.innerHTML = 'Restart'
+      
+        if(newWinCount === winCount){
+          btnText = 'Restart'
+        }
+        else if(newWinCount > winCount){
+          btnText = 'Next Round'
+          winCount = newWinCount;
+        }
+        else{
+          btnText = 'New Game'
+          winCount = 0
+          newWinCount = 0
+        }
+        newButton.innerHTML = btnText;
         newButton.addEventListener('click', clickNewGame);
         mainMenuButton.innerHTML = 'Main Menu';
         restartDiv.appendChild(mainMenuButton);
@@ -325,7 +339,7 @@ function ScreenController() {
       const activePlayer = game.getActivePlayer();
     
       // Display player's turn
-      playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+      playerTurnDiv.textContent = `${activePlayer.getToken()}'s turn... Win Count: ${winCount}`
   
       // Render board squares
       board.forEach((cell, index) => {
@@ -337,7 +351,10 @@ function ScreenController() {
           cellButton.dataset.cell = index
           cellButton.textContent = cell.getValue();
           if(!end){
-            cellButton.addEventListener('click', clickHandlerBoard)
+            if(cellButton.innerHTML === ''){
+              cellButton.addEventListener('click', clickHandlerBoard)
+            }
+            
           }
           boardDiv.appendChild(cellButton);
         })
@@ -347,21 +364,29 @@ function ScreenController() {
     function clickHandlerBoard(e) {
       const selectedButton = e.target;
     
-      // Make sure I've clicked a column and not the gaps in between
       if (!selectedButton) return;
       
       game.playRound(selectedButton.dataset.cell);
-
+      updateScreen(false)
+      console.log(game.board.printBoard())
       let result = game.checkWinCondition(game.activePlayer);
+      console.log(game.activePlayer)
       if(result == 1){
+        newWinCount += 1
         console.log('win')
         updateScreen(true)
-        renderNewGame()
+        renderNewGame(newWinCount)
+      }
+      else if(result == -2){
+        newWinCount -= 1
+        console.log('win bot')
+        updateScreen(true)
+        renderNewGame(newWinCount)
       }
       else if(result==-1){
         console.log('draw')
         updateScreen(true)
-        renderNewGame()
+        renderNewGame(newWinCount)
       }
       else {
         updateScreen(false);
@@ -372,10 +397,11 @@ function ScreenController() {
         const button = e.target;
         // game.clearBoard()
         restartDiv.querySelectorAll('*').forEach(n => n.remove());
+
         // updateScreen()
         // game.playRound();
         // updateScreen();
-        startGame()
+        startGame(winCount)
     }
     // newGame.addEventListener('click', clickNewGame)
     // const buttons = document.querySelector('.cell');
