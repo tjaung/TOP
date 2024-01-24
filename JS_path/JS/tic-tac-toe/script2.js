@@ -5,10 +5,7 @@ class GameBoard {
         // boardArray = []
     ) {
         this.boardArray = new Array(rows*columns)
-        // for (let i = 0; i < this.rows*this.columns; i++) {
-        //     this.boardArray.push(Cell());
-        //     this.boardArray[i].addIndex(i);
-        //   }
+
     }
 
     initializeBoard() {
@@ -80,15 +77,14 @@ function Cell() {
   };
 }
 
-function delay(milliseconds){
-  return new Promise(resolve => {
-      setTimeout(resolve, milliseconds);
-  });  
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 class GameController {
     constructor(
-      playerHuman
+      playerHuman,
+      winCount
     ) {
       // Initialize Players
       this.playerOneHuman = playerHuman === '1' ? true : false
@@ -107,9 +103,11 @@ class GameController {
       this.printNewRound();
 
       // get win rate
-      this.winCount = 0;
-        }
+      this.winCount = winCount/10;
+    }
   
+   
+    
     switchPlayerTurn() {
       this.activePlayer = this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
     }
@@ -133,9 +131,9 @@ class GameController {
 
     }
 
-    checkWinCondition() {
+    checkWinCondition(b) {
         let val = this.getActivePlayer().getToken()
-        const boardWithCellValues = this.board.getBoard().map(function (cell) {
+        const boardWithCellValues = b.map(function (cell) {
             if (cell.getValue() === val) {
             return cell.getIndex();
             }
@@ -153,16 +151,16 @@ class GameController {
   
       for (let i = 0; i < permutations.length; i++) {
         const result = permutations[i].every((j) => boardWithCellValues.includes(j));
+        console.log(result, permutations[i], this.getActivePlayer().getHuman())
         if (result) {
           if(this.getActivePlayer().getHuman()){
             return 1
           }
           else{return -2}
         }
-        else if(!this.checkAvailableMoves() && !result) return -1
       }
-
-      return 0;
+      if(!this.checkAvailableMoves()) return -1
+      else {return 0;}
     }
 
     playRound(space) {
@@ -182,15 +180,25 @@ class GameController {
     }
 
     moveBot() {
-      if(!this.getActivePlayer().getHuman()){
-        let botMove = this.getActivePlayer().getBotMove(this.board)
-        this.board.placeMove(botMove, this.getActivePlayer().getToken());
+      let currentBoard = this.board.printBoard()
+      let currentToken = this.getActivePlayer().getToken()
+      let currentHuman = this.getActivePlayer().getHuman()
+      let otherToken = currentToken == 'O' ? 'X': 'O'
+      console.log(`current token: ${currentToken}, other token: ${otherToken}`)
+      if(!currentHuman){
+        let botMove = this.getActivePlayer().getBotMove(currentBoard, currentToken, otherToken, currentHuman, this.winCount)
+        this.board.placeMove(botMove, currentToken);
+        let updatedBoard = this.board.getBoard();
+
         console.log(`bot move: ${botMove}`)
-        if(this.checkWinCondition() != 0){
+        if(this.checkWinCondition(updatedBoard) != 0){
+          console.log('end')
           return 1
         }
-        this.switchPlayerTurn();
-        this.printNewRound();
+        else {
+          this.switchPlayerTurn();
+          this.printNewRound();
+        }
       }
     }
 
@@ -198,16 +206,18 @@ class GameController {
       if(this.board.printBoard()[space] === null){
         this.board.placeMove(space, this.getActivePlayer().getToken());
 
-        if(this.checkWinCondition() != 0){
+        if(this.checkWinCondition(this.board.getBoard()) != 0){
+          console.log('end')
           return 1
         }
-        this.printNewRound();
+        else {
+          this.printNewRound();
+          console.log(`Player turn just went is bot: ${this.getActivePlayer().getHuman()}`)
+          this.switchPlayerTurn();
+          console.log(`Next player is bot: ${this.getActivePlayer().getHuman()}`)
+          this.moveBot();
+        }
       }
-    
-      console.log(`Player turn just went is bot: ${this.getActivePlayer().getHuman()}`)
-      this.switchPlayerTurn();
-      console.log(`Next player is bot: ${this.getActivePlayer().getHuman()}`)
-      this.moveBot();
     }
 
     clearBoard() {
@@ -230,9 +240,26 @@ class Player {
     getHuman(){return this.human}
 
    //bot moves
+   findWin(board, player){
+    if (
+    (board[0] == player && board[1] == player && board[2] == player) ||
+    (board[3] == player && board[4] == player && board[5] == player) ||
+    (board[6] == player && board[7] == player && board[8] == player) ||
+    (board[0] == player && board[3] == player && board[6] == player) ||
+    (board[1] == player && board[4] == player && board[7] == player) ||
+    (board[2] == player && board[5] == player && board[8] == player) ||
+    (board[0] == player && board[4] == player && board[8] == player) ||
+    (board[2] == player && board[4] == player && board[6] == player)
+    ) {
+    return true;
+    } else {
+    return false;
+    }
+   }
+
    makeEasyBotMove(board) {
     //randomly pick an available space
-    const available = board.printBoard()
+    const available = board
     //get indices of available
     let indices = []
     let idx = available.indexOf(null);
@@ -245,15 +272,100 @@ class Player {
     return move
   }  
 
-    makeMediumBotMove(available) {
 
+  minimax(board, botToken, humanToken, isHuman){
+  
+    // copy board
+    let newBoard = []
+    for(let i = 0; i< 9; i++){
+      newBoard.push(board[i])
     }
 
-    getBotMove(board, diff){
-      let move = null
-      move = this.makeEasyBotMove(board)
-      return move
+    // get available
+    let available = newBoard.reduce((acc, curr, index) => {
+      if (curr === null) {
+        acc.push(index);
+      }
+      return acc;
     }
+      , []);
+
+    // console.log(available)
+    // console.log(newBoard)
+
+    // scores for terminal states
+    if(this.findWin(newBoard, humanToken)) return {score:-10}
+    else if (this.findWin(newBoard, botToken)) return {score:10}
+    else if(available.length === 0) return {score:0};
+
+    // moves
+    let moves = [];
+
+    // loop available
+    for (let i = 0; i < available.length; i++){
+      let move  = {};
+        move['index'] = available[i];
+
+      // set empty spot to player
+      if(isHuman){newBoard[available[i]] = humanToken}
+      else{newBoard[available[i]] = botToken}
+
+      // get score
+      if (isHuman){
+        let result = this.minimax(newBoard, botToken, humanToken, false)
+        move['score'] = result.score;
+      }
+      else {
+        let result = this.minimax(newBoard, botToken, humanToken, true);
+        move['score'] = result.score;
+      }
+
+      //reset spot to empty
+      newBoard[available[i]] = null;
+
+      //push to array
+      moves.push(move)  
+    }
+
+  // choose best move
+  let bestMove;
+  if(!isHuman){
+    let bestScore = -10000;
+    for(let i = 0; i < moves.length; i++){
+      if(moves[i].score > bestScore){
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+  else {
+    let bestScore = 10000;
+    for(let i = 0; i < moves.length; i++){
+      if(moves[i].score < bestScore){
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+
+  
+  let best = moves[bestMove]
+  return best
+
+}
+
+  makeAIBotMove(board, botToken, humanToken, bot, diff) {
+    let chance = Math.random()
+    if(diff < chance){return this.makeEasyBotMove(board)}
+    else{return this.minimax(board, botToken, humanToken, bot).index}
+  }
+
+  getBotMove(board, botToken, humanToken, bot, diff){
+    let move = null
+    // move = this.makeEasyBotMove(board, player)
+    move = this.makeAIBotMove(board, botToken, humanToken, bot, diff)
+    return move
+  }
 
 }
 
@@ -275,7 +387,7 @@ function ScreenController() {
       // return target.value;
     }
     const startGame = (winCount) => {
-      game = new GameController(playerHuman = playerHuman, botDiff = winCount);
+      game = new GameController(playerHuman = playerHuman, winCount = winCount);
       console.log(`Player 1: ${game.players[0].getToken()}, Human: ${game.players[0].getHuman()}`)
       console.log(`Player 2: ${game.players[1].getToken()}, Human: ${game.players[1].getHuman()}`)
       // game.playRound();
@@ -369,7 +481,8 @@ function ScreenController() {
       game.playRound(selectedButton.dataset.cell);
       updateScreen(false)
       console.log(game.board.printBoard())
-      let result = game.checkWinCondition(game.activePlayer);
+      let result = game.checkWinCondition(game.board.getBoard());
+      console.log(result)
       console.log(game.activePlayer)
       if(result == 1){
         newWinCount += 1
@@ -378,7 +491,7 @@ function ScreenController() {
         renderNewGame(newWinCount)
       }
       else if(result == -2){
-        newWinCount -= 1
+        newWinCount = 0
         console.log('win bot')
         updateScreen(true)
         renderNewGame(newWinCount)
