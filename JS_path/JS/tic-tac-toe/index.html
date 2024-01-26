@@ -15,39 +15,50 @@
 
 <body>
     <header id="head">
-        Tic-Tac-Toe
+        <h2>Tic-Tac-Toe</h2>
+        <button class="info">i</button>
     </header> 
-    <div class="container">
-        <h1 class="turn">
+
+    <div id="msg" class="msg">Scanning</div>
+    <div id="console">
     </div>
 
-    <section class="mainmenu">
-        <div class="player-select">
-            <div class="message">Choose Your Turn</div>
-            <div class="players">
+    <div class="container">
+    
+        <section id="game-container">
+            <div class="game-message">
+                <h1 class="turn">
+                <h2 class="wins">
+            </div>
             
-                <div id="player1">
-                    <button class="player1human" value="1">X</button>
-                </div>
+            <div id="board" class="board">
+            </div>
 
-                <div id="player2">
-                    <div>
-                        <button class="player2human" value="0">O</button>
+            <div class="restart">
+            </div>
+        </section>
+        <section id="mainmenu">
+            <div class="player-select">
+                <h2 class="message">Choose Your Turn</h2>
+                <div class="players">
+                
+                    <div id="player1">
+                        <button id="playerbtn" class="player1human" value="1">X</button>
+                    </div>
+    
+                    <div id="player2">
+                        <div>
+                            <button id="playerbtn" class="player2human" value="0">O</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="start">
-                <button class="start">Start</button>
-            </div>
-        </div>
-    </section>
     
-    <div class="board"></div>
-    </div>   
-    <div class="restart">
-        </div>
-
-
+                <div class="start">
+                    <button class="start">Start</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
     <script src="script2.js"></script> 
 </body>

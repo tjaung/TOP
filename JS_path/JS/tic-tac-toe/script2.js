@@ -1,3 +1,12 @@
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function waitForTime(time, func, ...args) {
+    await sleep(time);
+    func(...args)
+}
+
 class GameBoard {
   constructor(
       rows = 3,
@@ -95,7 +104,7 @@ class GameController {
     this.winCount = winCount/10;
   }
 
-  switchPlayerTurn() {
+  switchPlayerTurn = async () => {
     this.activePlayer = this.activePlayer === this.players[0] ? this.players[1] : this.players[0];
   }
 
@@ -142,7 +151,7 @@ class GameController {
     else return 0;
   }
 
-  playRound(space) {
+  playRound = async(space) => {
     // get active player
     const token = this.getActivePlayer().getToken();
     let human = this.getActivePlayer().getHuman()
@@ -155,12 +164,13 @@ class GameController {
     }
   }
 
-  moveBot() {
+  moveBot = async() => {
     let currentBoard = this.board.printBoard()
     let currentToken = this.getActivePlayer().getToken()
     let currentHuman = this.getActivePlayer().getHuman()
     let otherToken = currentToken == 'O' ? 'X': 'O'
 
+    // await waitForTime(500, console.log, 'wait for bot')
     if(!currentHuman){
       let botMove = this.getActivePlayer().getBotMove(currentBoard, currentToken, otherToken, currentHuman, this.winCount)
       this.board.placeMove(botMove, currentToken);
@@ -180,10 +190,11 @@ class GameController {
 
       if(this.checkWinCondition(this.board.getBoard()) != 0) return 1
       else {
-        this.printNewRound();
+        // this.printNewRound();
         this.switchPlayerTurn();
-        this.moveBot();
+        this.moveBot()
       }
+
     }
   }
 
@@ -329,12 +340,55 @@ function ScreenController() {
   const playerTurnDiv = document.querySelector('.turn');
   const boardDiv = document.querySelector('.board');
   const restartDiv = document.querySelector('.restart');
+  const winDiv = document.querySelector('.wins')
 
   let playerHuman = 1;
   let game = new GameController();
   let winCount = 0
   let newWinCount = winCount
   
+  function typeText(target, text) {
+    speed = 25
+    i = 0;
+    if (i < text.length) {
+      let t = text.charAt(i)
+      target.innerHTML += text.charAt(i);
+      i++;
+      waitForTime(speed, typeText, target, text.substring(i))
+    }
+  }
+  
+  // info button
+  function clickToggleInfo(e){
+    const target = e.target;
+    const infoWindow = document.createElement('div');
+    const closeButton = document.createElement('button')
+    const infoText = document.createElement('p');
+    const body = document.querySelector('body')
+    text = "10 hackers are trying to hack into your computer for your personal information! Luckily, you've set up your machine's defenses to block them out by beating them at a game of tic-tac-toe. Can you defeat all 10 hackers? Every opponent will get increasingly difficult as you defeat more of them."
+    typeText(infoText, text)
+    
+    closeButton.addEventListener('click', clickCloseInfo)
+    closeButton.innerHTML = 'X'
+    infoWindow.appendChild(closeButton)
+    infoWindow.appendChild(infoText)
+    infoWindow.className = 'info-window'
+    info.disabled=true;
+    body.appendChild(infoWindow)
+  }
+
+  function clickCloseInfo(e) {
+    const target = e.target
+    const infowin = document.querySelector('.info-window')
+    const body = document.querySelector('body')
+    // body = body.removeChild(info)
+    infowin.remove()
+    info.disabled = false;
+  }
+
+  const info = document.querySelector('.info');
+  info.addEventListener('click', clickToggleInfo)
+
   // get human or bot
   function clickPlayerButtonValue(e){
     const target = e.target;
@@ -342,22 +396,42 @@ function ScreenController() {
     else if(target.className.includes('2')){playerHuman = target.value}
     console.log(`playerHuman: ${playerHuman}`);
   }
-  const startGame = (winCount) => {
+  const startGame = (winCount) => { 
     game = new GameController(playerHuman = playerHuman, winCount = winCount);
     console.log(`Player 1: ${game.players[0].getToken()}, Human: ${game.players[0].getHuman()}`)
     console.log(`Player 2: ${game.players[1].getToken()}, Human: ${game.players[1].getHuman()}`)
+    
     updateScreen();
   }
 
   // toggle board fade in and out
-  const fadeInBoard = () => {
-    const board = document.querySelector('.board')
-    board.classList.add()
+  function fadeIn(id) {
+    const target = document.getElementById(id)
+    target.style.animation = 'fadeIn 0.5s forwards';
+    target.classList.toggle('fadein')
+    target.style.zIndex = 999;
+  }
+
+  function fadeOut(id) {
+    const target = document.getElementById(id)
+    target.style.animation = 'fadeOut 0.5s forwards';
+    target.classList.toggle('fadeout')
+    target.style.zIndex = 0; 
   }
 
   function clickStartGame(e) {
     const target = e.target;
-    startGame(winCount)
+    const container = document.getElementsByClassName('.container')
+    const mainMenu = document.getElementById('mainmenu')
+    
+    const runStartGame = async () => {
+      fadeOut('mainmenu')
+      waitForTime(1000, console.log, 'wait')
+      // mainMenu.style.display = 'none';
+      waitForTime(1000, fadeIn, 'game-container')
+      startGame(winCount)
+    }
+    runStartGame()
   }
 
   const renderStart = () => {
@@ -366,6 +440,19 @@ function ScreenController() {
     const player2 = document.querySelector('#player2')
     const selectionButts = player1.getElementsByTagName('button');
     const selectionButts2 = player2.getElementsByTagName('button');
+    const gameContainer = document.querySelector('#game-container')
+    const container = document.querySelector('.container')
+    
+    container.style.display = 'flex'
+    winCount = 0
+    newWinCount = 0
+
+    if(gameContainer.style.zIndex === 999) {
+      fadeOut('game-container')
+      waitForTime(1000, fadeIn, 'mainmenu')
+      restartDiv.querySelectorAll('*').forEach(n => n.remove());
+    }
+    else fadeIn('mainmenu')
 
     for(const btn of selectionButts){
       btn.addEventListener('click', clickPlayerButtonValue)
@@ -387,19 +474,23 @@ function ScreenController() {
     playerTurnDiv.textContent = `${activePlayer.getToken()} Wins!`
     if(newWinCount === winCount){
       btnText = 'Restart'
+      playerTurnDiv.textContent = `It's a draw!`
     }
     else if(newWinCount > winCount){
       btnText = 'Next Round'
       winCount = newWinCount;
+      playerTurnDiv.textContent = `${activePlayer.getToken()} Wins!`
     }
     else{
       btnText = 'New Game'
       winCount = 0
       newWinCount = 0
+      playerTurnDiv.textContent = `${activePlayer.getToken()} Wins!`
     }
     newButton.innerHTML = btnText;
     newButton.addEventListener('click', clickNewGame);
     mainMenuButton.innerHTML = 'Main Menu';
+    mainMenuButton.addEventListener('click', renderStart)
     restartDiv.appendChild(mainMenuButton);
     restartDiv.appendChild(newButton);
   }
@@ -411,9 +502,10 @@ function ScreenController() {
     // get the newest version of the board and player turn
     const board = game.board.getBoard();
     const activePlayer = game.getActivePlayer();
-  
+
     // Display player's turn
-    playerTurnDiv.textContent = `${activePlayer.getToken()}'s turn... Win Count: ${winCount}`
+    playerTurnDiv.textContent = `${activePlayer.getToken()}'s turn`
+    winDiv.textContent = `Win Count: ${winCount}`
 
     // Render board squares
     board.forEach((cell, index) => {
@@ -472,7 +564,7 @@ function ScreenController() {
       const button = e.target;
       // game.clearBoard()
       restartDiv.querySelectorAll('*').forEach(n => n.remove());
-
+      
       // updateScreen()
       // game.playRound();
       // updateScreen();
@@ -482,8 +574,142 @@ function ScreenController() {
   // const buttons = document.querySelector('.cell');
   // buttons.forEach((btn) => btn.addEventListener("click", clickHandlerBoard));
 
+
+  // start animation
+  const loadStart = () => {
+    var intervalID = window.setInterval(updateScreen, 200);
+    var console = document.getElementById("console");
+    const msg = document.querySelector(".msg");
+
+    var txt = [
+      "FORCE: XX0022. ENCYPT://000.222.2345",
+      "TRYPASS: ********* AUTH CODE: ALPHA GAMMA: 1___ PRIORITY 1",
+      "RETRY: REINDEER FLOTILLA",
+      "Z:> /FALKEN/GAMES/TICTACTOE/ EXECUTE -PLAYERS 0",
+      "================================================",
+      "Priority 1 // local / scanning...",
+      "scanning ports...",
+      "BACKDOOR FOUND (23.45.23.12.00000000)",
+      "BACKDOOR FOUND (13.66.23.12.00110000)",
+      "BACKDOOR FOUND (13.66.23.12.00110044)",
+      "...",
+      "...",
+      "BRUTE.EXE -r -z",
+      "...locating vulnerabilities...",
+      "...vulnerabilities found...",
+      "MCP/> DEPLOY CLU",
+      "SCAN: __ 0100.0000.0554.0080",
+      "SCAN: __ 0020.0000.0553.0080",
+      "SCAN: __ 0001.0000.0554.0550",
+      "SCAN: __ 0012.0000.0553.0030",
+      "SCAN: __ 0100.0000.0554.0080",
+      "SCAN: __ 0020.0000.0553.0080"
+    ];
+
+    var docfrag = document.createDocumentFragment();
+
+    function updateScreen() {
+      //Shuffle the "txt" array
+      txt.push(txt.shift());
+      //Rebuild document fragment
+      txt.forEach(function (e) {
+        var p = document.createElement("p");
+        p.className = 'hackerText'
+        p.textContent = e;
+        docfrag.appendChild(p);
+      });
+      //Clear DOM body
+      while (console.firstChild) {
+        console.removeChild(console.firstChild);
+      }
+      console.appendChild(docfrag);
+    }
+
+    setTimeout(() => {
+      msg.style.background = "limegreen";
+      msg.innerHTML = "ACCESS GRANTED";
+      msg.style.boxShadow = "0 0 30px limegreen";
+      console.style.display = "none";
+    }, 5000);
+
+    setTimeout(() => {
+      msg.style.animation = 'fadeOut 0.5s forwards';
+    }, 6000);
+
+    setTimeout(() => {
+      msg.remove()
+      console.remove()
+    }, 8000);
+    // setTimeout(() => {
+    //   renderStart()
+    // }, 9000);
+    // renderStart()
+  }
+  
+  const start = () => {
+    loadStart()
+    setTimeout(() => {
+      renderStart()
+    }, 8000);
+    // waitForTime(8000, renderStart)
+  }
   // Initial render
-  renderStart()
+  start()
+  // renderStart()
 }
 
 ScreenController();
+
+// var intervalID = window.setInterval(updateScreen, 200);
+// var console = document.getElementById("console");
+// const msg = document.querySelector(".msg");
+
+// var txt = [
+//   "FORCE: XX0022. ENCYPT://000.222.2345",
+//   "TRYPASS: ********* AUTH CODE: ALPHA GAMMA: 1___ PRIORITY 1",
+//   "RETRY: REINDEER FLOTILLA",
+//   "Z:> /FALKEN/GAMES/TICTACTOE/ EXECUTE -PLAYERS 0",
+//   "================================================",
+//   "Priority 1 // local / scanning...",
+//   "scanning ports...",
+//   "BACKDOOR FOUND (23.45.23.12.00000000)",
+//   "BACKDOOR FOUND (13.66.23.12.00110000)",
+//   "BACKDOOR FOUND (13.66.23.12.00110044)",
+//   "...",
+//   "...",
+//   "BRUTE.EXE -r -z",
+//   "...locating vulnerabilities...",
+//   "...vulnerabilities found...",
+//   "MCP/> DEPLOY CLU",
+//   "SCAN: __ 0100.0000.0554.0080",
+//   "SCAN: __ 0020.0000.0553.0080",
+//   "SCAN: __ 0001.0000.0554.0550",
+//   "SCAN: __ 0012.0000.0553.0030",
+//   "SCAN: __ 0100.0000.0554.0080",
+//   "SCAN: __ 0020.0000.0553.0080"
+// ];
+
+// var docfrag = document.createDocumentFragment();
+
+// function updateScreen() {
+//   //Shuffle the "txt" array
+//   txt.push(txt.shift());
+//   //Rebuild document fragment
+//   txt.forEach(function (e) {
+//     var p = document.createElement("p");
+//     p.textContent = e;
+//     docfrag.appendChild(p);
+//   });
+//   //Clear DOM body
+//   while (console.firstChild) {
+//     console.removeChild(console.firstChild);
+//   }
+//   console.appendChild(docfrag);
+// }
+
+// setTimeout(() => {
+//   msg.style.background = "limegreen";
+//   msg.innerHTML = "ACCESS GRANTED";
+//   msg.style.boxShadow = "0 0 30px limegreen";
+//   console.style.display = "none";
+// }, 5000);
