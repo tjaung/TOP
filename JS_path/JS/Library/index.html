@@ -9,11 +9,9 @@
 
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="style.css" />
-    <script>src='script.js'</script>
 </head>
 
 <body>
-
     <div class="container" id="overall">
     
         <div class="sidebar sidebar--isHidden">
@@ -32,7 +30,7 @@
                     <div><img src="imgs/ghostLogo.jpeg" alt="Ghost-Logo" id="logo"></div>
                 </div>
                 <div class="search">
-                    <input type="text" placeholder=&#x1F50E; class="searchbar" card-search>
+                    <input type="text" id="search" placeholder=&#x1F50E; class="searchbar" card-search>
                 </div>
         </header>
 
@@ -45,35 +43,40 @@
                 </ul>
             </div>
             <div class="card-space">
-                <div class="card">
-                    <div class="remove-div">
-                        <button id="remove">X</button>
-                    </div>
-                    <p class="title">The Hobbit</p>
-                    <p class="author">J.R. Tolkein</p>
-                    <p class="pages">304</p>
-                    <p class="read">Finished</p>
-                    <p class="notes">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud...</p>
-                </div>
+               
 
             </div>
         </div>
         <div class="foot">Footer</div>
     </div>
 
-    <!-- New Card Form Test 
-    <div class="closeBG">
-        <div class="new-card">
-            <form class="new-form">
-                <input type="text" id="card-title" class='title' name="card-title" placeholder="Title">
-                <textarea id='new-detail' rows="4" cols="15" placeholder="Details"></textarea> 
-                <div class='butt-holder'>
-                    <button id="submit-new">Submit</button>
-                </div>
-              </form>
-              
-        </div>
-    </div> -->
+   
 
-    <script src="script.js"></script>    
+    <div class="new-card">
+        <form class="new-form">
+            <label for="new-title">Title:</label>
+            <input type="text" id="new-title" class='title' name="card-title" placeholder=""><br>
+            <label for="new-detail">Details:</label>
+            <textarea id='new-detail' rows="4" cols="15" placeholder="Details" name="details"></textarea> <br>
+            <label for="new-assignee">Assigned to:</label>
+            <input type="dropbtn" id="new-assignee" name="assignee"><br>
+            <label for="new-status">Status:</label>
+            <input type="dropbtn" id="new-status" name="status"><br>
+            <label for="new-priority">Priority:</label>
+            <input type="dropbtn" id="new-priority" name="priority"><br>
+            
+            <div class='butt-holder'>
+                <button id="submit-new" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="closeBG">
+    </div>
+
+    
+
+
+    <script src="app.js"></script>   
+   
 </body>
