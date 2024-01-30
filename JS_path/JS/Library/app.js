@@ -1,5 +1,3 @@
-// import Card from './cards/card.js';
-// import Library from './cards/Library.js';
 class Library {
     constructor() {
         this.cards = [];
@@ -12,7 +10,7 @@ class Library {
     // remove books
     removeCardFromList(title) {
         this.cards = this.cards.filter((card) => 
-            card.title !== title
+            card._title !== title
         );
     };
     
@@ -22,11 +20,20 @@ class Library {
             card.title.toLowerCase() === title.toLowerCase()
         );
     };
+
+    // filter card list
+    filterCards(search) {
+        let indexes = [], i;
+        for(i = 0; i < this.cards.length; i++)
+            if (this.cards[i]._title.toLowerCase().includes(search.toLowerCase()))
+                indexes.push(i);
+        return this.cards[indexes];
+    }
     
     // return
     isInList(newCard) {
         return this.cards.some((card) => 
-            card.title.toLowerCase() === newCard.title.toLowerCase()
+            card._title.toLowerCase() === newCard._title.toLowerCase()
         );
     };
 
@@ -118,39 +125,27 @@ class Card {
 
         title.innerHTML = this.getTitle()
         detail.innerHTML = this.getDetail()
-        assignee.innerHTML = this.getAssignee()
+        assignee.innerHTML = `For: ${this.getAssignee()}`
         status.innerHTML = this.getStatus()
-        priority.innerHTML = this.getPriority()
+        priority.innerHTML = `Priority: ${this.getPriority()}`
 
-        title.className = 'card-info'
+        title.className = 'card-title'
         detail.className = 'card-info'
         assignee.className = 'card-info'
         status.className = 'card-info'
         priority.className = 'card-info'
 
-        card.innerHTML = `<span class='card-info'>${this.getTitle()}</span>
-        <span class='card-info'>${this.getDetail()}</span>
-        <span class='card-info'>${this.getAssignee()}</span>
-        <span class='card-info'>${this.getStatus()}</span>
-        <span class='card-info'>${this.getPriority()}</span>
-                            `
-        
-
         card.className = 'card'
-        // card.append(toggleInfoButton, title, detail, assignee, status, priority)
+        card.append(toggleInfoButton, title, detail, assignee, status, priority)
 
-        return  `<span class='card-info'>${this.getTitle()}</span>
-        <span class='card-info'>${this.getDetail()}</span>
-        <span class='card-info'>${this.getAssignee()}</span>
-        <span class='card-info'>${this.getStatus()}</span>
-        <span class='card-info'>${this.getPriority()}</span>`
+        return card
     }
 
 
     removeCard = (e) => {
         const target = e.target
-        e.parentNode.remove()
-        //Library.removeCard(this.shadowRoot.querySelector(''))
+        library.removeCardFromList(this._title)
+        CardSpace.showCards()
     }
 }
 
@@ -176,75 +171,68 @@ const Sidebar = (() => {
 
 })();
 
-// const SearchBar = (() => {
+const SearchBar = (() => {
 
-//     // --- GET MODULE DOM COMPONENTS
-//     const searchBar = document.querySelector('[card-search]');
-//     // search bar filter function
-//     let filterCards = () => {
-//         const cards = CardHolder.cards;
-//         let searchItem;
-//         searchItem = e.target.value.toLowerCase();
-//         console.log(cards)
+    // --- GET MODULE DOM COMPONENTS
+    const searchBar = document.querySelector('[card-search]');
 
-//         //Loop through library
-//         cards.forEach(card => {
-//             let titles = card.querySelector('.title');
-//             let authors = card.querySelector('.author');
+    // search bar filter function
+    let filterCards = (e) => {
+        const cards = document.querySelectorAll('.card');
+        let searchItem;
+        searchItem = e.target.value.toLowerCase();
+        console.log(cards)
+        //Loop through library
+        cards.forEach(card => {
+            let titles = card.querySelector('.card-title');
+            // let assignee = card.querySelector('.author');
             
-//             const isVisible = 
-//                 titles.innerHTML.toLowerCase().includes(searchItem) ||
-//                 authors.innerHTML.toLowerCase().includes(searchItem)
-//             console.log(isVisible);
-//             card.classList.toggle('hide', !isVisible)
-//         });
-//     };
+            const isVisible = 
+                titles.innerHTML.toLowerCase().includes(searchItem)
+                // authors.innerHTML.toLowerCase().includes(searchItem)
+            console.log(isVisible);
+            card.classList.toggle('hide', !isVisible)
+        });
+    }
 
-//     searchBar.addEventListener('input', filterCards);
+    searchBar.addEventListener('input', filterCards);
 
-// })();
+})();
 
 const CardSpace = (() => {
 
     // --- GET MODULE DOM COMPONENTS
     let cardArea = document.querySelector('.card-space');
-    // let CardLibrary = new Library();
 
     // create cards
     let createCards = () => {
         let allCards = library.returnAllCards();
+
         console.log(`updated library with library list: ${JSON.stringify(allCards)}`)
         let cards = []
-        for(let i; i<allCards.length; i++){
-            let card = document.createElement('div')
-            card.className = 'card'
+        console.log(allCards.length)
+        for(let i = 0; i<allCards.length; i++){
+
 
             let addCard = allCards[i].createCard()
-            card.append(addCard)
-
-            let ulItem = document.createElement('ul')
-            console.log(`adding card to dom: ${addCard}`)
-            ulItem.append(card)
-            cards.append(ulItem)
-            cardArea.append(ulItem)
+            cardArea.append(addCard)
         }
         console.log(JSON.stringify(cards))
         return cards
     }
 
+    let clearCards = () => {
+        cardArea.removeChild
+        while (cardArea.firstChild) {
+            cardArea.removeChild(cardArea.lastChild);
+          }
+    }
+
     // show the cards in the card library
     let showCards = () => {
-        let cards = createCards()
-        for(let i; i<cards.length; i++){
-            cardArea.appendChild(cards[i])
-        }
+        clearCards()
+        createCards()
     }
-        // cardArea = CardSpace.addCardHTML();
-        // for(let i=0; i<allCards.length; i++){
-        //     let card = window.customElements.define('new-card', allCards[i]);
-        //     cardArea.innerHTML.append(card)
-        //     console.log(allCards[i]);
-        // }
 
     return {createCards: createCards,
         showCards: showCards}
@@ -297,13 +285,7 @@ const NewForm = (() => {
     // get form inputs
 
     //send inputs
-    let sendCardData = (e) => {
-        e.preventDefault();
-        // alert(`${newTitle.value}, 
-        //     ${newDetail.value},
-        //         ${newAssignee.value},
-        //             ${newStatus.value},
-        //                 ${newPriority.value}`)
+    let sendCardData = () => {
         
         let newCard = new Card()
         newCard.setTitle(newTitle.value)
@@ -311,24 +293,23 @@ const NewForm = (() => {
         newCard.setAssignee(newAssignee.value)
         newCard.setStatus(newStatus.value)
         newCard.setPriority(newPriority.value)
-        console.log(newCard)
-        // let foot = document.querySelector('.foot');
-        library.addCardToList(newCard)
-        console.log(`updated card list: ${[...library.returnAllCards()]}`)
-        CardSpace.createCards()
+        return newCard
+    }
+    getBookFromForm = () =>{
+        let card = sendCardData()
+        library.addCardToList(card)
+    }
+    let addNewBook = (e) => {
+        e.preventDefault();
+        sendCardData()
+        getBookFromForm()
+        CardSpace.showCards()
         hideForm()
         resetForm()
-        // CardSpace.cardArea.appendChild(newCard.createCard())
-        // foot.appendChild(newCard.createCard())
-        // console.log(newCard)
-        // CardSpace.cards.addCardToList(newCard)
-        // CardSpace.showCards(CardSpace.cards.returnAllCards())
-        // console.log(CardSpace.cards.returnAllCards())
-       
     }
-
+       
     newButt.addEventListener('click', showForm);
-    submitButt.addEventListener('click', sendCardData);
+    submitButt.addEventListener('click', addNewBook);
     return {closeBG: closeBG}
 
 })()
