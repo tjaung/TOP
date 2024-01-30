@@ -1,0 +1,359 @@
+::-webkit-scrollbar {
+  background:#3C3C3B; 
+  color:#01D758;
+}
+::-webkit-scrollbar-track {
+  background: #3C3C3B; 
+  border-color: #01D758;
+  border-style: solid;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #01D758; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background:#138A36; 
+}
+* {
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+@media only screen and (max-width: 530px) {
+  body {
+    background-color: #3C3C3B;
+    color: #01D758;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 1.5vh;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    text-shadow: 0px 0px 10px;
+    overflow:hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #board {
+    width: 250px;
+    height: 250px;
+  }
+
+  #mainmenu {
+    height: 90vh;
+    width: 100vw;
+  }
+  #mainmenu > button{
+    height: 75px;
+    width: 75px;
+  }
+
+  
+    
+}
+  
+
+
+body {
+  background-color: #3C3C3B;
+  color: #01D758;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.8vh;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  text-shadow: 0px 0px 10px;
+  overflow:hidden;
+}
+
+.scrollable-element {
+  scrollbar-color: #01D758 #01D758;;
+}
+
+.container {
+  display: none;
+  /* flex-direction: column; */
+  /* grid-template-rows: 1fr 5fr; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  height: 90vh;
+  width: 100%;
+}
+
+.info-window {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 10vh;
+  background: #3C3C3B;
+  border-color: #138A36;
+  border-style: solid;
+  border-radius:1rem;
+  height: 80%;
+  width: 60%;
+  z-index: 999;
+  line-height: 2;
+  padding: 2%
+}
+
+.info-window > button{
+  /* justify-self: right; */
+  align-self: end;
+  margin-top: 2%;
+  margin-right: 2%;
+  height: 50px;
+  width: 50px;
+}
+
+.info-window > p {
+  overflow: auto;
+}
+
+button {
+  background-color: #3C3C3B;
+  /* border-color: ; */
+  color: #FFFFFF;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 2.1vh;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  text-shadow: 0px 0px 10px;
+  cursor:pointer;
+}
+button:hover{
+  background-color: #138A36;
+  border-color: #01D758;
+  color: #3C3C3B;
+}
+
+
+#head {
+  /* position: fixed; */
+  display:flex;
+  /* grid-template-columns: 1fr 1fr; */
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 3%;
+  margin-right: 3%;
+  /* width: 100vw */
+  height: 10vh;
+}
+
+#head:nth-child(1){
+  /* margin-left: 5%; */
+  justify-self: end;
+}
+
+#head:nth-child(2){
+  /* margin-right: 5%; */
+  justify-self: start;
+}
+
+#game-container {
+  opacity:0;
+  transition: filter 1s linear; 
+  position:absolute;
+  top: 10vh;
+  display: grid;
+  grid-template-rows: 1fr 3fr 1fr;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.1rem;
+  height:80vh;
+  width: 100%;
+  z-index: 0;
+}
+
+#board {
+  display: grid;
+  justify-self: center;
+  height: 500px;
+  width: 500px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 1px solid black;
+  gap: 2px;
+  background-color: #3C3C3B;
+}
+
+#mainmenu {
+  opacity:0;
+  display: flex;
+  grid-template-rows:1fr;
+  justify-content: center;
+  align-items: center;
+  height: 99%;
+  width: 100%;
+  background: #3C3C3B;
+  border-color: #138A36;
+  border-style: solid;
+  border-radius:1rem;
+}
+
+.player1human {
+  height: 200px;
+  width: 200px;
+  border-color: #138A36;
+}
+
+.player2human {
+  height: 200px;
+  width: 200px;
+  border-color: #138A36;
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  background: #3C3C3B;
+  cursor: pointer;
+  color:#01D758
+}
+
+.player-select {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%
+}
+.players {
+  display: flex;
+  /* grid-template-columns: repeat(2, 1fr); */
+  justify-content: space-between;
+  align-items: center;
+  width:100%;
+  height: 50%;
+}
+.message {
+  text-align: center;
+}
+
+.game-message {
+  text-align: center;
+}
+.player div {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-evenly;
+  align-items: center;
+}
+.start {
+  display:grid;
+  justify-content: center;
+  align-items: center;
+}
+.restart {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.restart > button {
+  background-color: 'red';
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.hackerText {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 3.5vh;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  color: limegreen;
+  text-shadow: 0px 0px 10px limegreen;
+}
+
+.msg {
+  font-family: monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 5vh;
+  padding-top: 5vh;
+  background: red;
+  box-shadow: 0 0 30px red;
+  text-shadow: 0 0 20px white;
+  color: white;
+  padding : 20px;
+  position: absolute;
+  left: 50%;
+  margin-left: -10vw;
+  top: 50%;
+  margin-top: -5vh;
+  text-align: center;
+  width: range()200px;
+  animation-name: blink;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-moz-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-webkit-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-o-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-ms-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@-moz-keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@-webkit-keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@-o-keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@-ms-keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
