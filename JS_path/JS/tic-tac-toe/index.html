@@ -9,90 +9,56 @@
 
     <link rel="stylesheet" href="normalize.css" />
     <link rel="stylesheet" href="styles.css" />
-    <script>src='script.js'</script>
+    <!-- <script>src="script2.js"</script> -->
+    <link rel="shortcut icon" href="#">
 </head>
 
 <body>
-
     <header id="head">
-        Tic-Tac-Toe
-    </header>    
+        <h2>Tic-Hack-Toe</h2>
+        <button class="info">i</button>
+    </header> 
 
-    <div id="player-selection">
-        <div id="card-container">
-            <div class="players" id="player1">
-                <div class="symbol">X</div>
-                <button class="human player-button player1">Human</button>
-                <button class="bot player-button player1">Bot</button>
-                <div class="ready"> </div>
-            </div>
-        </div>
-        <div>Extra</div>
-        <div id="card-container">
-            <div class="players" id="player2">
-                <div class="symbol">O</div>
-                <button class="human player-button player2">Human</button>
-                <button class="bot player-button player2">Bot</button>
-                <div class="ready"> </div>
-            </div>
-        </div>
-        <div class="butt-holder">
-            <button id="start-butt">START</button>
-        </div>
+    <div id="msg" class="msg">Scanning</div>
+    <div id="console">
     </div>
 
-    <div id="result">
-        <div id="win-or-lose">
-            <p>Result message</p>
-        </div>
-        <div id="new-game-options">
-            <button id="new-game">Play Again</button>
-            <button id="new-players">New Players</button>
-        </div>
-    </div>
-
-    <div id="board">
-        <div id="score">
-            <div id="player1-score">P1</div>
-            <div id="turn">Player One's Turn</div>
-            <div id="player2-score">P2</div>
-        </div>
-        <div id="game-space">
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-            
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-            
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-            <button class="board-square">
-                <p></p>
-            </button>
-        </div>
-    </div>
-
+    <div class="container">
     
+        <section id="game-container">
+            <div class="game-message">
+                <h1 class="turn">
+                <h2 class="wins">
+            </div>
+            
+            <div id="board" class="board">
+            </div>
 
-
-
-    <script src="script.js"></script>    
+            <div class="restart">
+            </div>
+        </section>
+        <section id="mainmenu">
+            <div class="player-select">
+                <h2 class="message">Choose Your Turn</h2>
+                <div class="players">
+                
+                    <div id="player1">
+                        <button id="playerbtn" class="player1human" value="1">X</button>
+                    </div>
+    
+                    <div id="player2">
+                        <div>
+                            <button id="playerbtn" class="player2human" value="0">O</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="start">
+                    <button class="start">Start</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script src="script2.js"></script> 
 </body>
