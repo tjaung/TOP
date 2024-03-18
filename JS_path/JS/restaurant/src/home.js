@@ -1,4 +1,5 @@
 import {renderMenuSpace} from "./menu"
+import { renderAbout } from "./about"
 
 function renderHome() {
     // grab the page content div
@@ -18,6 +19,10 @@ function renderHome() {
     const about = document.createElement('button')
     about.classList.add('about-btn')
     about.innerHTML = 'ABOUT'
+    about.addEventListener('click', (e) => {
+        btnDiv.remove()
+        screenInfo.appendChild(renderAbout())
+    })
 
     btnDiv.appendChild(menu)
     btnDiv.appendChild(about)

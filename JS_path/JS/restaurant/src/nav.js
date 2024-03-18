@@ -1,5 +1,6 @@
 import { renderHome } from "./home";
 import { renderMenuSpace } from "./menu";
+import { renderAbout } from "./about";
 import './styles.css';
 
 function createNav() {
@@ -79,21 +80,20 @@ function createNavMenu() {
     const aboutBtn = document.createElement('button')
     aboutBtn.innerHTML = 'ABOUT'
     aboutBtn.classList.add('hamburger-btn')
+    aboutBtn.addEventListener('click', (e) => {
+      const screenInfo = document.getElementById("screen-info")
+      toggleMenu(),
+      screenInfo.replaceChild(renderAbout(), screenInfo.children[0]
+      )})
     about.appendChild(aboutBtn)
 
     list.appendChild(home)
     list.appendChild(menu)
     list.appendChild(about)
 
-    // const head = document.getElementById('nav')
-    // head.appendChild(nav)
     nav.appendChild(list)
 
     return nav
 }
 
-function clearPage() {
-    const screenInfo = document.querySelector("#screen-info")
-    screenInfo.children[0].remove()
-}
 export {createNav};

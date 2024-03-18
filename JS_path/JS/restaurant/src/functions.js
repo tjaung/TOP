@@ -1,15 +1,18 @@
 import { createNav } from "./nav";
 import { renderHome } from './home'
-
+import * as Carousel from './carousel'
 
 function createImageCarousel() {
     const slideDiv = document.createElement('div')
-    const slides = document.createElement('div') // chagne to img
+    // const slides = document.createElement('div') // chagne to img
 
     slideDiv.classList.add('slides')
-    slides.innerHTML = 'INSERT SLIDES HERE'
-    slideDiv.appendChild(slides)
+    // slides.innerHTML = 'INSERT SLIDES HERE'
+    slideDiv.appendChild(Carousel.createCarousel())
 
+    document.addEventListener('DOMContentLoaded', Carousel.rotateCarousel)
+    
+    console.log(Carousel.createCarousel())
     return slideDiv
 }
 
