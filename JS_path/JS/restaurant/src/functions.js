@@ -11,9 +11,8 @@ function createImageCarousel() {
     slideDiv.appendChild(Carousel.createCarousel())
 
     document.addEventListener('DOMContentLoaded', Carousel.rotateCarousel)
-    
-    console.log(Carousel.createCarousel())
-    return slideDiv
+
+    return Carousel.createCarousel()
 }
 
 function initialize() {

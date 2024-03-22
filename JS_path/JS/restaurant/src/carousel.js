@@ -72,10 +72,16 @@ export function rotateCarousel() {
     const nextButtonDiv = document.createElement('div');
     nextButtonDiv.classList.add('button', 'next', 'arrow');
 
+    // create scroll indicator arrow
+    const indicatorArrow = document.createElement('a');
+    indicatorArrow.classList.add('indicator-arrow', 'button');
+    indicatorArrow.href = '#screen-info';
+
     // Append all elements to the container div
     containerDiv.appendChild(sliderWrapperDiv);
     containerDiv.appendChild(prevButtonDiv);
     containerDiv.appendChild(nextButtonDiv);
+    containerDiv.appendChild(indicatorArrow);
 
     return containerDiv
   }
