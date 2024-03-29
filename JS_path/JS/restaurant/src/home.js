@@ -13,7 +13,8 @@ function renderHome() {
     menu.classList.add('menu-button')
     menu.addEventListener('click', (e) => {
         btnDiv.remove()
-        screenInfo.appendChild(renderMenuSpace())
+        console.log(renderMenuSpace())
+        screenInfo.append(...renderMenuSpace())
     })
 
     const about = document.createElement('button')

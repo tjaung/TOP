@@ -1,9 +1,10 @@
-import {lunch} from "./lunchMenu"
+import {lunch} from "./menu/lunchMenu"
+import { dinner } from "./menu/dinnerMenu";
 
 function createMenuItem(item, info) {
     const itemDiv = document.createElement('li')
     itemDiv.classList.add('menu-item');
-    
+
     const menuItemName = document.createElement('p')
     const menuItemDesc = document.createElement('p')
     const menuItemPrice = document.createElement('p')
@@ -12,6 +13,8 @@ function createMenuItem(item, info) {
     menuItemDesc.innerHTML = info.desc
     menuItemPrice.innerHTML = info.price
 
+    menuItemName.classList.add('item-title')
+
     itemDiv.appendChild(menuItemName)
     itemDiv.appendChild(menuItemDesc)
     itemDiv.appendChild(menuItemPrice)
@@ -19,18 +22,14 @@ function createMenuItem(item, info) {
     return itemDiv
 }
 
-export function createLunchMenu() {
+export function createMenu(menu) {
     let out = document.createElement('ul')
-    for(const [key, value] of Object.entries(lunch)){
+    for(const [key, value] of Object.entries(menu)){
         out.appendChild(createMenuItem(key, value))
     }
 
     return out
-}   
-
-export function createDinnerMenu() {
-    return 'DINNER'
- }
+} 
 
 export function renderMenuSpace() {
     // menu div
@@ -65,14 +64,14 @@ export function renderMenuSpace() {
         if(menu.childNodes.length > 0){
             menu.removeChild(menu.childNodes[0])
         }
-        menu.appendChild(createLunchMenu())
+        menu.appendChild(createMenu(lunch))
     })
     dinnerBtn.addEventListener('click', (e) => {
-        menu.innerHTML = createDinnerMenu()
+        if(menu.childNodes.length > 0){
+            menu.removeChild(menu.childNodes[0])
+        }
+        menu.appendChild(createMenu(dinner))
     })
 
-    return menuDiv
+    return [btnArea, menu]
 }
-
-
-// export default Menu
