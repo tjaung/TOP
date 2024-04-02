@@ -1,20 +1,24 @@
 import { renderHome } from "./home";
 import { renderMenuSpace } from "./menu";
 import { renderAbout } from "./about";
+import { createElementWithClass, removeAllChildren } from "./helpers";
 import './styles.css';
 
+
 function createNav() {
+
+    const mediaQuery = window.matchMedia( '( min-width: 768px )' )
+    
     const nav = document.createElement('header')
     nav.setAttribute("id", 'nav')
-    const siteLogo = document.createElement('div')
+
+    const siteLogo = createElementWithClass('div', ['logo-div'])
     const logo = document.createElement('div'); //change to img
-    siteLogo.classList.add('logo-div')
     logo.innerHTML = 'LOGO'
 
     siteLogo.appendChild(logo)
 
-    const sandwichBtn = document.createElement('button')
-    sandwichBtn.classList.add('hamburger')
+    const sandwichBtn = createElementWithClass('button', ['hamburger'])
     
     sandwichBtn.innerHTML = "☰"
     sandwichBtn.addEventListener('click', toggleMenu)
@@ -23,7 +27,13 @@ function createNav() {
     nav.appendChild(sandwichBtn)
     nav.appendChild(createNavMenu())
 
-    return nav
+    // if desktop: addd aside tag
+    if(mediaQuery.matches){
+      const aside = document.createElement('aside')
+      aside.appendChild(nav)
+      return aside
+    }
+    else return nav
 }
 
 function toggleMenu() {
@@ -44,48 +54,22 @@ function toggleMenu() {
   }
 
 function createNavMenu() {
-    const nav = document.createElement('div')
-    nav.classList.add('hamburger-menu')
-    nav.classList.add('hideMenu')
+    const nav = createElementWithClass('div', ['hamburger-menu'])
+
+    // for media query
+    const mediaQuery = window.matchMedia( '( min-width: 768px )' )
+    if(!mediaQuery.matches) {
+      nav.classList.add('hideMenu')
+    }
+    
     nav.setAttribute('id', 'hamburger-menu')
 
     //list items
     const list = document.createElement('ul')
-    const home = document.createElement('li')
-    home.classList.add('hamburger-li')
-    const homeBtn = document.createElement('button')
-    homeBtn.innerHTML = 'HOME'
-    homeBtn.classList.add('hamburger-btn')
-    homeBtn.addEventListener('click', (e) => {
-        const screenInfo = document.getElementById("screen-info")
-        toggleMenu(),
-        screenInfo.replaceChild(renderHome(), screenInfo.children[0])
-    })
-    home.appendChild(homeBtn)
 
-    const menu = document.createElement('li')
-    menu.classList.add('hamburger-li')
-    const menuBtn = document.createElement('button')
-    menuBtn.innerHTML = 'MENU'
-    menuBtn.classList.add('hamburger-btn')
-    menuBtn.addEventListener('click', (e) => {
-        const screenInfo = document.getElementById("screen-info")
-        toggleMenu(),
-        screenInfo.replaceChild(renderMenuSpace(), screenInfo.children[0]
-        )})
-    menu.appendChild(menuBtn)
-
-    const about = document.createElement('li')
-    about.classList.add('hamburger-li')
-    const aboutBtn = document.createElement('button')
-    aboutBtn.innerHTML = 'ABOUT'
-    aboutBtn.classList.add('hamburger-btn')
-    aboutBtn.addEventListener('click', (e) => {
-      const screenInfo = document.getElementById("screen-info")
-      toggleMenu(),
-      screenInfo.replaceChild(renderAbout(), screenInfo.children[0]
-      )})
-    about.appendChild(aboutBtn)
+    const home = createNavItems('HOME', renderHome(), false)
+    const menu = createNavItems('MENU', renderMenuSpace(), true)
+    const about = createNavItems('ABOUT', renderAbout(), true)
 
     list.appendChild(home)
     list.appendChild(menu)
@@ -94,6 +78,36 @@ function createNavMenu() {
     nav.appendChild(list)
 
     return nav
+}
+
+function refreshScreenInfo(page) {
+  const mediaQuery = window.matchMedia( '( min-width: 768px )' )
+  let screenInfo = document.getElementById("screen-info")
+  if(!mediaQuery.matches) toggleMenu()
+  screenInfo = removeAllChildren(screenInfo).append(...page)
+}
+
+function createNavItems(label, func, ind) {
+  const list_item = createElementWithClass('li', ['hamburger-li'])
+  const btn = createElementWithClass('button', ['hamburger-btn'])
+  btn.innerHTML = label
+
+  const indicatorArrow = document.querySelector('#indicatorArrow')
+  const mediaQuery = window.matchMedia( '( min-width: 768px )' )
+    
+  btn.addEventListener('click', (e) => {
+    if(mediaQuery.matches){
+      if(ind){
+        console.log(indicatorArrow)
+        indicatorArrow.classList.remove('hide')}
+      else {indicatorArrow.classList.add('hide')}
+    }
+    refreshScreenInfo(func)
+  })
+
+  list_item.appendChild(btn)
+  return list_item
+
 }
 
 export {createNav};

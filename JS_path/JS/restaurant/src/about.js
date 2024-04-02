@@ -4,5 +4,5 @@ export function renderAbout() {
     
     aboutDiv.innerHTML = 'ABOUT THIS PAGE'
     
-    return aboutDiv
+    return [aboutDiv]
 }

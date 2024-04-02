@@ -1,3 +1,5 @@
+import { createElementWithClass } from "./helpers";
+
 export function rotateCarousel() {
 
     var inWrap = document.querySelector('.inner-wrapper');
@@ -41,22 +43,20 @@ export function rotateCarousel() {
 
   export function createCarousel() {
 
+    const mediaQuery = window.matchMedia( '( min-width: 768px )' )
+
     // Create container div
-    const containerDiv = document.createElement('div');
-    containerDiv.classList.add('container');
+    const containerDiv = createElementWithClass('div', ['container'])
 
     // Create slider wrapper div
-    const sliderWrapperDiv = document.createElement('div');
-    sliderWrapperDiv.classList.add('slider-wrapper');
+    const sliderWrapperDiv = createElementWithClass('div', ['slider-wrapper'])
 
     // Create inner wrapper div
-    const innerWrapperDiv = document.createElement('div');
-    innerWrapperDiv.classList.add('inner-wrapper');
+    const innerWrapperDiv = createElementWithClass('div', ['inner-wrapper'])
 
     // Create slide divs and append them to inner wrapper
     for (let i = 1; i <= 5; i++) {
-        let slideDiv = document.createElement('div');
-        slideDiv.classList.add('slide');
+        let slideDiv = createElementWithClass('div', ['slide'])
         slideDiv.textContent = i;
         innerWrapperDiv.appendChild(slideDiv);
     }
@@ -65,17 +65,19 @@ export function rotateCarousel() {
     sliderWrapperDiv.appendChild(innerWrapperDiv);
 
     // Create previous button div
-    const prevButtonDiv = document.createElement('div');
-    prevButtonDiv.classList.add('button', 'prev', 'arrow');
+    const prevButtonDiv = createElementWithClass('div', ['button', 'prev', 'arrow'])
     
     // Create next button div
-    const nextButtonDiv = document.createElement('div');
-    nextButtonDiv.classList.add('button', 'next', 'arrow');
-
+    const nextButtonDiv = createElementWithClass('div', ['button', 'next', 'arrow'])
+    
     // create scroll indicator arrow
-    const indicatorArrow = document.createElement('a');
-    indicatorArrow.classList.add('indicator-arrow', 'button');
+    const indicatorArrow = createElementWithClass('a', ['indicator-arrow', 'button'])
     indicatorArrow.href = '#screen-info';
+    indicatorArrow.setAttribute("id", "indicatorArrow")
+
+    if(mediaQuery.matches){
+      indicatorArrow.classList.add('hide')
+    }
 
     // Append all elements to the container div
     containerDiv.appendChild(sliderWrapperDiv);

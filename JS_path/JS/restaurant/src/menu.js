@@ -1,19 +1,13 @@
 import {lunch} from "./menu/lunchMenu"
 import { dinner } from "./menu/dinnerMenu";
+import { createElementWithClass } from "./helpers";
 
 function createMenuItem(item, info) {
-    const itemDiv = document.createElement('li')
-    itemDiv.classList.add('menu-item');
+    const itemDiv = createElementWithClass('li', ['menu-item'])
 
-    const menuItemName = document.createElement('p')
-    const menuItemDesc = document.createElement('p')
-    const menuItemPrice = document.createElement('p')
-
-    menuItemName.innerHTML = item
-    menuItemDesc.innerHTML = info.desc
-    menuItemPrice.innerHTML = info.price
-
-    menuItemName.classList.add('item-title')
+    const menuItemName = createElementWithClass('p', ['item-title'], item)
+    const menuItemDesc = createElementWithClass('p', [], info.desc)
+    const menuItemPrice = createElementWithClass('p', [], info.price)
 
     itemDiv.appendChild(menuItemName)
     itemDiv.appendChild(menuItemDesc)
@@ -36,16 +30,9 @@ export function renderMenuSpace() {
     const menuDiv = document.createElement('div')
 
     // add menu buttons at top of menu div
-    const btnArea = document.createElement('div')
-    btnArea.classList.add('menu-btn-list')
-
-    const lunchBtn = document.createElement('button')
-    lunchBtn.classList.add('lunch-button')
-    lunchBtn.innerHTML = 'LUNCH'
-
-    const dinnerBtn = document.createElement('button')
-    dinnerBtn.classList.add('dinner-button')
-    dinnerBtn.innerHTML = 'DINNER'
+    const btnArea = createElementWithClass('div', ['menu-btn-list'])
+    const lunchBtn = createElementWithClass('button', ['menu-buttons'], 'LUNCH')
+    const dinnerBtn = createElementWithClass('button', ['menu-buttons'], 'DINNER')
 
     btnArea.appendChild(lunchBtn)
     btnArea.appendChild(dinnerBtn)
@@ -53,11 +40,9 @@ export function renderMenuSpace() {
     menuDiv.appendChild(btnArea)
 
     // add the actual menu below buttons
-    const menu = document.createElement('div')
-    menu.classList.add('menu')
+    const menu = createElementWithClass('div', ['menu'])
 
     menuDiv.appendChild(menu)
-    // menuDiv.innerHTML = createLunchMenu()
     
     // button functionality
     lunchBtn.addEventListener('click', (e) => {

@@ -1,6 +1,7 @@
 import { createNav } from "./nav";
 import { renderHome } from './home'
 import * as Carousel from './carousel'
+import { createElementWithClass } from "./helpers";
 
 function createImageCarousel() {
     const slideDiv = document.createElement('div')
@@ -17,20 +18,17 @@ function createImageCarousel() {
 
 function initialize() {
     const body = document.getElementById('body');
-    const siteContent = document.createElement('div')
-    siteContent.classList.add('site-content')
+    const siteContent = createElementWithClass('div', ['site-content'])
 
-    const screenInfo = document.createElement('div')
-    screenInfo.classList.add('screen-info')
+    const screenInfo = createElementWithClass('div', ['screen-info'])
     screenInfo.setAttribute("id", "screen-info")
-    // screenInfo.innerHTML = 'Home Page'
 
     body.appendChild(createNav())
     siteContent.appendChild(createImageCarousel())
     siteContent.appendChild(screenInfo)
     body.appendChild(siteContent)
 
-    screenInfo.appendChild(renderHome())
+    screenInfo.append(...renderHome())
 }
 
 export {initialize}
