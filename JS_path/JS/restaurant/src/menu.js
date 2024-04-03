@@ -1,6 +1,7 @@
-import {lunch} from "./menu/lunchMenu"
-import { dinner } from "./menu/dinnerMenu";
-import { createElementWithClass } from "./helpers";
+import {antipasto} from "./menu/antipastoMenu"
+import { pasta } from "./menu/pastaMenu";
+import { entree } from "./menu/entreeMenu";
+import { createElementWithClass, toggleIndicator } from "./helpers";
 
 function createMenuItem(item, info) {
     const itemDiv = createElementWithClass('li', ['menu-item'])
@@ -31,12 +32,14 @@ export function renderMenuSpace() {
 
     // add menu buttons at top of menu div
     const btnArea = createElementWithClass('div', ['menu-btn-list'])
-    const lunchBtn = createElementWithClass('button', ['menu-buttons'], 'LUNCH')
-    const dinnerBtn = createElementWithClass('button', ['menu-buttons'], 'DINNER')
+    const antipastoBtn = createElementWithClass('button', ['menu-buttons'], 'ANTIPASTO')
+    const pastaBtn = createElementWithClass('button', ['menu-buttons'], 'PASTA')
+    const entreeBtn = createElementWithClass('button', ['menu-buttons'], 'ENTREES')
 
-    btnArea.appendChild(lunchBtn)
-    btnArea.appendChild(dinnerBtn)
-
+    btnArea.appendChild(antipastoBtn)
+    btnArea.appendChild(pastaBtn)
+    btnArea.appendChild(entreeBtn)
+    
     menuDiv.appendChild(btnArea)
 
     // add the actual menu below buttons
@@ -45,18 +48,29 @@ export function renderMenuSpace() {
     menuDiv.appendChild(menu)
     
     // button functionality
-    lunchBtn.addEventListener('click', (e) => {
+    antipastoBtn.addEventListener('click', (e) => {
         if(menu.childNodes.length > 0){
             menu.removeChild(menu.childNodes[0])
         }
-        menu.appendChild(createMenu(lunch))
+        menu.appendChild(createMenu(antipasto))
+        menu.scrollIntoView()
     })
-    dinnerBtn.addEventListener('click', (e) => {
+    pastaBtn.addEventListener('click', (e) => {
         if(menu.childNodes.length > 0){
             menu.removeChild(menu.childNodes[0])
         }
-        menu.appendChild(createMenu(dinner))
+        menu.appendChild(createMenu(pasta))
+        menu.scrollIntoView()
     })
+    entreeBtn.addEventListener('click', (e) => {
+        if(menu.childNodes.length > 0){
+            menu.removeChild(menu.childNodes[0])
+        }
+        menu.appendChild(createMenu(entree))
+        menu.scrollIntoView()
+    })
+
+    // toggleIndicator(true)
 
     return [btnArea, menu]
 }

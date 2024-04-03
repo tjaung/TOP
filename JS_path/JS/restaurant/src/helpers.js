@@ -13,3 +13,15 @@ export function createElementWithClass(elem, classes, innerhtml) {
 
   return out
 }
+
+export function toggleIndicator(on){
+  const indicator = document.querySelector('#indicatorArrow')
+  
+  if(indicator !== undefined){
+    if (on) {indicator.classList.remove("hide");} 
+    else {indicator.classList.add('hide')}
+  }
+  else return
+
+}
+

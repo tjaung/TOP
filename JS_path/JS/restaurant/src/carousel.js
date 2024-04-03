@@ -1,4 +1,10 @@
 import { createElementWithClass } from "./helpers";
+import slide1 from './slide1.png';
+import slide2 from './slide2.png';
+import slide3 from './slide3.png';
+import slide4 from './slide4.png';
+import slide5 from './slide5.png';
+import slide6 from './slide6.png';
 
 export function rotateCarousel() {
 
@@ -37,11 +43,7 @@ export function rotateCarousel() {
       });
 }
   
-
-
-
-
-  export function createCarousel() {
+export function createCarousel() {
 
     const mediaQuery = window.matchMedia( '( min-width: 768px )' )
 
@@ -55,9 +57,26 @@ export function rotateCarousel() {
     const innerWrapperDiv = createElementWithClass('div', ['inner-wrapper'])
 
     // Create slide divs and append them to inner wrapper
-    for (let i = 1; i <= 5; i++) {
+    const img1 = new Image();
+    const img2 = new Image();
+    const img3 = new Image();
+    const img4 = new Image();
+    const img5 = new Image();
+    const img6 = new Image();
+
+    img1.src = slide1;
+    img2.src = slide2;
+    img3.src = slide3;
+    img4.src = slide4;
+    img5.src = slide5;
+    img6.src = slide6;
+
+    const imgs = [img1, img2, img3, img4, img5, img6]
+
+    for (let i = 0; i <= 5; i++) {
         let slideDiv = createElementWithClass('div', ['slide'])
-        slideDiv.textContent = i;
+        // slideDiv.textContent = i;
+        slideDiv.append(imgs[i])
         innerWrapperDiv.appendChild(slideDiv);
     }
 
@@ -75,6 +94,9 @@ export function rotateCarousel() {
     indicatorArrow.href = '#screen-info';
     indicatorArrow.setAttribute("id", "indicatorArrow")
 
+    //create title
+    const title = createElementWithClass('h1', ['title'], 'shef')
+
     if(mediaQuery.matches){
       indicatorArrow.classList.add('hide')
     }
@@ -83,7 +105,21 @@ export function rotateCarousel() {
     containerDiv.appendChild(sliderWrapperDiv);
     containerDiv.appendChild(prevButtonDiv);
     containerDiv.appendChild(nextButtonDiv);
+    containerDiv.appendChild(title);
     containerDiv.appendChild(indicatorArrow);
 
     return containerDiv
   }
+
+export function createImageCarousel() {
+  const slideDiv = document.createElement('div')
+  // const slides = document.createElement('div') // chagne to img
+
+  slideDiv.classList.add('slides')
+  // slides.innerHTML = 'INSERT SLIDES HERE'
+  slideDiv.appendChild(Carousel.createCarousel())
+
+  document.addEventListener('DOMContentLoaded', Carousel.rotateCarousel)
+
+  return Carousel.createCarousel()
+}

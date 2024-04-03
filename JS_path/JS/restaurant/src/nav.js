@@ -3,7 +3,7 @@ import { renderMenuSpace } from "./menu";
 import { renderAbout } from "./about";
 import { createElementWithClass, removeAllChildren } from "./helpers";
 import './styles.css';
-
+import logoImg from './logo.png';
 
 function createNav() {
 
@@ -13,10 +13,12 @@ function createNav() {
     nav.setAttribute("id", 'nav')
 
     const siteLogo = createElementWithClass('div', ['logo-div'])
-    const logo = document.createElement('div'); //change to img
-    logo.innerHTML = 'LOGO'
+    const logo = new Image()
+    logo.src = logoImg;
+    logo.classList.add('logo')
 
     siteLogo.appendChild(logo)
+    siteLogo.onclick = renderHome
 
     const sandwichBtn = createElementWithClass('button', ['hamburger'])
     
@@ -67,9 +69,9 @@ function createNavMenu() {
     //list items
     const list = document.createElement('ul')
 
-    const home = createNavItems('HOME', renderHome(), false)
-    const menu = createNavItems('MENU', renderMenuSpace(), true)
-    const about = createNavItems('ABOUT', renderAbout(), true)
+    const home = createNavItems('HOME', renderHome())
+    const menu = createNavItems('MENU', renderMenuSpace())
+    const about = createNavItems('ABOUT', renderAbout())
 
     list.appendChild(home)
     list.appendChild(menu)
@@ -87,22 +89,15 @@ function refreshScreenInfo(page) {
   screenInfo = removeAllChildren(screenInfo).append(...page)
 }
 
-function createNavItems(label, func, ind) {
+function createNavItems(label, func) {
   const list_item = createElementWithClass('li', ['hamburger-li'])
   const btn = createElementWithClass('button', ['hamburger-btn'])
   btn.innerHTML = label
 
-  const indicatorArrow = document.querySelector('#indicatorArrow')
-  const mediaQuery = window.matchMedia( '( min-width: 768px )' )
-    
   btn.addEventListener('click', (e) => {
-    if(mediaQuery.matches){
-      if(ind){
-        console.log(indicatorArrow)
-        indicatorArrow.classList.remove('hide')}
-      else {indicatorArrow.classList.add('hide')}
-    }
     refreshScreenInfo(func)
+    let screenInfo = document.querySelector('#screen-info')
+    screenInfo.scrollIntoView()
   })
 
   list_item.appendChild(btn)
