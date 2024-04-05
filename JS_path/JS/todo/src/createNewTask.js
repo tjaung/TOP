@@ -1,0 +1,17 @@
+import { TodoItem } from "./todoObj";
+import { createDomElement } from "./componentMakers";
+import { initialize } from "./projectDisplay";
+
+export function submitNewTask(project) {
+    const title = document.querySelector('#new-card-title').value
+    // const status = document.querySelector('#new-card-status')
+    const duedate = document.querySelector('#new-card-dueDate').value
+    const priority = document.querySelector('#new-card-priority').value
+    const detail = document.querySelector('#new-card-detail').value
+    // const project = document.querySelector('#new-card-project')
+    console.log(project)
+    let newTask = new TodoItem(title, priority, duedate, detail)
+    
+    // console.log(project.returnAllTasks())
+    return project.addTask(newTask)
+}
