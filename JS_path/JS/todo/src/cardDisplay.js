@@ -1,4 +1,5 @@
 import { createDomElement } from "./componentMakers"
+import * as Drag from './dragFunctions.js'
 import './styles/cards.css';
 
 export class CardRenderer {
@@ -56,16 +57,25 @@ export class CardRenderer {
                 class: 'mini-card', 
                 id: this.task.title.replace(/\s+/g, '-'), 
                 draggable:true,
-                ondragstart: 'onDragStart(event)',
-                ondragover: 'onDragOver(event)'
+                // ondragstart: 'onDragStart(event)',
+                // ondragover: 'onDragOver(event)'
             }, 
             cardTitle, cardDueDate, cardPriority)
             card.setAttribute('data-project', this.projectRenderer.project.returnProjectNameWithNoWhitespace())
             card.setAttribute('data-status', this.task.returnStatusAsHtmlData())
 
+        // Add event listeners for click to open, drag, and drop
         card.addEventListener('click', () => {
             document.body.append(this.createFullCard(this.projectRenderer.project, this.task))
         })
+
+        card.addEventListener("dragstart", (e) => {
+            Drag.onDragStart(e)
+          });
+        card.addEventListener("dragend", (e) => {
+            Drag.onDragEnd(e)
+          });
+
         // console.log(card)
         return card
     }

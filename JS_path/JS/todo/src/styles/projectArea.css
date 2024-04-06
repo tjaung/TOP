@@ -16,20 +16,104 @@
     border: 6px solid black;
 }
 
+.project-options {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 2fr 1fr;
+}
+
+.project-name {
+
+}
+.project-name-change-button{
+
+}
+
+.project-delete-button{
+
+}
+
+.project-collapse-button{
+    height:50px;
+    width:50px;
+}
+
+.new-task-button{
+
+}
+
 .project-status-wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 12px;
-    min-height: 5rem;
+    /* min-height: 5rem; */
 }
 
 .project-status-col {
     background: lightblue;
     /* z-index: 5; */
+    /* max-height: 0px; */
+    /* border-bottom: 1px solid red; */
+    /* margin-top: -100%; */
+    transition: all 1s;
 
 }
 
 .hover {
     background: blue;
     z-index:99;
+}
+
+.save{
+    background: lightblue;
+}
+.project-collapse-button:hover {
+    color: green;
+}
+
+.project-collapse-button::before {
+    content: ' ';
+    display: inline-block;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid currentColor;
+
+    vertical-align: middle;
+    margin-right: .7rem;
+    transform: translateY(-2px);
+
+    transition: transform .2s ease-out;
+}
+
+.toggle-button-transition {
+    transform: rotate(90deg) translateX(-3px);
+  }
+
+.collapsed {
+    background-color: red;
+    transform: translateY(-100%);
+    max-height:0px;
+ }
+
+
+.project {
+    overflow: hidden;
+  }
+  
+/* #expand-contract {
+border-bottom: 1px solid red;
+margin-top: -100%;
+transition: all 1s;
+} */
+
+.project-status-col.expanded {
+    background-color: green;
+    margin-top: 0;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateY(0%)
+    }
 }

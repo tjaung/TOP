@@ -2,12 +2,14 @@ import { createDomElement } from "./componentMakers"
 import { CardRenderer, createMinimizedCard} from "./cardDisplay"
 import { submitNewTask } from "./createNewTask"
 import { Project } from "./projectObj";
+import { TodoItem } from "./todoObj";
 import './styles/projectArea.css';
-
+import * as Drag from './dragFunctions.js'
 
 class ProjectRenderer {
-    constructor(project){
+    constructor(projectHandler, project){
         this.project = project
+        this.handler = projectHandler
 
         document.addEventListener('statusChange', (event) => {
             const id = event.detail.id.replaceAll('-', ' ').toLowerCase();
@@ -95,11 +97,23 @@ class ProjectRenderer {
         })
 
         cardSubmitButton.addEventListener('click', (e) => {
-            project = submitNewTask(project), 
+            this.submitNewTask(this.project), 
             this.renderAndUpdateProject()
             e.currentTarget.parentNode.parentNode.remove()})
 
         document.body.append(cardArea)
+    }
+
+    submitNewTask() {
+        const title = document.querySelector('#new-card-title').value
+        const duedate = document.querySelector('#new-card-dueDate').value
+        const priority = document.querySelector('#new-card-priority').value
+        const detail = document.querySelector('#new-card-detail').value
+
+        const status = 'not-started'
+        let newTask = new TodoItem(title, status, priority, duedate, detail)
+        
+        this.project.addTask(newTask)
     }
 
     createProjectDOM(newDOM){
@@ -114,56 +128,169 @@ class ProjectRenderer {
             this.createNewTaskForm(proj);
         });
 
-        const projectDOMTitle = createDomElement('div', 
-            {class:'project-name', 
+        const projectDOMTitle = createDomElement(
+            'div',
+            {
+                class:'project-name', 
                 id: `${this.project.returnProjectNameWithNoWhitespace()}-title`, 
-                contentEditable:true}, 
-            this.project.name)
+            },
+            this.project.name
+            )
+        projectDOMTitle
+
+        const projectDOMEditTitleButton = createDomElement(
+            'button',
+            {
+                class:'project-name-change-button', 
+                id: `${this.project.returnProjectNameWithNoWhitespace()}-edit`
+            },
+            'Edit'
+            )
+        function editTitle(e){
+                projectDOMTitle.setAttribute('contenteditable', true)
+                projectDOMTitle.focus() 
+                e.classList.add('save')
+        }
+        
+        function saveTitle(e){
+                e.innerHTML = 'Edit'
+                projectDOMTitle.setAttribute('contenteditable', false)  
+                e.classList.remove('save')
+        }
+
+        projectDOMEditTitleButton.addEventListener('click', (e) => {
+            if(projectDOMEditTitleButton.classList.contains('save')){
+                saveTitle(projectDOMEditTitleButton)
+                console.log('save on')
+            }
+            else{
+                editTitle(projectDOMEditTitleButton)
+                console.log('edit on')
+            }
+        });
+
+        const projectDOMDeleteButton = createDomElement(
+            'button',
+            {
+                class:'project-delete-button', 
+                id: `${this.project.returnProjectNameWithNoWhitespace()}-delete`, 
+            },
+            'Delete'
+            )
+        projectDOMDeleteButton.addEventListener('click', () => {
+            this.handler.removeProject(this.project.name)
+            console.log(this.handler.returnAllProjectTitles())
+            projectDOM.remove()
+        });
+
+        const projectDOMCollapseButton = createDomElement(
+            'button',
+            {
+                class:'project-collapse-button', 
+                id: `${this.project.returnProjectNameWithNoWhitespace()}-collapse`, 
+                // type:"checkbox"
+            }
+            )
+        const projectCollapseLabel = createDomElement('label',
+        {for:'project-collapse-button',
+        class:'lbl-toggle'})
+
+        projectDOMCollapseButton.addEventListener('click', () => {
+            // projectColumnsWrapper.classList.toggle('expanded')
+            // projectColumnsWrapper.classList.toggle('collapsed')
+            // projectDOMCollapseButton.classList.toggle('toggle-button-transition')
+            if(projectColumnsWrapper.classList.contains('collapsed')){
+                projectColumnsWrapper.classList.remove('collapsed')
+                projectDOMCollapseButton.classList.remove('toggle-button-transition')
+            }
+            else{
+                projectColumnsWrapper.classList.add('collapsed')
+                projectDOMCollapseButton.classList.add('toggle-button-transition')
+            }
+            
+        });
+
+        const projectDOMOptions = createDomElement(
+            'div', 
+            {class:'project-options'}, 
+            projectDOMTitle,
+            projectDOMEditTitleButton,
+            projectDOMDeleteButton,
+            newTaskButton,
+            projectDOMCollapseButton
+            // projectCollapseLabel
+            )
 
         const projectHeader = createDomElement(
             'div',
             {class: 'project-header'},
-            projectDOMTitle, newTaskButton)
+            projectDOMOptions)
 
-        // Progress columns
+
+
+        // -------------------- Progress columns --------------------------------------------------------------------//
         const projectNotStartedColumn = createDomElement(
             'div',
             {
                 class:'project-status-col', 
                 id:`not-started-${this.project.returnProjectNameWithNoWhitespace()}`,
-                ondragover:"onDragOver(event);",
-                ondragleave:"onDragLeave(event);",
-                ondrop:"onDrop(event);"
             })
         projectNotStartedColumn.classList.add('not-started')
+        projectNotStartedColumn.setAttribute('data-status', 'not-started')
+        projectNotStartedColumn.addEventListener("dragover", (e) => {
+            Drag.onDragOver(e)
+          });
+        projectNotStartedColumn.addEventListener("drop", (e) => {
+            Drag.onDrop(e)
+          });
+        projectNotStartedColumn.addEventListener("dragleave", (e) => {
+            Drag.onDragLeave(e)
+          });
 
         const projectInProgressColumn = createDomElement(
             'div',
             {
                 class:'project-status-col', 
                 id:`in-progress-${this.project.returnProjectNameWithNoWhitespace()}`,
-                ondragover:"onDragOver(event);",
-                ondragleave:"onDragLeave(event);",
-                ondrop:"onDrop(event);"
             })
         projectInProgressColumn.classList.add('in-progress')
+        projectInProgressColumn.setAttribute('data-status', 'in-progress')
+        projectInProgressColumn.addEventListener("dragover", (e) => {
+            Drag.onDragOver(e)
+          });
+        projectInProgressColumn.addEventListener("drop", (e) => {
+            Drag.onDrop(e)
+          });
+        projectInProgressColumn.addEventListener("dragleave", (e) => {
+            Drag.onDragLeave(e)
+          });
 
         const projectCompletedColumn = createDomElement(
             'div',
             {
                 class:'project-status-col', 
                 id:`completed-${this.project.returnProjectNameWithNoWhitespace()}`,
-                ondragover:"onDragOver(event);",
-                ondragleave:"onDragLeave(event);",
-                ondrop:"onDrop(event);"
             })
         projectCompletedColumn.classList.add('completed')
+        projectCompletedColumn.setAttribute('data-status', 'completed')
+        projectCompletedColumn.addEventListener("dragover", (e) => {
+            Drag.onDragOver(e)
+          });
+        projectCompletedColumn.addEventListener("drop", (e) => {
+            Drag.onDrop(e)
+          });
+          projectCompletedColumn.addEventListener("dragleave", (e) => {
+            Drag.onDragLeave(e)
+          });
 
         const projectColumnsWrapper = createDomElement(
             'div',
             {class:'project-status-wrapper', id:`columns-${this.project.returnProjectNameWithNoWhitespace()}`},
             projectNotStartedColumn, projectInProgressColumn, projectCompletedColumn)
 
+
+
+            
         // pull everything together
         const projectDOM = createDomElement('div', 
             {class:'project', 
@@ -182,17 +309,22 @@ class ProjectRenderer {
         //update project name and div ids when editting
         projectDOMTitle.addEventListener('input', (e) => {
             let newProjectName = projectDOMTitle.innerHTML.replace(/\s+/g, '-')
+            let editButton = document.querySelector(`#${this.project.returnProjectNameWithNoWhitespace()}-edit`)
+            if(editButton.innerHTML != 'Save') editButton.innerHTML = 'Save'
             this.project.updateProjectName(newProjectName)
             projectDOM.setAttribute('id', newProjectName)
             projectNotStartedColumn.setAttribute('id', `not-started-${newProjectName}`)
             projectInProgressColumn.setAttribute('id', `in-progress-${newProjectName}`)
             projectCompletedColumn.setAttribute('id', `completed-${newProjectName}`)
+            projectDOMTitle.setAttribute('id', `${newProjectName}-title`)
+            projectDOMEditTitleButton.setAttribute('id', `${newProjectName}-edit`),
+            projectDOMDeleteButton.setAttribute('id', `${newProjectName}-delete`)
+            projectDOMCollapseButton.setAttribute('id', `${newProjectName}-collapse`)
         
             if(projectNotStartedColumn.hasChildNodes() || projectInProgressColumn.hasChildNodes() || projectCompletedColumn.hasChildNodes()){
                 projectNotStartedColumn.childNodes.forEach(card => card.dataset.project = newProjectName)
                 projectInProgressColumn.childNodes.forEach(card => card.dataset.project = newProjectName)
-                projectCompletedColumn.childNodes.forEach(card => card.dataset.project = newProjectName)
-                
+                projectCompletedColumn.childNodes.forEach(card => card.dataset.project = newProjectName) 
             }
         })
     }
@@ -265,7 +397,7 @@ export class PageInitializer {
         else(newProjectTitle = newProjectTitleBase)
 
         const NewProject = new Project(newProjectTitle)
-        const NewProjectRenderer = new ProjectRenderer(NewProject)
+        const NewProjectRenderer = new ProjectRenderer(this.projectHandler, NewProject)
         // console.log(this.projectHandler)
         this.projectHandler.addProject(NewProject)
         NewProjectRenderer.createProjectDOM(true)
@@ -278,7 +410,7 @@ export class PageInitializer {
 
         const out = []
         for (let proj of projectList){
-            let ProjectManager = new ProjectRenderer(proj)
+            let ProjectManager = new ProjectRenderer(this.projectHandler, proj)
             ProjectManager.createProjectDOM()
             ProjectManager.placeTaskCardsIntoProjectDOM()
         }
