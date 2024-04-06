@@ -2,17 +2,30 @@ import { createCard } from "./cardDisplay"
 
 export class TodoItem {
     // jobStatus = 0;
-    constructor(title, priority, dueDate, detail){
+    constructor(title, jobStatus, priority, dueDate, detail){
         this.title = title,
-        this.jobStatus = 0,
+        this.jobStatus = jobStatus,
         this.priority = priority,
         this.dueDate = dueDate,
         this.detail = detail
+
+        document.addEventListener('statusChange', (event) => {
+            const id = event.detail.id;
+            const newStatus = event.detail.newStatus;
+            if (id === this.title) { // Assuming title is unique for each TodoItem
+                this.updateStatus(newStatus)
+                console.log(`Status of TodoItem ${this.title} changed to ${this.jobStatus}`);
+            }
+        });
     }
 
     updateStatus(newStatus) {
-        if(this.jobStatus != newStatus) { this.jobStatus = newStatus }
+        if(this.jobStatus != newStatus) {
+            this.jobStatus = newStatus
+            console.log(this.jobStatus)
+        }; 
     }
+    
 
     updateDetail(newDetail) {
         this.detail = newDetail
@@ -36,6 +49,10 @@ export class TodoItem {
 
     returnStatus() {
         return this.jobStatus
+    }
+
+    returnStatusAsHtmlData() {
+        return this.jobStatus.replace(/\s+/g, '-')
     }
 
     returnPriority() {

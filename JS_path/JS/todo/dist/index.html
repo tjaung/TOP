@@ -1,1 +1,74 @@
-<!doctype html><html><head><meta charset="utf-8"/><title>Ticket App</title></head><body><header>header</header><section id="projects">projects <button id="new-project-button" class="control-button">+</button></section><script src="main.bundle.js"></script></body></html>
+<!doctype html><html><head><meta charset="utf-8"/><title>Ticket App</title></head><body><div class="container" id="overall"><div class="sidebar sidebar--isHidden"><ul class="sidebar-menu"><button class="openbtn .openbtn--isHidden">☰</button><li class="sidebar-menu__item"><a href="#"><i class="fa fa-rss" aria-hidden="true"></i> Item 1</a></li><li class="sidebar-menu__item"><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i> Item 2</a></li><li class="sidebar-menu__item"><a href="#"><i class="fa fa-info-circle" aria-hidden="true"></i> Item 3</a></li></ul></div><header class="top"><h1 class="page">Library</h1><div class="logo"></div><div class="search"><input id="search" placeholder="&#x1F50E;" class="searchbar" card-search></div></header><section id="projects"><div id="project-section-header"><div class="project-status-wrapper" id="status-labels"><div>To Do</div><div>In Progress</div><div>Completed</div></div><button id="new-project-button" class="control-button">+</button></div></section></div><script src="index.bundle.js"></script><script>function onDragStart(event) {
+    const targetId = event.target.id; // Get the id of the dragged element
+    // const targetProject = event.target.dataset.project
+    event.dataTransfer.setData('text/plain', targetId); // Set the id as data in dataTransfer
+
+    // event.currentTarget.style.backgroundColor = 'white';
+}
+
+function onDragOver(event) {
+  event.preventDefault();
+  const id = event.dataTransfer.getData('text/plain'); // Retrieve the id from dataTransfer
+  // const draggableElement = document.getElementById(id);
+  // console.log(draggableElement.dataset.project)
+  if(event.target.classList.contains('project-status-col')){
+    event.target.classList.add('hover')
+  }
+  // if(event.target.classList.contains('mini-card')){
+  //   event.target.classList.add('hide')
+  // }
+  // if(event.target.parentNode.classList.contains('mini-card')){
+  //   event.target.parentNode.classList.add('hide')
+  // }
+  
+  // event.target.style.background = 'blue';
+  // event.target.zIndex = 99;
+}
+
+function onDragLeave(event){
+  event.preventDefault()
+  if(event.target.classList.contains('hover')) event.target.classList.remove('hover')
+  // if(event.target.classList.contains('hide')) event.target.classList.remove('hide')
+  // event.target.style.background = 'lightblue';
+  // event.target.zIndex = 0;
+}
+
+function onDrop(event) {
+    const id = event.dataTransfer.getData('text/plain'); // Retrieve the id from dataTransfer
+    const draggableElement = document.getElementById(id);
+
+    const dropzone = event.target;
+
+    const projectName = draggableElement.dataset.project
+    const dropzoneID = dropzone.id
+
+    let ableToDrop = dropzoneID.includes(projectName)
+
+    if(ableToDrop){
+      dropzone.appendChild(draggableElement);
+      console.log(event.target)
+      //return original style
+      dropzone.classList.remove('hover')
+      // dropzone.target.style.background = 'lightblue';
+      // dropzone.target.zIndex = 0;
+
+      let newStatus = dropzone.id.replace(`-${projectName}`, '')
+
+      draggableElement.dataset.status = newStatus
+
+      // Dispatch custom event with updated status
+      const statusChangeEvent = new CustomEvent('statusChange', {
+        detail: { id: id, newStatus: newStatus }
+      });
+      console.log(statusChangeEvent)
+      document.dispatchEvent(statusChangeEvent);
+    }
+
+    else {
+      dropzone.classList.remove('hover')
+      // dropzone.classList.remove('hide')
+    }
+    event.dataTransfer.clearData();
+}
+
+// export { onDragStart, onDragOver, onDrop };</script></body></html>

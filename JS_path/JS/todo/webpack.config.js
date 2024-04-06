@@ -3,8 +3,9 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: './src/index.js',
+    // dragFunctions: './src/dragFunctions.js'
   output: {
-    filename: 'main.bundle.js',
+    filename: 'index.bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },

@@ -1,0 +1,35 @@
+#projects {
+    display:flex;
+    flex-direction: column;
+
+}
+
+#status-labels {
+    /* left: 12px; */
+    min-height: 12px;
+    max-height: 24px;
+    background: lightyellow;
+}
+
+.project-header {
+    background: lightgray;
+    border: 6px solid black;
+}
+
+.project-status-wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 12px;
+    min-height: 5rem;
+}
+
+.project-status-col {
+    background: lightblue;
+    /* z-index: 5; */
+
+}
+
+.hover {
+    background: blue;
+    z-index:99;
+}

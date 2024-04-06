@@ -9,8 +9,8 @@ export function submitNewTask(project) {
     const priority = document.querySelector('#new-card-priority').value
     const detail = document.querySelector('#new-card-detail').value
     // const project = document.querySelector('#new-card-project')
-    console.log(project)
-    let newTask = new TodoItem(title, priority, duedate, detail)
+    const status = 'not-started'
+    let newTask = new TodoItem(title, status, priority, duedate, detail)
     
     // console.log(project.returnAllTasks())
     return project.addTask(newTask)

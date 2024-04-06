@@ -1,0 +1,77 @@
+.mini-card {
+    background: grey;
+    /* border: 2px solid black; */
+    min-height: 200px;
+    border-radius: 20px solid black;
+    cursor: move;
+    /* position:relative; */
+    /* z-index: 0; */
+}
+.remove-bg {
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:9;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.full-card {
+    z-index: 99;
+    position: absolute;
+    background: white;
+    height: 80%;
+    width: 80%;
+    display: grid;
+    grid-template:
+        'title title title' auto
+        ' desc desc priority' auto
+        'desc desc date' auto
+        'desc desc status' auto
+        ' button foot foot ' auto
+}
+
+#new-card-title, #full-card-title {
+    grid-area: title;
+}
+
+#new-card-detail, #full-card-detail {
+    grid-area: desc;
+}
+
+#new-card-priority, #full-card-priority{
+    grid-area: priority;
+}
+
+#new-card-dueDate, #full-card-dueDate{
+    grid-area: date;
+}
+
+#card-remove-button, #new-card-create-button{
+    grid-area: button;
+}
+
+#full-card-status {
+    grid-area: status;
+}
+
+#card-area {
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.5);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide {
+    display:none;
+}

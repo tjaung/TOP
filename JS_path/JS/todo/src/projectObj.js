@@ -27,8 +27,21 @@ export class Project {
         return this.tasks
     };
 
+    returnAllTaskTitles(){
+        let out = []
+        for(let task of this.tasks){
+            out.push(task.returnTitle())
+        }
+        console.log(out)
+        return out
+    }
+
     returnProjectName() {
         return this.name
+    }
+
+    returnProjectNameWithNoWhitespace(){
+        return this.name.replace(/\s+/g, '-')
     }
 
     returnProjectJSON() {
