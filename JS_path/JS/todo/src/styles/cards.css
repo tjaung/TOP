@@ -1,11 +1,18 @@
 .mini-card {
-    background: grey;
-    /* border: 2px solid black; */
     min-height: 200px;
+    max-height: 800px;
+    max-width: 400px;
     border-radius: 20px solid black;
+    background: white;
+    color: black;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    width: 80%;
+    align-self: center;
+    padding: 12px;
+    border-radius: 4px;
+    text-overflow: ellipsis;
+    font-size: 16px;
     cursor: move;
-    /* position:relative; */
-    /* z-index: 0; */
 }
 .remove-bg {
     position:absolute;

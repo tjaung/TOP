@@ -2,8 +2,9 @@ import { ErrorLog } from "./errorLogger";
 const ErrorLogger = new ErrorLog()
 
 export class ProjectHandler {
-    constructor(){
+    constructor(sidebar){
         this.projectList = [];
+        this.sidebar = sidebar
     }
 
     addProject(projectObj) {

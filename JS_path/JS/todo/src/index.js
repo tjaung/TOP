@@ -2,6 +2,7 @@ import { Project } from "./projectObj";
 import { TodoItem } from "./todoObj";
 import {ProjectHandler} from './projectHandler.js'
 import * as ProjectDisplay from './projectDisplay.js'
+import { PageInitializer } from "./pageController.js";
 import './styles/main.css';
 
 const projectHandler = new ProjectHandler()
@@ -41,7 +42,7 @@ project2.addTask(testTask3)
 projectHandler.addProject(project2)
 
 console.log(projectHandler.returnAllProjects())
-let Page = new ProjectDisplay.PageInitializer(projectHandler)
+let Page = new PageInitializer(projectHandler)
 
 Page.initialize(projectHandler)
 

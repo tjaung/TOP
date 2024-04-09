@@ -1,38 +1,31 @@
 import { createDomElement } from "./componentMakers"
-import { CardRenderer, createMinimizedCard} from "./cardDisplay"
-import { submitNewTask } from "./createNewTask"
-import { Project } from "./projectObj";
+import { CardRenderer} from "./cardDisplay"
 import { TodoItem } from "./todoObj";
 import './styles/projectArea.css';
 import * as Drag from './dragFunctions.js'
 
-class ProjectRenderer {
-    constructor(projectHandler, project){
+export class ProjectRenderer {
+    constructor(projectHandler, project, sidebar){
         this.project = project
         this.handler = projectHandler
+        this.sidebar = sidebar
 
         document.addEventListener('statusChange', (event) => {
             const id = event.detail.id.replaceAll('-', ' ').toLowerCase();
             const newStatus = event.detail.newStatus;
             const taskTitles = this.project.returnAllTaskTitles()
             taskTitles.forEach((title) => title.toLowerCase())
-            console.log(taskTitles)
-            console.log(id)
-            console.log(newStatus)
-            console.log(taskTitles.includes(id))
             if (taskTitles.includes(id)) { // Assuming title is unique for each TodoItem
                 this.project.filterTasks(id).updateStatus(newStatus)
-                // task.updateStatus(newStatus)
-                
-                console.log(`Status of TodoItem ${this.project.filterTasks(id).title} changed to ${this.project.filterTasks(id).jobStatus}`);
             }
         });
     }
     
     clearAllChildren(target){
-        while (target.childNodes.length > 0) {
-            target.removeChild(target.lastChild);
-        }
+        target.innerHTML = ''
+        // while (target.childNodes.length > 0) {
+        //     target.removeChild(target.lastChild);
+        // }
     }
 
     renderAndUpdateProject()  {        
@@ -44,10 +37,83 @@ class ProjectRenderer {
                 this.clearAllChildren(col)
             }
         })
+        this.createProjectDOM()
         this.placeTaskCardsIntoProjectDOM()
     }
 
-    createNewTaskForm(project) {
+    submitNewTask() {
+        const title = document.querySelector('#new-card-title').value
+        const duedate = document.querySelector('#new-card-dueDate').value
+        const priority = document.querySelector('#new-card-priority').value
+        const detail = document.querySelector('#new-card-detail').value
+
+        const status = 'not-started'
+        let newTask = new TodoItem(title, status, priority, duedate, detail)
+        this.project.addTask(newTask)
+    }
+
+    renderTaskCards(){
+        const listOfTasksInProject = this.project.returnAllTasks()
+
+        let cardArray = []
+        for(let task of listOfTasksInProject) {
+            let CardCreaterObj = new CardRenderer(this, task)
+            cardArray.push(CardCreaterObj)
+        }
+        return cardArray
+    }
+
+    placeTaskCardsIntoProjectDOM(){
+
+        let tasks = this.renderTaskCards()
+
+        for(let task of tasks){
+            let status = task.returnStatus()
+            let projectNameForHTML = this.project.returnProjectNameWithNoWhitespace()
+            let targetID = `#${status}-${projectNameForHTML}`
+            let columnForTaskCardByProgress = document.querySelector(targetID)
+            columnForTaskCardByProgress.appendChild(task.createMinimizedCard())
+        }
+    }
+
+    getProject(){
+        return this.project
+    } 
+
+    updateIDsToNewProjectName(oldName, newName){
+        const projectDOMTitle = document.querySelector(`#${oldName}-title`)
+
+        let editButton = document.querySelector(`#${this.project.returnProjectNameWithNoWhitespace()}-edit`)
+        if(editButton.innerHTML != 'Edit') editButton.innerHTML = 'Edit'
+
+        const projectDOM = document.querySelector(`#${oldName}`)
+        projectDOM.setAttribute('id', newName)
+        
+        const projectNotStartedColumn = document.querySelector(`#not-started-${oldName}`)
+        projectNotStartedColumn.setAttribute('id', `not-started-${newName}`)
+        const projectInProgressColumn = document.querySelector(`#in-progress-${oldName}`)
+        projectInProgressColumn.setAttribute('id', `in-progress-${newName}`)
+        const projectCompletedColumn = document.querySelector(`#completed-${oldName}`)
+        projectCompletedColumn.setAttribute('id', `completed-${newName}`)
+
+        projectDOMTitle.setAttribute('id', `${newName}-title`)
+        editButton.setAttribute('id', `${newName}-edit`)
+
+        const projectDOMDeleteButton = document.querySelector(`#${oldName}-delete`)
+        projectDOMDeleteButton.setAttribute('id', `${newName}-delete`)
+        const projectDOMCollapseButton = document.querySelector(`#${oldName}-collapse`)
+        projectDOMCollapseButton.setAttribute('id', `${newName}-collapse`)
+
+        if(projectNotStartedColumn.hasChildNodes() || projectInProgressColumn.hasChildNodes() || projectCompletedColumn.hasChildNodes()){
+            projectNotStartedColumn.childNodes.forEach(card => card.dataset.project = newName)
+            projectInProgressColumn.childNodes.forEach(card => card.dataset.project = newName)
+            projectCompletedColumn.childNodes.forEach(card => card.dataset.project = newName) 
+        }
+        this.project.updateProjectName(newName)
+        this.sidebar.displayProjects()
+    }
+
+    createNewTaskForm() {
         const cardTitle = createDomElement(
             'input', 
             {id: 'new-card-title', class:'new-card-info', type:'text'})
@@ -99,21 +165,9 @@ class ProjectRenderer {
         cardSubmitButton.addEventListener('click', (e) => {
             this.submitNewTask(this.project), 
             this.renderAndUpdateProject()
-            e.currentTarget.parentNode.parentNode.remove()})
-
+            e.currentTarget.parentNode.parentNode.remove()
+        })
         document.body.append(cardArea)
-    }
-
-    submitNewTask() {
-        const title = document.querySelector('#new-card-title').value
-        const duedate = document.querySelector('#new-card-dueDate').value
-        const priority = document.querySelector('#new-card-priority').value
-        const detail = document.querySelector('#new-card-detail').value
-
-        const status = 'not-started'
-        let newTask = new TodoItem(title, status, priority, duedate, detail)
-        
-        this.project.addTask(newTask)
     }
 
     createProjectDOM(newDOM){
@@ -136,7 +190,6 @@ class ProjectRenderer {
             },
             this.project.name
             )
-        projectDOMTitle
 
         const projectDOMEditTitleButton = createDomElement(
             'button',
@@ -149,6 +202,7 @@ class ProjectRenderer {
         function editTitle(e){
                 projectDOMTitle.setAttribute('contenteditable', true)
                 projectDOMTitle.focus() 
+                e.innerHTML = 'Save'
                 e.classList.add('save')
         }
         
@@ -160,12 +214,15 @@ class ProjectRenderer {
 
         projectDOMEditTitleButton.addEventListener('click', (e) => {
             if(projectDOMEditTitleButton.classList.contains('save')){
+                let oldID = projectDOM.id
+                let newID = projectDOMTitle.innerHTML.replace(/\s+/g, '-')
+
                 saveTitle(projectDOMEditTitleButton)
-                console.log('save on')
+                this.updateIDsToNewProjectName(oldID, newID)
             }
             else{
                 editTitle(projectDOMEditTitleButton)
-                console.log('edit on')
+                projectDOMEditTitleButton.innerHTML = 'Save'
             }
         });
 
@@ -179,8 +236,8 @@ class ProjectRenderer {
             )
         projectDOMDeleteButton.addEventListener('click', () => {
             this.handler.removeProject(this.project.name)
-            console.log(this.handler.returnAllProjectTitles())
             projectDOM.remove()
+            this.sidebar.displayProjects()
         });
 
         const projectDOMCollapseButton = createDomElement(
@@ -188,17 +245,13 @@ class ProjectRenderer {
             {
                 class:'project-collapse-button', 
                 id: `${this.project.returnProjectNameWithNoWhitespace()}-collapse`, 
-                // type:"checkbox"
             }
             )
-        const projectCollapseLabel = createDomElement('label',
-        {for:'project-collapse-button',
-        class:'lbl-toggle'})
+        // const projectCollapseLabel = createDomElement('label',
+        // {for:'project-collapse-button',
+        // class:'lbl-toggle'})
 
         projectDOMCollapseButton.addEventListener('click', () => {
-            // projectColumnsWrapper.classList.toggle('expanded')
-            // projectColumnsWrapper.classList.toggle('collapsed')
-            // projectDOMCollapseButton.classList.toggle('toggle-button-transition')
             if(projectColumnsWrapper.classList.contains('collapsed')){
                 projectColumnsWrapper.classList.remove('collapsed')
                 projectDOMCollapseButton.classList.remove('toggle-button-transition')
@@ -225,8 +278,6 @@ class ProjectRenderer {
             'div',
             {class: 'project-header'},
             projectDOMOptions)
-
-
 
         // -------------------- Progress columns --------------------------------------------------------------------//
         const projectNotStartedColumn = createDomElement(
@@ -288,9 +339,6 @@ class ProjectRenderer {
             {class:'project-status-wrapper', id:`columns-${this.project.returnProjectNameWithNoWhitespace()}`},
             projectNotStartedColumn, projectInProgressColumn, projectCompletedColumn)
 
-
-
-            
         // pull everything together
         const projectDOM = createDomElement('div', 
             {class:'project', 
@@ -308,113 +356,8 @@ class ProjectRenderer {
 
         //update project name and div ids when editting
         projectDOMTitle.addEventListener('input', (e) => {
-            let newProjectName = projectDOMTitle.innerHTML.replace(/\s+/g, '-')
             let editButton = document.querySelector(`#${this.project.returnProjectNameWithNoWhitespace()}-edit`)
             if(editButton.innerHTML != 'Save') editButton.innerHTML = 'Save'
-            this.project.updateProjectName(newProjectName)
-            projectDOM.setAttribute('id', newProjectName)
-            projectNotStartedColumn.setAttribute('id', `not-started-${newProjectName}`)
-            projectInProgressColumn.setAttribute('id', `in-progress-${newProjectName}`)
-            projectCompletedColumn.setAttribute('id', `completed-${newProjectName}`)
-            projectDOMTitle.setAttribute('id', `${newProjectName}-title`)
-            projectDOMEditTitleButton.setAttribute('id', `${newProjectName}-edit`),
-            projectDOMDeleteButton.setAttribute('id', `${newProjectName}-delete`)
-            projectDOMCollapseButton.setAttribute('id', `${newProjectName}-collapse`)
-        
-            if(projectNotStartedColumn.hasChildNodes() || projectInProgressColumn.hasChildNodes() || projectCompletedColumn.hasChildNodes()){
-                projectNotStartedColumn.childNodes.forEach(card => card.dataset.project = newProjectName)
-                projectInProgressColumn.childNodes.forEach(card => card.dataset.project = newProjectName)
-                projectCompletedColumn.childNodes.forEach(card => card.dataset.project = newProjectName) 
-            }
         })
-    }
-
-    renderTaskCards(){
-        const listOfTasksInProject = this.project.returnAllTasks()
-
-        let cardArray = []
-        for(let task of listOfTasksInProject) {
-            let CardCreaterObj = new CardRenderer(this, task)
-            cardArray.push(CardCreaterObj)
-        }
-        return cardArray
-    }
-
-    placeTaskCardsIntoProjectDOM(){
-
-        let tasks = this.renderTaskCards()
-
-        for(let task of tasks){
-
-            let status = task.returnStatus()
-            let projectNameForHTML = this.project.returnProjectNameWithNoWhitespace()
-            let targetID = `#${status}-${projectNameForHTML}`
-            let columnForTaskCardByProgress = document.querySelector(targetID)
-
-            columnForTaskCardByProgress.appendChild(task.createMinimizedCard())
-        }
-    }
-
-    getProject(){
-        return this.project
-    } 
-
-    updateProjectName(newName){
-        this.project.updateProjectName(newName)
-        this.renderAndUpdateProject()
-    }
-}
-
-
-export class PageInitializer {
-    constructor(projectHandler){
-        this.projectHandler = projectHandler
-    }
-
-    setProjectHandler(projectHandler) {
-        this.projectHandler = projectHandler;
-    }
-
-    setCreateNewProjectButton(){
-        const newProjectButton = document.querySelector('#new-project-button')
-        newProjectButton.addEventListener('click', this.createSingleProject.bind(this))
-    }
-
-    createSingleProject(){
-        let newProjectTitleBase = 'New Project'
-        let i = 1
-        let newProjectTitle
-
-        const projectTitles = this.projectHandler.returnAllProjectTitles()
-        if(projectTitles.includes(newProjectTitleBase)){
-            newProjectTitle = newProjectTitleBase + i
-            do{
-                i+=1
-                newProjectTitle = newProjectTitleBase + i
-            }
-            while(projectTitles.includes(newProjectTitle));
-        }
-        else(newProjectTitle = newProjectTitleBase)
-
-        const NewProject = new Project(newProjectTitle)
-        const NewProjectRenderer = new ProjectRenderer(this.projectHandler, NewProject)
-        // console.log(this.projectHandler)
-        this.projectHandler.addProject(NewProject)
-        NewProjectRenderer.createProjectDOM(true)
-    }
-
-    initialize() {
-        const projectDiv = document.querySelector('#projects')
-
-        let projectList = this.projectHandler.returnAllProjects()
-
-        const out = []
-        for (let proj of projectList){
-            let ProjectManager = new ProjectRenderer(this.projectHandler, proj)
-            ProjectManager.createProjectDOM()
-            ProjectManager.placeTaskCardsIntoProjectDOM()
-        }
-
-        this.setCreateNewProjectButton()
     }
 }

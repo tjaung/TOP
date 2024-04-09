@@ -1,9 +1,18 @@
 * {
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
-    font-size: 1em;
-    font-family: 'Sublima', 'Poppins', sans-serif;
-    color: #182825;
+    font-family: sans-serif;
+  
+    /* -ms-overflow-style: none; 
+    scrollbar-width: none; Firefox */
 }
+
+/* ---- RESET/BASIC STYLING ---- */
+  
+  /* *::-webkit-scrollbar {
+    display: none;
+  } */
 
 .container {
     display: grid;
@@ -13,12 +22,11 @@
         'header'
         'article'
         'foot';
-    height: 100vh;
 }
 
 .top {
     grid-area: header;
-
+    min-height: 20vh;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
@@ -133,4 +141,10 @@ The text elements in the sidebar are centered with grid
 #logo {
     width: 4.5rem;
     height: 4.5rem;
+}
+
+#foot{
+    grid-area:foot;
+    background: #252525;
+    height: 5vh;
 }

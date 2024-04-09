@@ -26,7 +26,6 @@ export class TodoItem {
         }; 
     }
     
-
     updateDetail(newDetail) {
         this.detail = newDetail
     }
