@@ -17,6 +17,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "set-attribute-tuples": "^1.0.1"
   }
 }

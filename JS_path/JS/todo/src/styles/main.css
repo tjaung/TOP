@@ -14,36 +14,31 @@
     display: none;
   } */
 
+
 .container {
-    display: grid;
-    grid-template-rows: 1fr 3fr 1fr;
-    grid-template-columns: 100vw;
-    grid-template-areas:
-        'header'
-        'article'
-        'foot';
+    display: flex;
+    flex-direction:column;
 }
 
 .top {
-    grid-area: header;
     min-height: 20vh;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas: 
-        'page logo'
-        'searchbar searchbar';    
+    display: flex;  
     justify-content: space-around;
-    align-items: center;
+    align-items: start;
     padding-left: 5%;
     padding-top: 5%;
-    background:#faf2ff;
+    /* background:#faf2ff; */
+    transition: 300ms;
+    overflow: auto;
+    flex-direction: column;
+    flex:1;
 }
 
 
+
 .page {
-    grid-area: page;
     margin-left: 10%;
+    font-size: 2rem;
 }
 
 .logo {
@@ -53,69 +48,53 @@
     margin-left: 45%;
 }
 
-.search {
-    grid-area: searchbar;
-    margin-right: 10%;
-    margin-left: 5%;
-    color: #474847;
-}
-
-.searchbar {
-    width:100%;
-    border-radius: 25px;
-    color: #474847;
-}
-.searchbar input:focus {
-    outline: none;
-}
 /*
 The sidebar element has a gap of 50px
 The text elements in the sidebar are centered with grid
 */
 .sidebar {
-    background-color: #81667A;
+    background-color: #e3e3e3;
     width: 12rem;
     height: 100vh;
     padding: 0;
     position: fixed;
-    transition: transform 300ms ease-in;
-    opacity: 90%;
+    transition: 300ms;
     z-index: 999;
+    opacity:90%;
 }
 .sidebar--isHidden {
     transform: translateX(-12rem);
-    transition: transform 300ms ease-out;
+    transition: 300ms;
 }
+
+section .container {
+    margin-left: 250px;
+}
+
 .sidebar-menu {
     list-style: none;
     padding: 1.5rem;
-    margin-top: 0;
-}
-.sidebar-menu__item {
-    display: block;
-    cursor: pointer;
-    margin-bottom: 0.5rem;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }
 
-.sidebar-meu_item :nth-child(1){
-    position: fixed;
-    left: -5;
-}
-
-.sidebar-menu__item a {
-    color: white;
+.sidebar li {
+    color: #131200;
     text-decoration: none;
     display: block;
+    cursor:pointer;
 }
-.sidebar-menu__item a:hover {
-    color: grey;
+.sidebar li:hover {
+    color: #0197F6;
     transition: color 150ms linear;
 }
 
 
 .openbtn {
-    width: 30px;
-    height: 30px;
+    border: none;
+    text-align: center;
     border-radius: 15%;
     border:none;
     outline:none;
@@ -123,10 +102,30 @@ The text elements in the sidebar are centered with grid
     position: fixed;
     transition: transform 300ms ease-in;
     left: 12rem;
-    color: #474847;
-    background-color:#81667A;
+    color: #131200;
+    background-color:#0197F6;
     font-weight: bold;
   }
+
+#show-all{
+    border-radius: 15%;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    transition: transform 300ms ease-in;
+    color: #131200;
+    display: block;
+    font-weight: bold;
+}
+.sidebar li {
+    color: #131200;
+    text-decoration: none;
+    display: block;
+}
+#show-all:hover {
+    color: #0197F6;
+    transition: color 150ms linear;
+}
 
 .openbtn--isHidden {
     transform: translateX(-12rem);
@@ -144,7 +143,69 @@ The text elements in the sidebar are centered with grid
 }
 
 #foot{
-    grid-area:foot;
-    background: #252525;
+    align-self: flex-end;
+    background: #131200;
     height: 5vh;
+}
+
+/* Mobile */
+@media only screen and (max-width: 768px) {
+
+    
+    .top {
+        max-height: 15vh;
+        min-height: 10vh;
+    }
+
+    .sidebar {
+        background-color: #e3e3e3;
+        padding: 0;
+        position: fixed;
+        transition: 300ms;
+        z-index: 999;
+    }
+    .sidebar--isHidden {
+        transform: translateX(-12rem);
+        transition: 300ms;
+    }
+    
+    section .container {
+        margin-left: 0px;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 1.5rem;
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    .sidebar li {
+        color: #131200;
+        text-decoration: none;
+        display: block;
+        cursor:pointer;
+    }
+    .sidebar li:hover {
+        color: #0197F6;
+        transition: color 150ms linear;
+    }
+    
+    
+    .openbtn {
+        border: none;
+        text-align: center;
+        border-radius: 15%;
+        border:none;
+        outline:none;
+        cursor:pointer;
+        position: fixed;
+        transition: transform 300ms ease-in;
+        top: 0;
+        color: #131200;
+        background-color:#0197F6;
+        font-weight: bold;
+      }
 }

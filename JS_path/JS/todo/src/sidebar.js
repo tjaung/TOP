@@ -53,18 +53,55 @@ export class Sidebar {
     giveSidebarOpenButtonFunction(){
         const openButton = document.querySelector('.openbtn')
         const sidebar = document.querySelector('.sidebar')
+        const head = document.querySelector('.top')
+        const projectSection = document.querySelector('#projects')
+        const newProject = document.querySelector('#new-project')
+        const foot = document.querySelector('#foot')
+
+        function openNav() {
+            const mq = window.matchMedia("(min-width: 768px)")
+            console.log(mq)
+            if(mq.matches){
+                sidebar.style.width = "250px";
+                head.style.marginLeft = "250px";
+                projectSection.style.marginLeft = "250px"
+                newProject.style.marginLeft = "250px"
+                foot.style.marginLeft = "250px"
+            }
+
+          }
+          
+          function closeNav() {
+            const mq = window.matchMedia("(min-width: 768px)")
+            console.log(mq)
+            if(mq.matches){
+                sidebar.style.width = "0";
+                head.style.marginLeft = "0px";
+                projectSection.style.marginLeft = "0px"
+                newProject.style.marginLeft = "0px"
+                foot.style.marginLeft = "0px"
+            }
+          }
 
         let _toggleSidebar = () => {
             sidebar.classList.toggle("sidebar--isHidden");
             openButton.classList.toggle('.openbtn--isHidden');
 
-            openButton.innerHTML = sidebar.classList.contains(
-                "sidebar--isHidden"
-            )
-                ? "☰"
-                : "☰";
+            if(sidebar.classList.contains('sidebar--isHidden')){
+                closeNav()
+                openButton.innerHTML = "☰";
+            }
+            else{
+                openNav()
+                openButton.innerHTML = "X";
+            }
+            // openButton.innerHTML = sidebar.classList.contains(
+            //     "sidebar--isHidden"
+            // )
+            //     ? "X"
+            //     : "☰";
         }
-
+        
         openButton.addEventListener("click", _toggleSidebar);
     }
 

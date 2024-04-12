@@ -39,7 +39,7 @@ export class TodoItem {
     }
 
     updateDueDate(newDate){
-        this.dueDate = newDate
+        this.dueDate = new Date(newDate)
     }
 
     returnTitle() {

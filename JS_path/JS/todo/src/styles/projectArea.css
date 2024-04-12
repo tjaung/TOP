@@ -1,22 +1,44 @@
+button {
+    background: none;
+    font-size: 30px;
+    border: solid #131200;
+    color: #131200;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    
+}
+
+button:hover {
+    color: #e3e3e3;
+    border: solid #e3e3e3;
+    transition: color 150ms linear;
+}
+
 #projects {
     display:flex;
     flex-direction: column;
-    position: fixed;
-    width: 100%;
+    /* position: fixed; */
+    /* width: 100%; */
     top: 20vh;
     padding: 1rem 1rem 1rem 1rem;
+    transition: 300ms;
+    overflow: auto;
+    flex:1;
 }
 
 #project-section-header {
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     padding-bottom: 12px;
+    margin-top: 12px;
 }
 
 #status-labels {
     align-content: center;
     justify-items: center;
-    /* background: #f4f4f4; */
+    border-radius: 5px;
 }
 
 #new-project-button {
@@ -24,56 +46,52 @@
     height: 3rem;
     width: 6rem;
     margin-left: 2rem;
+    border-radius: 0%;
+    font-size: 18px;
 }
 
 .project-header {
-    /* background: #f4f4f4; */
-    /* border: 6px solid black; */
-    border-radius: 30px;
-    padding: 2rem;
-    background: lightblue;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    border-radius: 8px;
+    padding: 1rem;
+    background: #0197F6;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .head-lbl {
-    background: #f4f4f4;
+    background: #e3e3e3;
     height:100%;
     width:100%;
     text-align:center;
 }
 
 .project-options {
-    display: grid;
-    grid-template-columns: .5fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .project-name {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 8px;
+    color:#131200;
+    padding-left: 24px;
 }
 .project-name-change-button{
-    height: 2rem;
-    width: 2rem;
+    
 }
 
 .project-delete-button{
-    height: 3rem;
-    width: 3rem;
-    justify-self: end;
 }
 
 .project-collapse-button{
-    height:50px;
-    width:50px;
-    grid-column-start: 3;
-    justify-self: end;
-    grid-row-start: 2;
 }
 
 .new-task-button{
-    height: 3rem;
-    width: 3rem;
+    grid-row: 1;
+    grid-column-start: 1;
 }
 
 .project-status-wrapper {
@@ -81,10 +99,11 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 12px;
     padding: 0rem 2rem;
+    margin-top: -24px;
 }
 
 .project-status-col {
-    background: #f4f4f4;
+    background: #e3e3e3;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -93,19 +112,16 @@
     overflow: scroll;
     height: 100%;
     transition: all 1s;
-
+    grid-row: 2;
 }
 
 .hover {
-    background: blue;
+    background: #0197F6;
     z-index:99;
 }
 
 .save{
-    background: lightblue;
-}
-.project-collapse-button:hover {
-    color: green;
+    /* background: ; */
 }
 
 .project-collapse-button::before {
@@ -117,7 +133,7 @@
     border-left: 5px solid currentColor;
 
     vertical-align: middle;
-    margin-right: .7rem;
+    /* margin-right: .7rem; */
     transform: translateY(-2px);
 
     transition: transform .2s ease-out;
@@ -155,4 +171,46 @@ transition: all 1s;
 
 .clicked{
     color: yellow;
+}
+
+#new-project {
+    display: flex;
+    align-items: start;
+    transition: 300ms;
+    overflow: auto;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Mobile */
+@media only screen and (max-width: 768px) {
+
+    button {
+        height: 35px;
+        width: 35px;
+        font-size: 20px;
+    }
+    #projects{
+        padding: 0px;
+    }
+    #project-section-header{
+        display: none;
+    }
+
+    .project-status-wrapper {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 0px;
+        padding: 0px;
+        margin-top: -24px;
+    }
+
+    .project-header {
+        margin-bottom: 24px;
+        grid-template-columns: 50% 50%;
+    }
+    .project-status-col {
+        gap: 0px;
+    }
+
 }
