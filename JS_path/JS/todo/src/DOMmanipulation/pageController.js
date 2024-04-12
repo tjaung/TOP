@@ -1,5 +1,5 @@
-import { Project } from "./projectObj";
-import './styles/projectArea.css';
+import { Project } from "../objects/projectObj.js";
+import '../styles/projectArea.css';
 import { Sidebar } from "./sidebar.js";
 import { ProjectRenderer } from "./projectDisplay.js";
 
@@ -31,6 +31,7 @@ export class PageInitializer {
             } while (projectTitles.includes(newProjectTitle));
         } else {
             newProjectTitle = newProjectTitleBase;
+            i = 1
         }
 
         const newProject = new Project(newProjectTitle);

@@ -1,4 +1,4 @@
-import { createCard } from "./cardDisplay"
+import { createCard } from "../DOMmanipulation/cardDisplay"
 
 export class TodoItem {
     // jobStatus = 0;
@@ -39,7 +39,8 @@ export class TodoItem {
     }
 
     updateDueDate(newDate){
-        this.dueDate = new Date(newDate)
+        let date = newDate.replace('/', '-').split('-')
+        this.dueDate = date[0] + '-' + date[1] + '-' + date[2]
     }
 
     returnTitle() {

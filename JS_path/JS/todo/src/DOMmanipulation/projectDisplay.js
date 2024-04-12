@@ -1,9 +1,8 @@
-import { createDomElement } from "./componentMakers"
-import { CardRenderer} from "./cardDisplay"
-import { TodoItem } from "./todoObj";
-import './styles/projectArea.css';
+import { createDomElement } from "./componentMakers.js"
+import { CardRenderer} from "./cardDisplay.js"
+import { TodoItem } from "../objects/todoObj.js";
+import '../styles/projectArea.css';
 import * as Drag from './dragFunctions.js'
-// import { create } from "domain";
 
 export class ProjectRenderer {
     constructor(projectHandler, project, sidebar){
@@ -24,9 +23,6 @@ export class ProjectRenderer {
     
     clearAllChildren(target){
         target.innerHTML = ''
-        // while (target.childNodes.length > 0) {
-        //     target.removeChild(target.lastChild);
-        // }
     }
 
     renderAndUpdateProject()  {        
@@ -38,7 +34,8 @@ export class ProjectRenderer {
                 this.clearAllChildren(col)
             }
         })
-        // this.createProjectDOM()
+        this.project.returnProjectJSON()
+        this.handler.updateLocalStorage()
         this.placeTaskCardsIntoProjectDOM()
     }
 
@@ -50,8 +47,9 @@ export class ProjectRenderer {
 
         const status = 'not-started'
         let newTask = new TodoItem(title, status, priority, duedate, detail)
-        console.log(newTask.returnDueDate())
+
         this.project.addTask(newTask)
+        this.handler.updateLocalStorage()
     }
 
     renderTaskCards(){
@@ -212,8 +210,6 @@ export class ProjectRenderer {
     createProjectDOM(newDOM){
         const header = this.renderProjectHeader()
         const projectColumns = this.renderProjectTaskColumns(newDOM)
-
-
     }
     
     renderProjectHeader(){
@@ -266,6 +262,7 @@ export class ProjectRenderer {
 
                 saveTitle(projectDOMEditTitleButton)
                 this.updateIDsToNewProjectName(oldID, newID)
+                this.handler.updateLocalStorage()
             }
             else{
                 editTitle(projectDOMEditTitleButton)

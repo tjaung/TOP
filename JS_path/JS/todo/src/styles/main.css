@@ -4,15 +4,15 @@
     box-sizing: border-box;
     font-family: sans-serif;
   
-    /* -ms-overflow-style: none; 
-    scrollbar-width: none; Firefox */
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
 }
 
 /* ---- RESET/BASIC STYLING ---- */
   
-  /* *::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     display: none;
-  } */
+  }
 
 
 .container {

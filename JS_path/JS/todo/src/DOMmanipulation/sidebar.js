@@ -1,5 +1,5 @@
 import { createDomElement } from "./componentMakers"
-import './styles/projectArea.css';
+import '../styles/projectArea.css';
 
 export class Sidebar {
     constructor(handler){
@@ -24,7 +24,6 @@ export class Sidebar {
 
         const titles = this.getProjectList()
         for(let proj of titles){
-            console.log(proj)
             const projectTitle = createDomElement(
                 'li',
                 {class:'project-list-item', id:`${proj.returnProjectNameWithNoWhitespace()}-sidebar`},
@@ -32,7 +31,6 @@ export class Sidebar {
             )
             projectTitle.addEventListener('click', (e) => {
                 this.showSingleProject(proj.returnProjectNameWithNoWhitespace())
-                console.log(e)
                 e.target.classList.add('clicked')
             })
             projectList.appendChild(projectTitle)
@@ -60,7 +58,6 @@ export class Sidebar {
 
         function openNav() {
             const mq = window.matchMedia("(min-width: 768px)")
-            console.log(mq)
             if(mq.matches){
                 sidebar.style.width = "250px";
                 head.style.marginLeft = "250px";
@@ -73,7 +70,6 @@ export class Sidebar {
           
           function closeNav() {
             const mq = window.matchMedia("(min-width: 768px)")
-            console.log(mq)
             if(mq.matches){
                 sidebar.style.width = "0";
                 head.style.marginLeft = "0px";

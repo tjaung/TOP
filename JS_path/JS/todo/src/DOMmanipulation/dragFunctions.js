@@ -16,8 +16,6 @@ function onDragOver(event) {
   const projectName = curTask.dataset.project
   console.log('onDragOver task project name', projectName)
   let ableToDrop = dropzoneID.includes(projectName)
-  console.log(dropzoneID)
-  console.log(ableToDrop)
   if(ableToDrop){
     if (!bottomTask) {
       dropzone.appendChild(curTask);
@@ -43,12 +41,10 @@ function onDrop(event) {
   const projectName = curTask.dataset.project
   const dropzoneID = dropzone.id
 
-  console.log('onDragOver task project name', projectName)
   let ableToDrop = dropzoneID.includes(projectName)
   let newStatus = dropzone.dataset.status
   if(ableToDrop){
     curTask.dataset.status = newStatus
-
     // Dispatch custom event with updated status
     const statusChangeEvent = new CustomEvent('statusChange', {
       detail: { id: id, newStatus: newStatus }
@@ -61,7 +57,6 @@ function onDrop(event) {
 
 const insertAboveTask = (zone, mouseY) => {
   const els = zone.querySelectorAll(".mini-card:not(.is-dragging)");
-  // console.log(els)
   let closestTask = null;
   let closestOffset = Number.NEGATIVE_INFINITY;
 

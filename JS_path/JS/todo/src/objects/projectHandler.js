@@ -1,4 +1,4 @@
-import { ErrorLog } from "./errorLogger";
+import { ErrorLog } from "../errorLogger";
 const ErrorLogger = new ErrorLog()
 
 export class ProjectHandler {
@@ -9,14 +9,22 @@ export class ProjectHandler {
 
     addProject(projectObj) {
         const found = this.projectList.some(pro => pro.name === projectObj.name);
-        if (!found) (this.projectList.push(projectObj));
+        if (!found) {
+            this.projectList.push(projectObj)
+            this.updateLocalStorage()
+        }
         else {ErrorLogger.throwError('Project Already Exists')}
     }
 
     removeProject(projectName) {
-        this.projectList = this.projectList.filter((pro) => 
-            pro.name !== projectName
-        );
+        console.log(projectName)
+        for(let i=0; i< this.projectList.length; i++){
+            console.log(this.projectList[i].name)
+            if(this.projectList[i].name == projectName) {
+                this.projectList.splice(i, 1)
+            }
+        }
+        this.updateLocalStorage()
     }
 
     returnAllProjectTitles() {
@@ -36,8 +44,11 @@ export class ProjectHandler {
         for(i = 0; i < this.projectList.length; i++)
             if (this.projectList[i].name.toLowerCase().includes(projectName.toLowerCase()))
                 indexes.push(i);
-            // might have to undo stringify
         return this.projectList[indexes];
+    }
+
+    updateLocalStorage() {
+        localStorage.setItem('projects', JSON.stringify(this.returnAllProjects()))
     }
 
 }

@@ -1,7 +1,8 @@
-import { createDomElement } from "./componentMakers"
+import { createDomElement } from "./componentMakers.js"
 import * as Drag from './dragFunctions.js'
 import * as DateFNS from "date-fns"
-import './styles/cards.css';
+import '../styles/cards.css';
+import { addDays } from "date-fns";
 
 export class CardRenderer {
     constructor(projectRenderer, task){
@@ -20,31 +21,25 @@ export class CardRenderer {
             this.deleteTarget(cardArea),
             this.projectRenderer.project.removeTask(this.task.title)
             this.projectRenderer.renderAndUpdateProject()
-            console.log(this.projectRenderer.project.returnProjectJSON())})
+    })
 
-            const date = new Date()
-            // let currentDate = date.getDate()
+
             let dueDate = this.task.returnDueDate()
-            let dueDateTimer = DateFNS.differenceInDays(dueDate, date);
-
             const dueDateLabel = createDomElement('label', {id:"dueDate-label", for:"new-card-dueDate"}, "Due: ")
-            const cardDueDate = createDomElement('input', {id: 'full-card-dueDate', class:'full-card-info', contenteditable :true, type:'date'})
+            const cardDueDate = createDomElement('input', {id: 'full-card-dueDate', class:'full-card-info', type:'date', value:dueDate})
             cardDueDate.value = dueDate
             const dueDateDiv = createDomElement('div',{id:'due-date'},dueDateLabel, cardDueDate)
-            
+
             const priorityLabel = createDomElement('label',{id:'priority-label',for:"new-card-priority"},'Priority:')
-            // const cardPriority = createDomElement('option', {id: 'full-card-priority', class:'full-card-info', contenteditable :true}, this.task.priority)
             const cardPriority = createDomElement('select', {id:'new-card-priority'},//, selected:`${this.task.priority}`}, 
                 createDomElement('option', {value: 'low'}, "Low"), 
                 createDomElement('option', {value: 'medium'}, "Medium"), 
                 createDomElement('option', {value: 'high'}, "High"
                 ))
             cardPriority.value = this.task.priority
-            // document.querySelector('#new-card-priority').value = this.task.priority
             const prioritiesDiv = createDomElement('div',{id:'priorities'},priorityLabel, cardPriority)
     
             const detailLabel = createDomElement('label',{id:"detail-label",for:"new-card-detail"},'Details:')
-            // const cardDetail = createDomElement('textarea', {id: 'new-card-detail', class:'new-card-info', type:'text'})
             const cardDetail = createDomElement('textarea', {id: 'full-card-detail', class:'full-card-info', contenteditable :true}, this.task.detail)
             const detailDiv = createDomElement('div', {id:"detail"}, detailLabel, cardDetail)
 
@@ -90,8 +85,6 @@ export class CardRenderer {
                 class: 'mini-card', 
                 id: this.task.title.replace(/\s+/g, '-'), 
                 draggable:true,
-                // ondragstart: 'onDragStart(event)',
-                // ondragover: 'onDragOver(event)'
             }, 
             cardTitle, cardDueDate, cardPriority, cardStatus)
             card.setAttribute('data-project', this.projectRenderer.project.returnProjectNameWithNoWhitespace())
