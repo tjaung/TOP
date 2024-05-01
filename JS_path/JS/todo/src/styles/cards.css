@@ -1,0 +1,225 @@
+h1, h2 {
+    text-overflow: clip;
+    white-space: nowrap;
+    overflow: hidden;
+    /* font-size: 12px; */
+}
+
+textarea {
+    resize: none;
+}
+
+label, select, textarea, p {
+    display:block;
+    resize:none;
+}
+select, textarea, p {
+    padding: 12px;
+}
+
+.mini-card {
+    min-height: 200px;
+    max-height: 800px;
+    max-width: 400px;
+    border-radius: 20px solid black;
+    background: white;
+    color: black;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    width: 80%;
+    align-self: center;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: move;
+}
+.remove-bg {
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:9;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.full-card {
+    z-index: 99;
+    position: absolute;
+    background: white;
+    display: grid;
+    grid-template:
+        'title title title' auto
+        ' desc desc priority' auto
+        'desc desc date' auto
+        'desc desc status' auto
+        ' button foot foot ' auto;
+    width: 40%;
+    height: 80%;
+    font-size: 18px;
+    border-radius: 5px;
+    justify-self: center;
+    align-self: center;
+    padding:24px;
+    grid-gap: 24px;
+}
+
+#new-card-title, #full-card-title {
+    grid-area: title;
+}
+
+#detail, #full-card-detail {
+    grid-area: desc;
+    height: 100%;
+    width: 100%;
+}
+
+#detail-label, #new-card-detail {
+    display:block;
+}
+
+#mini-card-status {
+    border-radius: 25%;
+    display:none;
+}
+
+
+
+#new-card-detail {
+    height: 100%;
+    width: 100%;
+}
+
+#priorities, #full-card-priority{
+    grid-area: priority;
+}
+
+#due-date, #full-card-dueDate{
+    grid-area: date;
+}
+
+#card-remove-button, #new-card-create-button{
+    grid-area: button;
+    border-radius: 5px;
+    width: 6rem;
+    height: 3rem;
+    font-size: 18px;
+    align-self: center;
+    justify-self: center;
+}
+
+#full-card-status {
+    grid-area: status;
+}
+
+#card-area {
+    position:fixed;
+    padding:0;
+    margin:0;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+    background:rgba(255,255,255,0.5);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide {
+    display:none;
+}
+
+.is-dragging {
+    scale: 1.05;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    background: rgb(50, 50, 50);
+    color: white;
+  }
+
+  .haveTime {
+    text-decoration: underline;
+    text-decoration-color: rgb(28, 181, 28);
+  }
+
+  .shouldDo {
+    text-decoration: underline;
+    text-decoration-color: rgb(205, 205, 26);
+  }
+
+  .urgent {
+    text-decoration: underline;
+    text-decoration-color: rgb(205, 15, 15);
+  }
+
+  
+/* Mobile */
+@media only screen and (max-width: 768px) {
+
+    .mini-card {
+        min-height: 0px;
+        max-height: 200px;
+        max-width: 100%;
+        width: 99%;
+        background: white;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+        align-self: center;
+        padding: 12px;
+        border-radius: 4px;
+        border: 2px solid black;
+        text-overflow: ellipsis;
+        font-size: 8px;
+        cursor: move;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .full-card {   
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 80%;
+    }
+
+    .haveTime {
+        text-decoration: underline;
+        text-decoration-color: rgb(28, 181, 28);
+      }
+    
+      .shouldDo {
+        text-decoration: underline;
+        text-decoration-color: rgb(205, 205, 26);
+      }
+    
+      .urgent {
+        text-decoration: underline;
+        text-decoration-color: rgb(205, 15, 15);
+      }
+      
+    #mini-card-status {
+        display:block;
+    }
+
+    #mini-card-status.not-started{
+        border: 4px solid rgb(205, 15, 15);
+        fill: rgb(205, 15, 15);
+    }
+    #mini-card-status.in-progress{
+        border: 4px solid rgb(205, 205, 26);
+        fill: rgb(205, 205, 26);
+    }
+    #mini-card-status.completed {
+        border: 4px solid rgb(28, 181, 28);
+        fill: rgb(28, 181, 28);
+    }
+
+    .mini-card-info {
+        max-width: 30%;
+    }
+    #full-card-title{
+        font-size: 30px;
+        width: 100%;
+        height: 72px;
+    
+    }
+}
