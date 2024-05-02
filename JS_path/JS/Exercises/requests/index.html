@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <img src="#">
+  <input type="text" placeholder="Gumball and Darwin">
+  <button>New GIF</button>
+  <script>
+    const img = document.querySelector('img');
+    const search = document.querySelector('input')
+    search.value = 'Gumball and Darwin'
+    // fetchAndPostGIF()
+
+    const btn = document.querySelector('button');
+    btn.addEventListener('click', fetchAndPostGIF)
+
+    async function fetchAndPostGIF(){
+        let searchInput = search.value;
+        if ((searchInput == null || searchInput == "")) {
+            alert("Please Fill In All Required Fields");
+            return false;
+        }
+
+        // fetch data
+        const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=kKz2BnMoHi7yvknfW1CHJXvcOkiceNXX&s=${searchInput}`, 
+        {mode: 'cors'}
+        )
+        const gifURL = await response.json().data.images.original.url
+
+        // then post
+        img.src = gifURL;
+    }
+
+
+  </script>
+</body>
+</html>
