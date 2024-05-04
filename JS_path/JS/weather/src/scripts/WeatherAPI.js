@@ -9,7 +9,7 @@ export class WeatherAPI {
             const cityURL = `http://api.weatherapi.com/v1/current.json?key=${process.env.API_KEY}&q=${city.toLowerCase()}&aqi=no`
             const response = await fetch(cityURL);
             const cityData = await response.json()
-            console.log(cityData)
+            // console.log(cityData)
             this.updateLocation(cityData.location)
             this.updateWeatherData(cityData)
 
