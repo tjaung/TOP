@@ -7,3 +7,5 @@ Projects from the JS Path:
  2. [Dashboard](https://tjaung.github.io/TOP_Dashboard/)
  3. [Library](https://tjaung.github.io/TOP-Library/)
  4. [Tic-Tac-Toe](https://tjaung.github.io/TOP_tictactoe/)
+ 5. [Restaurant Page](https://tjaung.github.io/odin_restaurant/)
+ 6. [Todo App](https://tjaung.github.io/TOP_todo/)
