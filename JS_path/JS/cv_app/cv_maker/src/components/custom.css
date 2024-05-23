@@ -1,0 +1,14 @@
+body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        place-items: start;
+        min-width: 320px;
+        min-height: 100vh;
+}
+.container-fluid {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1600px; /* or 950px */
+    flex-direction: row;
+  }

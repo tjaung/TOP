@@ -1,6 +1,6 @@
 function PersonalDetails() {
   return (
-    <form className="row g-0 h-100">
+    <form className="row g-3 h-100">
       <div id="firstNamehtmlForm" className="form-group col-md-6">
         <label htmlFor="firstName" className="htmlForm-label">
           First Name

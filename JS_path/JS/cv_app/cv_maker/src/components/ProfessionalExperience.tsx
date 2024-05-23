@@ -1,11 +1,11 @@
-import * as React from "react";
+// import * as React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function ProfessionalExperience() {
   return (
-    <form className="row g-0 h-100">
+    <form className="row g-3 h-100">
       <div id="positionTitlehtmlForm" className="form-group col-md-6">
         <label htmlFor="positionTitle" className="htmlForm-label">
           Position Title
